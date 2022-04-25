@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+     Create new Ads
+{%endblock%}
+
+
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+    <li class="breadcrumb-item "><a href="{% url 'SectionAds' Section.pk %}">{{Section.name}}</a></li>
+    <li class="breadcrumb-item active">New Ads</li>
+ {%endblock%}
+
+
+{% block content %}
+
+<form method="post"  novalidate>
+    {% csrf_token %}
+
+    {% include 'form.html' %}
+
+    <button type="submit" class="btn btn-success">Add</button>
+</form>
+
+{%endblock%}

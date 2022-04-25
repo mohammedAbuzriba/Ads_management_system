@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+       {{Section.name}}
+{%endblock%}
+
+
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+    <li class="breadcrumb-item active">{{Section.name}}</li>
+ {%endblock%}
+
+
+{% block content %}
+    <div class="mb-4">
+    <a href="{% url 'newAds' Section.pk %}" class="btn btn-primary">New Ads</a>
+</div>
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th>ADs</th>
+        <th>Created by</th>
+        <th>Comments</th>
+        <th>Views</th>
+        <th>Created dt</th>
+    </tr>
+    </thead>
+    <tbody>
+    {%for ads in Section.ads.all%}
+    <tr>
+        <td>{{ads.subject}}</td>
+        <td>{{ads.created_by.username}}</td>
+        <td>0</td>
+        <td>0</td>
+        <td>{{ads.created_dt}}</td>
+
+    </tr>
+    {%endfor%}
+
+    </tbody>
+</table>
+
+{%endblock%}
