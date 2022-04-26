@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% block title %}
+       {{ads.subject}}
+{%endblock%}
+
+
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+<li class="breadcrumb-item"><a href="{% url 'SectionAds' Ads.section.pk %}">{{Ads.section.name}}</a></li>
+    <li class="breadcrumb-item active">{{Ads.subject}}</li>
+ {%endblock%}
+
+
+{% block content %}
+
+    {% for comments in Ads.comments.all%}
+    <div class="row">
+    <div class="col-2">
+        <img class="w-100" src="{% static 'img/user.png' %}" alt="{{comments.created_by_username}}">
+    </div>
+        <div class="col-10">
+        <p>{{comments.created_by.username}}</p>
+            <p>{{comments.message}}</p>
+            <p>{{comments.created_dt}}</p>
+
+            {% if comments.created_by == user %}
+            <a href="" class="btn btn-primary">edit</a>
+            {%endif%}
+
+        </div>
+    </div>
+    {% endfor %}
+
+
+{%endblock%}

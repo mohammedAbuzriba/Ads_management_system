@@ -30,7 +30,7 @@
     <tbody>
     {%for ads in Section.ads.all%}
     <tr>
-        <td>{{ads.subject}}</td>
+        <td><a href="{% url 'adsComments' Section.pk ads.pk %}">{{ads.subject}}</a></td>
         <td>{{ads.created_by.username}}</td>
         <td>0</td>
         <td>0</td>
