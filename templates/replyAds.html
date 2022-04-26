@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% block title %}
+       {{Ads.subject}}
+{%endblock%}
+
+
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+<li class="breadcrumb-item"><a href="{% url 'SectionAds' Ads.section.pk %}">{{Ads.section.name}}</a></li>
+    <li class="breadcrumb-item ">{{Ads.subject}}</li>
+    <li class="breadcrumb-item active">add reply</li>
+ {%endblock%}
+
+
+{% block content %}
+<form method="post" action="">
+    {%csrf_token%}
+{% include 'form.html' %}
+
+    <button type="submit" class="btn btn-success">Add Comment</button>
+
+
+</form>
+
+
+{% for comment in Ads.comments.all%}
+
+ <div class="col-10">
+            <div class="row mb-3">
+              <div class="col-6">
+                <strong class="text-muted">{{ comment.created_by.username }}</strong>
+              </div>
+              <div class="col-6 text-right">
+                <small class="text-muted">{{ comment.created_dt }}</small>
+              </div>
+            </div>
+            {{ comment.message }}
+
+          </div>
+
+{%endfor%}
+
+{%endblock%}

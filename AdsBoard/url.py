@@ -4,5 +4,6 @@ urlpatterns = [
     path('',views.home,name='home'),
     path('Section/<int:section_id>/',views.SectionAds,name='SectionAds'),
     path('Section/<int:section_id>/new/',views.newAds,name='newAds'),
-    path('Section/<int:section_id>/Ads/<int:ads_id>',views.adsComments,name='adsComments'),
+    path('Section/<int:section_id>/Ads/<int:ads_id>/',views.adsComments,name='adsComments'),
+    path('Section/<int:section_id>/Ads/<int:ads_id>/reply/',views.replyAds,name='replyAds'),
 ]
