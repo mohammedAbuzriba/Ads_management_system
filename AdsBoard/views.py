@@ -4,7 +4,7 @@ from django.http import HttpResponse, Http404
 from .models import Section
 from .models import Ads
 from .models import Comments
-from .forms import NewAdsForm
+from .forms import NewAdsForm,CommentsForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -44,4 +44,19 @@ def adsComments(request, section_id,ads_id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
     return render(request, 'adsComments.html', {'Ads': ads})
 
+@login_required
+def replyAds(request, section_id,ads_id):
+    ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
+    if request.method == "POST":
+        form = CommentsForm(request.POST)
+        if form.is_valid():
+            comments = form.save(commit=False)
+            comments.ads = ads
+            comments.created_by = request.user
+            comments.save()
+
+            return redirect('adsComments',section_id=section_id, ads_id=ads_id)
+    else:
+        form = CommentsForm()
+    return render(request, 'replyAds.html',{'Ads':ads,'form':form})
 

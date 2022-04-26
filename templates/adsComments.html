@@ -16,21 +16,55 @@
 
 {% block content %}
 
-    {% for comments in Ads.comments.all%}
-    <div class="row">
-    <div class="col-2">
-        <img class="w-100" src="{% static 'img/user.png' %}" alt="{{comments.created_by_username}}">
-    </div>
-        <div class="col-10">
-        <p>{{comments.created_by.username}}</p>
-            <p>{{comments.message}}</p>
-            <p>{{comments.created_dt}}</p>
+<div class="mb-4">
+    <a href="{% url 'replyAds' Ads.section.pk Ads.pk %}" class="btn btn-primary">Reply</a>
+</div>
 
-            {% if comments.created_by == user %}
-            <a href="" class="btn btn-primary">edit</a>
-            {%endif%}
 
+    {% for comment in Ads.comments.all%}
+<!--<div class="card mb-2">-->
+<!--      <div class="card-body p-3">-->
+<!--    <div class="row">-->
+<!--    <div class="col-2">-->
+<!--        <img class="w-100" src="{% static 'img/user.png' %}" alt="{{comments.created_by_username}}">-->
+<!--    </div>-->
+<!--        <div class="col-10">-->
+<!--        <p>{{comments.created_by.username}}</p>-->
+<!--            <p>{{comments.message}}</p>-->
+<!--            <p>{{comments.created_dt}}</p>-->
+
+<!--            {% if comments.created_by == user %}-->
+<!--            <a href="" class="btn btn-primary">edit</a>-->
+<!--            {%endif%}-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--      </div></div>-->
+
+<div class="card mb-2">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col-2">
+            <img src="{% static 'img/user.png' %}" alt="{{ comment.created_by.username }}" class="w-100">
+          </div>
+          <div class="col-10">
+            <div class="row mb-3">
+              <div class="col-6">
+                <strong class="text-muted">{{ comment.created_by.username }}</strong>
+              </div>
+              <div class="col-6 text-right">
+                <small class="text-muted">{{ comment.created_dt }}</small>
+              </div>
+            </div>
+            {{ comment.message }}
+            {% if comment.created_by == user %}
+              <div class="mt-3">
+                <a href="#" class="btn btn-primary btn-sm" role="button">Edit</a>
+              </div>
+            {% endif %}
+          </div>
         </div>
+      </div>
     </div>
     {% endfor %}
 
