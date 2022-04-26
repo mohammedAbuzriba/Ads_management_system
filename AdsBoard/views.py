@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from .models import Section
+from .models import Ads
 from .models import Comments
 from .forms import NewAdsForm
 from django.contrib.auth.decorators import login_required
@@ -13,17 +14,13 @@ def home(request):
 
 
 def SectionAds(request,section_id):
-    # try:
-    #     Sections = Section.objects.get(pk=section_id)
-    # except Section.DoesNotExist:
-    #     raise Http404
+
     Sections = get_object_or_404(Section,pk=section_id)
     return render(request,'Ads.html',{'Section':Sections})
 
 @login_required
 def newAds(request, section_id):
     Sections = get_object_or_404(Section,pk=section_id)
-    #user = User.objects.first()
     if request.method == "POST":
         form = NewAdsForm(request.POST)
         if form.is_valid():
@@ -41,3 +38,10 @@ def newAds(request, section_id):
         form = NewAdsForm()
 
     return render(request,'newAds.html',{'Section':Sections,'form':form})
+
+
+def adsComments(request, section_id,ads_id):
+    ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
+    return render(request, 'adsComments.html', {'Ads': ads})
+
+
