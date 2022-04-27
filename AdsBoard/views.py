@@ -2,26 +2,40 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
-
 from .models import Section
 from .models import Ads
 from .models import Comments
 from .forms import NewAdsForm,CommentsForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, ListView
 from django.utils import timezone
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 
 # Create your views here.
 
-def home(request):
-    Sections = Section.objects.all()
-    return render(request,'home.html',{'Section':Sections})
+# def home(request):
+#     Sections = Section.objects.all()
+#     return render(request,'home.html',{'Section':Sections})
 
+class SectionListView(ListView):
+    model = Section
+    context_object_name = 'Section'
+    template_name = 'home.html'
 
 def SectionAds(request,section_id):
     Sections = get_object_or_404(Section,pk=section_id)
     ads = Sections.ads.order_by('-created_dt').annotate(commentCount=Count('comments'))
+    page = request.GET.get('page',1)
+    paginator = Paginator(ads,10)
+    try:
+        ads = paginator.page(page)
+    except PageNotAnInteger:
+        ads = paginator.page(1)
+    except EmptyPage:
+        ads = paginator.page(paginator.num_pages)
+
     return render(request,'Ads.html',{'Section':Sections,'Ads':ads})
 
 @login_required
