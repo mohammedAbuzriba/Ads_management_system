@@ -6,6 +6,7 @@ from .models import Ads
 from .models import Comments
 from .forms import NewAdsForm,CommentsForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 # Create your views here.
 
 def home(request):
@@ -14,9 +15,9 @@ def home(request):
 
 
 def SectionAds(request,section_id):
-
     Sections = get_object_or_404(Section,pk=section_id)
-    return render(request,'Ads.html',{'Section':Sections})
+    ads = Sections.ads.order_by('-created_dt').annotate(commentCount=Count('comments'))
+    return render(request,'Ads.html',{'Section':Sections,'Ads':ads})
 
 @login_required
 def newAds(request, section_id):
