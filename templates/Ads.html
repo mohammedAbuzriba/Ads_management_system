@@ -33,7 +33,7 @@
         <td><a href="{% url 'adsComments' Section.pk ads.pk %}">{{ads.subject}}</a></td>
         <td>{{ads.created_by.username}}</td>
         <td>{{ads.commentCount}}</td>
-        <td>0</td>
+        <td>{{ads.views}}</td>
         <td>{{ads.created_dt}}</td>
 
     </tr>
