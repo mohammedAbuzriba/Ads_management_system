@@ -16,8 +16,8 @@
     <tr>
         <th>Section</th>
         <th>Ads</th>
-        <th>Comments</th>
-        <th>Last Ads</th>
+        <th>Last Ad</th>
+        <th>Add by</th>
     </tr>
     </thead>
     <tbody>
@@ -26,9 +26,24 @@
         <td><a href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
         <small class="text-muted d-block">{{Sections.description}}</small>
         </td>
-        <td>0</td>
-        <td>0</td>
-        <td></td>
+        <td>{{Sections.ads.count}}</td>
+        <td>
+            {%if Sections.ads.last%}
+                {{Sections.ads.last}}
+            {%else%}
+                NO ADS
+            {%endif%}
+        </td>
+        <td>
+            {% with ads=Sections.ads.last %}
+            {%if ads%}
+            by   {{ads.created_by.username}}<small class="text-muted d-block"> at    {{ads.created_dt}}</small>
+
+            {%else%}
+             NO ADS
+            {%endif%}
+            {%endwith%}
+        </td>
     </tr>
     {%endfor%}
 
