@@ -43,6 +43,8 @@ def newAds(request, section_id):
 
 def adsComments(request, section_id,ads_id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
+    ads.views +=1
+    ads.save()
     return render(request, 'adsComments.html', {'Ads': ads})
 
 @login_required
