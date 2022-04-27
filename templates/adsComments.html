@@ -59,7 +59,7 @@
             {{ comment.message }}
             {% if comment.created_by == user %}
               <div class="mt-3">
-                <a href="#" class="btn btn-primary btn-sm" role="button">Edit</a>
+                <a href="{% url 'CommentUpdateView' comment.ads.section.pk comment.ads.pk comment.pk %}" class="btn btn-primary btn-sm" role="button">Edit</a>
               </div>
             {% endif %}
           </div>

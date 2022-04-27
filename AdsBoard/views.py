@@ -1,12 +1,17 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
+from django.utils.decorators import method_decorator
+
 from .models import Section
 from .models import Ads
 from .models import Comments
 from .forms import NewAdsForm,CommentsForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.views.generic import UpdateView
+from django.utils import timezone
+
 # Create your views here.
 
 def home(request):
@@ -63,3 +68,18 @@ def replyAds(request, section_id,ads_id):
         form = CommentsForm()
     return render(request, 'replyAds.html',{'Ads':ads,'form':form})
 
+
+@method_decorator(login_required,name='dispatch')
+class CommentUpdateView(UpdateView):
+    model =  Comments
+    fields = {'message',}
+    template_name = 'editComment.html'
+    pk_url_kwarg = 'comment_id'
+    context_object_name = 'comment'
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.updated_by = self.request.user
+        comment.updated_dt = timezone.now()
+        comment.save()
+        return redirect('adsComments',section_id=comment.ads.section.pk,ads_id=comment.ads.pk)
