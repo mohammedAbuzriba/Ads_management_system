@@ -28,11 +28,11 @@
     </tr>
     </thead>
     <tbody>
-    {%for ads in Section.ads.all%}
+    {%for ads in Ads %}
     <tr>
         <td><a href="{% url 'adsComments' Section.pk ads.pk %}">{{ads.subject}}</a></td>
         <td>{{ads.created_by.username}}</td>
-        <td>0</td>
+        <td>{{ads.commentCount}}</td>
         <td>0</td>
         <td>{{ads.created_dt}}</td>
 
