@@ -62,8 +62,13 @@ def newAds(request, section_id):
 
 def adsComments(request, section_id,ads_id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
-    ads.views +=1
-    ads.save()
+
+    sessionKey = 'viewAds_{}'.format(ads.pk)
+
+    if not request.session.get(sessionKey,False):
+        ads.views +=1
+        ads.save()
+        request.session[sessionKey]=True
     return render(request, 'adsComments.html', {'Ads': ads})
 
 @login_required
@@ -76,6 +81,10 @@ def replyAds(request, section_id,ads_id):
             comments.ads = ads
             comments.created_by = request.user
             comments.save()
+
+            ads.updated_by=request.user
+            ads.updated_dt= timezone.now()
+            ads.save()
 
             return redirect('adsComments',section_id=section_id, ads_id=ads_id)
     else:
