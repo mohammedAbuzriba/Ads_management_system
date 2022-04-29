@@ -1,7 +1,7 @@
 {% load widget_tweaks %}
 
 {% if form.non_field_errors%}
-<div class="alert alert-danger" role="alerts">
+<div class="alert alert-danger " role="alerts">
 {%for error in form.non_field_errors%}
 <p {%if forloop.last%} class="mb-0" {%endif%}>{{error}}</p>
 {%endfor%}
@@ -9,17 +9,17 @@
 {%endif%}
 
 {% for field in form %}
-    <div class="form-group">
+    <div class="form-group pt-1 pb-1">
       {{field.label_tag}}
 
       {%if form.is_bound%}
         {%if field.errors%}
-           {% render_field field class="form-control is-invalid" %}
+           {% render_field field class="form-control is-invalid pt-1 pb-1" %}
             {%for error in field.errors%}
-              <div class="invalid-feedback">{{error}}</div>
+              <div class="invalid-feedback pt-0 pb-1">{{error}}</div>
             {%endfor%}
         {%else%}
-      {% render_field field class="form-control is-valid" %}
+            {% render_field field class="form-control is-valid pt-1 pb-1" %}
         {%endif%}
       {%else%}
       {% render_field field class="form-control" %}
