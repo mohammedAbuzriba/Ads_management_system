@@ -1,52 +1,79 @@
 {% extends 'base.html' %}
+{% load static%}
 
 {% block title %}
         Section
 {%endblock%}
 
+
+
 {% block breadcrumb %}
-    <li class="breadcrumb-item active">Section</li>
+      <!-- Jumbotron -->
+
+<li class="breadcrumb-item active" aria-current="page">Section</li>
+
+
+
+
+
+    <!-- Jumbotron -->
  {%endblock%}
+
+
 
 {% block content %}
 
+  <!--Main Navigation-->
 
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th>Section</th>
-        <th>Ads</th>
-        <th>Last Ad</th>
-        <th>Add by</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for Sections in Section%}
-    <tr>
-        <td><a href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
-        <small class="text-muted d-block">{{Sections.description}}</small>
-        </td>
-        <td>{{Sections.ads.count}}</td>
-        <td>
-            {%if Sections.ads.last%}
-                {{Sections.ads.last}}
-            {%else%}
-                NO ADS
-            {%endif%}
-        </td>
-        <td>
-            {% with ads=Sections.ads.last %}
-            {%if ads%}
-            by   {{ads.created_by.username}}<small class="text-muted d-block"> at    {{ads.created_dt}}</small>
+  <!--Main layout-->
 
-            {%else%}
-             NO ADS
-            {%endif%}
-            {%endwith%}
-        </td>
-    </tr>
-    {%endfor%}
+      <!--Section: Content-->
+      <section class="text-center">
 
-    </tbody>
-</table>
+<div class="row">
+          {% for Sections in Section%}
+
+          <div class="col-lg-4 col-md-12 mb-4 ">
+            <div class="card text-start border border-1">
+
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" class="img-fluid" />
+                <a href="#!">
+                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                </a>
+              </div>
+              <div class="card-body ">
+                  <h5 class="card-title ">
+                      <a href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                        <small class="text-muted d-block">{{Sections.description}}</small>
+
+                  </h5>
+
+
+              </div>
+                <ul class="list-group list-group-flush">
+    <li class="list-group-item">Ads  count {{Sections.ads.count}}</li>
+    </ul>
+                <div class="card-footer text-muted">
+     last update            {% with ads=Sections.ads.last %}
+            {%if ads%} by   {{ads.created_by.username}}
+    <small class="text-muted d-block"> at    {{ads.created_dt}}</small>{%else%} NO ADS {%endif%} {%endwith%}
+
+  </div>
+            </div>
+          </div>
+
+
+
+
+        {%endfor%}
+</div>
+      </section>
+      <!--Section: Content-->
+
+
+
+  <!--Main layout-->
+
+
  {%endblock%}

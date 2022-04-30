@@ -19,7 +19,7 @@
             <form method="post" novalidate>
               {% csrf_token %}
               <input type="hidden" name="next" value="{{ next }}">
-              {% include 'form.html' %}
+              {% include 'form.html' %}<br>
               <button type="submit" class="btn btn-primary btn-block">Log in</button>
             </form>
           </div>
