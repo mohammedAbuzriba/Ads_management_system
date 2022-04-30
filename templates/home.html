@@ -37,8 +37,12 @@
             <div class="card text-start border border-1">
 
               <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                <img src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" class="img-fluid" />
-                <a href="#!">
+            {%if Sections.img%}
+                  <img src="{{ Sections.img.url }}" alt="{{ Sections.name }}" class="img-fluid"   >
+                  {%else%}
+                  <img src="{% static 'img/6070193.jpg' %}" alt="{{ Sections.name }}" class="img-fluid" >
+            {%endif%}
+                <a href="{% url 'SectionAds' Sections.pk%}">
                   <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                 </a>
               </div>
@@ -52,11 +56,12 @@
 
               </div>
                 <ul class="list-group list-group-flush">
-    <li class="list-group-item">Ads  count {{Sections.ads.count}}</li>
+    <li class="list-group-item"> <i class="fa-regular fa-copy"></i> Ads  {{Sections.ads.count}}</li>
     </ul>
                 <div class="card-footer text-muted">
-     last update            {% with ads=Sections.ads.last %}
-            {%if ads%} by   {{ads.created_by.username}}
+                    {% with ads=Sections.ads.last %}
+                    {%if ads%}
+                     update   by   <i class="fa-regular fa-circle-user"></i> {{ads.created_by.username}}
     <small class="text-muted d-block"> at    {{ads.created_dt}}</small>{%else%} NO ADS {%endif%} {%endwith%}
 
   </div>

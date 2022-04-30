@@ -26,7 +26,7 @@ class SectionListView(ListView):
 
 def SectionAds(request,section_id):
     Sections = get_object_or_404(Section,pk=section_id)
-    ads = Sections.ads.order_by('-created_dt').annotate(commentCount=Count('comments'))
+    ads = Sections.ads.filter(active='True').order_by('-created_dt').annotate(commentCount=Count('comments'))
     page = request.GET.get('page',1)
     paginator = Paginator(ads,5)
     try:
