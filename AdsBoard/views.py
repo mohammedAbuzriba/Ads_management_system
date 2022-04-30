@@ -67,7 +67,7 @@ def adsComments(request, section_id,ads_id):
     session_key = 'view_ads_{}'.format(ads.pk)
     if not request.session.get(session_key,False):
         ads.views +=1
-        ads.save(session_key)
+        ads.save()
         request.session[session_key]=True
 
     return render(request, 'adsComments.html', {'Ads': ads})
