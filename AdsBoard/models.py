@@ -21,6 +21,7 @@ class Section(models.Model):
 
 class Ads(models.Model):
     subject = models.CharField(max_length=255)
+    messageAds = models.TextField(null=True,max_length=4000)
     section = models.ForeignKey(Section,related_name='ads',on_delete=models.CASCADE)
     created_by = models.ForeignKey(User,related_name='ads',on_delete=models.CASCADE)
     created_dt = models.DateTimeField(auto_now_add=True)
@@ -30,6 +31,8 @@ class Ads(models.Model):
 
     def __str__(self):
         return self.subject
+
+
 
 class Comments(models.Model):
     message = models.TextField(max_length=4000)

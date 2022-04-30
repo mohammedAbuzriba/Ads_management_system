@@ -28,7 +28,7 @@ def SectionAds(request,section_id):
     Sections = get_object_or_404(Section,pk=section_id)
     ads = Sections.ads.order_by('-created_dt').annotate(commentCount=Count('comments'))
     page = request.GET.get('page',1)
-    paginator = Paginator(ads,10)
+    paginator = Paginator(ads,5)
     try:
         ads = paginator.page(page)
     except PageNotAnInteger:
@@ -46,6 +46,7 @@ def newAds(request, section_id):
         if form.is_valid():
             ads = form.save(commit=False)
             ads.section = Sections
+            ads.messageAds=form.cleaned_data.get('message')
             ads.created_by = request.user
             ads.save()
             comment = Comments.objects.create(
@@ -62,8 +63,13 @@ def newAds(request, section_id):
 
 def adsComments(request, section_id,ads_id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
-    ads.views +=1
-    ads.save()
+
+    session_key = 'view_ads_{}'.format(ads.pk)
+    if not request.session.get(session_key,False):
+        ads.views +=1
+        ads.save()
+        request.session[session_key]=True
+
     return render(request, 'adsComments.html', {'Ads': ads})
 
 @login_required
