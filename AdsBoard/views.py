@@ -26,7 +26,7 @@ class SectionListView(ListView):
 
 def SectionAds(request,section_id):
     Sections = get_object_or_404(Section,pk=section_id)
-    ads = Sections.ads.order_by('-created_dt').annotate(commentCount=Count('comments'))
+    ads = Sections.ads.filter(active='True').order_by('-created_dt').annotate(commentCount=Count('comments'))
     page = request.GET.get('page',1)
     paginator = Paginator(ads,5)
     try:
@@ -37,6 +37,34 @@ def SectionAds(request,section_id):
         ads = paginator.page(paginator.num_pages)
 
     return render(request,'Ads.html',{'Section':Sections,'Ads':ads})
+
+def ShowAds(request):
+    ads = Ads.objects.filter(active='False').order_by('-created_dt').annotate(commentCount=Count('comments'))
+    page = request.GET.get('page',1)
+    paginator = Paginator(ads,5)
+    try:
+        ads = paginator.page(page)
+    except PageNotAnInteger:
+        ads = paginator.page(1)
+    except EmptyPage:
+        ads = paginator.page(paginator.num_pages)
+
+    return render(request,'ShowAds.html',{'Ads':ads})
+
+
+def addAds(request,ads_id):
+    ads = get_object_or_404(Ads, pk=ads_id)
+    ads.active='True'
+    ads.save()
+    return redirect('ShowAds')
+
+def deleteAds(request,ads_id):
+    ads = get_object_or_404(Ads, pk=ads_id)
+    # comment = ads.comments.pk
+    # comment.delete()
+    ads.delete()
+    return redirect('ShowAds')
+
 
 @login_required
 def newAds(request, section_id):

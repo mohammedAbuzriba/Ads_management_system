@@ -2,12 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import Truncator
 # Create your models here.
+from setuptools.command.upload import upload
 
 
 class Section(models.Model):
     name = models.CharField(max_length=50,unique=True)
     description = models.CharField(max_length=150)
-
+    img = models.ImageField(null=True,upload_to='static/img')
     def __str__(self):
         return self.name
 
@@ -26,6 +27,7 @@ class Ads(models.Model):
     created_by = models.ForeignKey(User,related_name='ads',on_delete=models.CASCADE)
     created_dt = models.DateTimeField(auto_now_add=True)
     views = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=False)
     updated_by = models.ForeignKey(User, null=True, related_name='+', on_delete=models.CASCADE)
     updated_dt = models.DateTimeField(null=True)
 
