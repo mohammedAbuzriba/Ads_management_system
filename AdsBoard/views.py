@@ -39,36 +39,44 @@ def SectionAds(request,section_id):
 
     return render(request,'Ads.html',{'Section':Sections,'Ads':ads})
 
-def ShowAds(request):
-    ads = Ads.objects.filter(active='False').order_by('-created_dt').annotate(commentCount=Count('comments'))
-    page = request.GET.get('page',1)
-    paginator = Paginator(ads,5)
-    try:
-        ads = paginator.page(page)
-    except PageNotAnInteger:
-        ads = paginator.page(1)
-    except EmptyPage:
-        ads = paginator.page(paginator.num_pages)
+def waitingAds(request):
+    if request.user.is_staff:
+        ads = Ads.objects.filter(active='False').order_by('-created_dt').annotate(commentCount=Count('comments'))
+        page = request.GET.get('page',1)
+        paginator = Paginator(ads,5)
+        try:
+            ads = paginator.page(page)
+        except PageNotAnInteger:
+            ads = paginator.page(1)
+        except EmptyPage:
+            ads = paginator.page(paginator.num_pages)
 
-    return render(request,'ShowAds.html',{'Ads':ads})
+        return render(request,'waitingAds.html',{'Ads':ads})
+
+    else:
+        return redirect('home')
 
 
-def addAds(request,ads_id):
-    ads = get_object_or_404(Ads, pk=ads_id)
-    ads.active='True'
-    ads.save()
-    return redirect('ShowAds')
+def Accept(request,ads_id):
+    if request.user.is_staff:
+        ads = get_object_or_404(Ads, pk=ads_id)
+        ads.active='True'
+        ads.save()
+        return redirect('waitingAds')
+    else:
+        return redirect('home')
 
-def deleteAds(request,ads_id):
-    ads = get_object_or_404(Ads, pk=ads_id)
-    # comment = ads.comments.pk
-    # comment.delete()
-    ads.delete()
-    return redirect('ShowAds')
+def Rejection(request,ads_id):
+    if request.user.is_staff:
+        ads = get_object_or_404(Ads, pk=ads_id)
+        ads.delete()
+        return redirect('waitingAds')
+    else:
+        return redirect('home')
 
 
 @login_required
-@permission_required('AdsBoard.add_ads',login_url='login/',raise_exception=True)
+#@permission_required('AdsBoard.add_ads',login_url='login/',raise_exception=True)
 def newAds(request, section_id):
     Sections = get_object_or_404(Section,pk=section_id)
     if request.method == "POST":
@@ -79,11 +87,11 @@ def newAds(request, section_id):
             ads.messageAds=form.cleaned_data.get('message')
             ads.created_by = request.user
             ads.save()
-            comment = Comments.objects.create(
-                message = form.cleaned_data.get('message'),
-                created_by = request.user,
-                ads = ads
-            )
+            # comment = Comments.objects.create(
+            #     message = form.cleaned_data.get('message'),
+            #     created_by = request.user,
+            #     ads = ads
+            # )
             return redirect('SectionAds',section_id=Sections.pk)
     else:
         form = NewAdsForm()
@@ -117,6 +125,25 @@ def replyAds(request, section_id,ads_id):
     else:
         form = CommentsForm()
     return render(request, 'replyAds.html',{'Ads':ads,'form':form})
+
+
+
+
+@method_decorator(login_required,name='dispatch')
+class AdsUpdateView(UpdateView):
+    model =  Ads
+    fields = ['subject','messageAds']
+    template_name = 'editAds.html'
+    pk_url_kwarg = 'ads_id'
+    context_object_name = 'ads'
+
+    def form_valid(self, form):
+        ads = form.save(commit=False)
+        ads.updated_by = self.request.user
+        ads.updated_dt = timezone.now()
+        ads.save()
+        return redirect('SectionAds',section_id=ads.section.pk)
+
 
 
 @method_decorator(login_required,name='dispatch')
