@@ -6,7 +6,7 @@ from .models import Section
 from .models import Ads
 from .models import Comments
 from .forms import NewAdsForm,CommentsForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required , permission_required
 from django.db.models import Count
 from django.views.generic import UpdateView, ListView
 from django.utils import timezone
@@ -19,6 +19,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 #     Sections = Section.objects.all()
 #     return render(request,'home.html',{'Section':Sections})
 
+#@method_decorator(login_required,name='dispatch')
 class SectionListView(ListView):
     model = Section
     context_object_name = 'Section'
@@ -67,6 +68,7 @@ def deleteAds(request,ads_id):
 
 
 @login_required
+@permission_required('AdsBoard.add_ads',login_url='login/',raise_exception=True)
 def newAds(request, section_id):
     Sections = get_object_or_404(Section,pk=section_id)
     if request.method == "POST":

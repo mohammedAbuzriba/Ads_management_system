@@ -23,12 +23,12 @@
 <div class="card border border-2   mt-3 mb-3" >
   <h5 class="card-header">
       <div class="row">
-          <div class="col-1">
-              <img src="{% static 'img/user.png' %}" alt="{{ ads.created_by.username }}" class="w-50">
-          </div>
-              <div class="col-1">
+<!--          <div class="col-1">-->
+<!--              <img src="{% static 'img/user.png' %}" alt="{{ ads.created_by.username }}" class="w-50">-->
+<!--          </div>-->
+              <div class="col">
 
-              {{ads.created_by.username}}
+              @{{ads.created_by.username}}
 </div>
       </div>
   </h5>
