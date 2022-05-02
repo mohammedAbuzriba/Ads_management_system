@@ -24,24 +24,32 @@
     {%for ads in Ads %}
 {% if ads.pk not in li %}
 <div class="card border border-2   mt-3 mb-3" >
+    <h5 class="card-header">
     {% else %}
-    <div class="card border border-2 border-info bg-light  mt-3 mb-3" >
+    <div class="card border border-2 border-info   mt-3 mb-3" >
+        <h5 class="card-header  text-white bg-info" >
     {% endif %}
-  <h5 class="card-header">
+
       <div class="row">
 <!--          <div class="col-1">-->
 <!--              <img src="{% static 'img/user.png' %}" alt="{{ ads.created_by.username }}" class="w-50">-->
 <!--          </div>-->
               <div class="col">
 
-              <i class="fa-regular fa-circle-user"></i> {{ads.created_by.username}}
+              <i class="fa-regular fa-circle-user me-2"></i> {{ads.created_by.username}}
 </div>
       </div>
   </h5>
   <div class="card-body">
     <h5 class="card-title"><a href="{% url 'adsComments' Section.pk ads.pk %}">{{ads.subject}}</a></h5>
     <p class="card-text"> {{ads.messageAds}}</p>
+     {%if ads.img%}
+      <a href="{{ ads.img.url }}" target="_blank">
+                <img src="{{ ads.img.url }}" alt="{{ ads.subject}}" class="img-fluid" height="100" width="120"  >
 
+      </a>
+
+      {%endif%}
   </div>
     <div class="card-footer text-muted">
 

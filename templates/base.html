@@ -1,6 +1,6 @@
 {% load static%}
 
-<html lang="en">
+<html lang="en"  >
   <head>
     <meta charset="UTF-8" />
     <title>{% block title %}{%endblock%}</title>
@@ -36,9 +36,9 @@
     {% block body %}
 
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
-      <div class="container-fluid">
+      <div class="container-fluid ">
         <!-- Navbar brand -->
-        <a class="" href="{% url 'home' %}"> ADS </a>
+        <a class="logo" href="{% url 'home' %}"> Ads Board </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -120,13 +120,13 @@
                   role="button"
                   >Login</a
                 >
-                <a
-                  class="btn btn-primary m-2"
-                  href="{%url 'signup'%}"
+<!--                <a-->
+<!--                  class="btn btn-primary m-2"-->
+<!--                  href="{%url 'signup'%}"-->
 
-                  role="button"
-                  >Signup</a
-                >
+<!--                  role="button"-->
+<!--                  >Signup</a-->
+<!--                >-->
               </div>
               {%endif%}
             </li>
@@ -195,8 +195,8 @@
           <i class="fab fa-youtube"></i>
         </a>
         <a
-          href="https://www.facebook.com/mdbootstrap"
-          class="btn btn-primary m-1"
+          href="#"
+          class="btn btn-primary m-1 "
           role="button"
           rel="nofollow"
           target="_blank"
@@ -204,8 +204,8 @@
           <i class="fab fa-facebook-f"></i>
         </a>
         <a
-          href="https://twitter.com/MDBootstrap"
-          class="btn btn-primary m-1"
+          href="#"
+          class="btn btn-primary m-1  "
           role="button"
           rel="nofollow"
           target="_blank"

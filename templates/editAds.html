@@ -16,7 +16,7 @@
 
 {% block content %}
 
-<form method="post"  novalidate class="mb-4">
+<form method="post" enctype="multipart/form-data"  novalidate class="mb-4">
     {% csrf_token %}
 
     {% include 'form.html' %}

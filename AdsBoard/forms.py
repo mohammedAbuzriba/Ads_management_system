@@ -11,7 +11,7 @@ class NewAdsForm(forms.ModelForm):
 
     class Meta:
         model = Ads
-        fields = ['subject','message']
+        fields = ['subject','message','img']
 
 
 class CommentsForm(forms.ModelForm):
