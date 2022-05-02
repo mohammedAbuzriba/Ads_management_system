@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.models import User,Group
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
@@ -37,7 +39,14 @@ def SectionAds(request,section_id):
     except EmptyPage:
         ads = paginator.page(paginator.num_pages)
 
-    return render(request,'Ads.html',{'Section':Sections,'Ads':ads})
+    listView=[""]
+    for a in ads:
+        session_key = 'view_ads_{}'.format(a.pk)
+        if not request.session.get(session_key, False):
+            listView.append(a.pk)
+
+    return render(request,'Ads.html',{'Section':Sections,'Ads':ads,'li':listView})
+
 
 def waitingAds(request):
     if request.user.is_staff:
@@ -111,6 +120,10 @@ def newAds(request, section_id):
             ads.section = Sections
             ads.messageAds=form.cleaned_data.get('message')
             ads.created_by = request.user
+
+            if len(request.FILES)!=0:
+                ads.img=request.FILES['img']
+
             ads.save()
             # comment = Comments.objects.create(
             #     message = form.cleaned_data.get('message'),
@@ -157,13 +170,13 @@ def replyAds(request, section_id,ads_id):
 @method_decorator(login_required,name='dispatch')
 class AdsUpdateView(UpdateView):
     model =  Ads
-    fields = ['subject','messageAds']
+    fields = ['subject','messageAds','img']
     template_name = 'editAds.html'
     pk_url_kwarg = 'ads_id'
     context_object_name = 'ads'
 
     def form_valid(self, form):
-        ads = form.save(commit=False)
+        ads = form.save(commit=True)
         ads.updated_by = self.request.user
         ads.updated_dt = timezone.now()
         ads.save()
