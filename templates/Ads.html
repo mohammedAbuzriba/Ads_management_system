@@ -25,7 +25,7 @@
 {% if ads.pk not in li %}
 <div class="card border border-2   mt-3 mb-3" >
     {% else %}
-    <div class="card border border-2 border-success bg-light  mt-3 mb-3" >
+    <div class="card border border-2 border-info bg-light  mt-3 mb-3" >
     {% endif %}
   <h5 class="card-header">
       <div class="row">
@@ -34,7 +34,7 @@
 <!--          </div>-->
               <div class="col">
 
-              @{{ads.created_by.username}}
+              <i class="fa-regular fa-circle-user"></i> {{ads.created_by.username}}
 </div>
       </div>
   </h5>
