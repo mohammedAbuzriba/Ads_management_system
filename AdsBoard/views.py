@@ -36,8 +36,15 @@ def SectionAds(request,section_id):
         ads = paginator.page(1)
     except EmptyPage:
         ads = paginator.page(paginator.num_pages)
+    l=[""]
+    for a in ads:
+        session_key = 'view_ads_{}'.format(a.pk)
+        if not request.session.get(session_key, False):
+            l.append(a.pk)
 
-    return render(request,'Ads.html',{'Section':Sections,'Ads':ads})
+
+
+    return render(request,'Ads.html',{'Section':Sections,'Ads':ads,'li':l})
 
 def waitingAds(request):
     if request.user.is_staff:
