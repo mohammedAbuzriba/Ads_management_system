@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
@@ -57,6 +57,8 @@ def waitingAds(request):
         return redirect('home')
 
 
+
+
 def Accept(request,ads_id):
     if request.user.is_staff:
         ads = get_object_or_404(Ads, pk=ads_id)
@@ -71,6 +73,29 @@ def Rejection(request,ads_id):
         ads = get_object_or_404(Ads, pk=ads_id)
         ads.delete()
         return redirect('waitingAds')
+    else:
+        return redirect('home')
+
+def BandUser(request,section_id,user_id):
+    user = User.objects.filter(id=user_id).first()
+    if user and request.user.is_staff:
+        try:
+            group = Group.objects.get(name='user')
+            group.user_set.remove(user)
+            user.is_active=False
+            user.save()
+        except:
+            pass
+
+        return redirect('SectionAds',section_id=section_id)
+    else:
+        return redirect('home')
+
+def DeleteAds(request,section_id,ads_id):
+    ads = get_object_or_404(Ads, pk=ads_id)
+    if request.user.is_staff or request.user == ads.created_by :
+        ads.delete()
+        return redirect('SectionAds',section_id=section_id)
     else:
         return redirect('home')
 
