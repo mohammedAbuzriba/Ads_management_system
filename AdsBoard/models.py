@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import Truncator
-# Create your models here.
 from setuptools.command.upload import upload
+from ckeditor.fields import RichTextField
+# Create your models here.
+
 
 
 class Section(models.Model):
@@ -22,7 +24,8 @@ class Section(models.Model):
 
 class Ads(models.Model):
     subject = models.CharField(max_length=255)
-    messageAds = models.TextField(null=True,max_length=4000)
+    messageAds = RichTextField(null=True)
+    #messageAds = models.TextField(null=True,max_length=4000)
     section = models.ForeignKey(Section,related_name='ads',on_delete=models.CASCADE)
     created_by = models.ForeignKey(User,related_name='ads',on_delete=models.CASCADE)
     created_dt = models.DateTimeField(auto_now_add=True)
