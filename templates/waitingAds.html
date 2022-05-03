@@ -8,13 +8,18 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
-    <li class="breadcrumb-item active">Show Ads</li>
+    {%if Ads %}
+    <li class="breadcrumb-item active">Show Ads {{countAds}}</li>
+   {%else%}
+    <li class="breadcrumb-item active">No Ads !!</li>
+
+   {%endif%}
  {%endblock%}
 
 
 {% block content %}
-    <div class="mb-4">
-    <a href="" class="btn btn-primary">New Ads</a>
+    <div class="mb-5">
+<!--    <a href="" class="btn btn-primary">New Ads</a>-->
 </div>
 
 

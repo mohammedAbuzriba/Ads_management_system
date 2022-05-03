@@ -10,7 +10,7 @@ from .models import Comments
 from .forms import NewAdsForm,CommentsForm
 from django.contrib.auth.decorators import login_required , permission_required
 from django.db.models import Count
-from django.views.generic import UpdateView, ListView
+from django.views.generic import UpdateView, ListView, DeleteView
 from django.utils import timezone
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
@@ -51,6 +51,7 @@ def SectionAds(request,section_id):
 def waitingAds(request):
     if request.user.is_staff:
         ads = Ads.objects.filter(active='False').order_by('-created_dt').annotate(commentCount=Count('comments'))
+        countAds = ads.count()
         page = request.GET.get('page',1)
         paginator = Paginator(ads,5)
         try:
@@ -60,7 +61,7 @@ def waitingAds(request):
         except EmptyPage:
             ads = paginator.page(paginator.num_pages)
 
-        return render(request,'waitingAds.html',{'Ads':ads})
+        return render(request,'waitingAds.html',{'Ads':ads,'countAds':countAds})
 
     else:
         return redirect('home')
@@ -85,7 +86,7 @@ def Rejection(request,ads_id):
     else:
         return redirect('home')
 
-def BandUser(request,section_id,user_id):
+def BandUserAds(request,section_id,user_id):
     user = User.objects.filter(id=user_id).first()
     if user and request.user.is_staff:
         try:
@@ -100,6 +101,23 @@ def BandUser(request,section_id,user_id):
     else:
         return redirect('home')
 
+
+def BandUserComment(request,section_id,ads_id,user_id):
+    user = User.objects.filter(id=user_id).first()
+    if user and request.user.is_staff:
+        try:
+            group = Group.objects.get(name='user')
+            group.user_set.remove(user)
+            user.is_active=False
+            user.save()
+        except:
+            pass
+
+        return redirect('adsComments', section_id=section_id, ads_id=ads_id)
+    else:
+        return redirect('home')
+
+@login_required
 def DeleteAds(request,section_id,ads_id):
     ads = get_object_or_404(Ads, pk=ads_id)
     if request.user.is_staff or request.user == ads.created_by :
@@ -118,7 +136,7 @@ def newAds(request, section_id):
         if form.is_valid():
             ads = form.save(commit=False)
             ads.section = Sections
-            ads.messageAds=form.cleaned_data.get('message')
+            # ads.messageAds=form.cleaned_data.get('message')
             ads.created_by = request.user
 
             if len(request.FILES)!=0:
@@ -140,13 +158,24 @@ def newAds(request, section_id):
 def adsComments(request, section_id,ads_id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
 
+    comments = ads.comments.all()
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(comments, 5)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+
     session_key = 'view_ads_{}'.format(ads.pk)
     if not request.session.get(session_key,False):
         ads.views +=1
         ads.save()
         request.session[session_key]=True
 
-    return render(request, 'adsComments.html', {'Ads': ads})
+    return render(request, 'adsComments.html', {'Ads': ads,'comments':comments})
 
 @login_required
 def replyAds(request, section_id,ads_id):
@@ -198,3 +227,16 @@ class CommentUpdateView(UpdateView):
         comment.updated_dt = timezone.now()
         comment.save()
         return redirect('adsComments',section_id=comment.ads.section.pk,ads_id=comment.ads.pk)
+
+
+def CommentDelete(request,section_id,ads_id,comment_id):
+    comment = get_object_or_404(Comments, pk=comment_id)
+    if request.user.is_staff or request.user == comment.created_by :
+        comment.delete()
+        return redirect('adsComments',section_id=comment.ads.section.pk,ads_id=comment.ads.pk)
+    else:
+        return redirect('home')
+
+
+
+
