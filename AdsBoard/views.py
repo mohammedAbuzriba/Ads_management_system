@@ -164,7 +164,7 @@ def newAds(request, section_id):
 def adsComments(request, section_id,ads_id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
 
-    comments = ads.comments.all()
+    comments = ads.comments.all().order_by('-created_dt')
 
     page = request.GET.get('page', 1)
     paginator = Paginator(comments, 5)
