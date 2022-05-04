@@ -22,27 +22,26 @@
 
 
     {%for ads in Ads %}
-{% if ads.pk not in li %}
-<div class="card border border-2   mt-3 mb-3" >
-    <h5 class="card-header">
-    {% else %}
-    <div class="card border border-2 border-info   mt-3 mb-3" >
-        <h5 class="card-header  text-white bg-info" >
+        {% if ads.pk not in li %}
+            <div class="card border border-3   mt-3 mb-3" >
+            <h5 class="card-header  bg-light">
+            {% else %}
+            <div class="card border border-2 border-info   mt-3 mb-3" >
+            <h5 class="card-header  text-white bg-info" >
     {% endif %}
 
       <div class="row">
-<!--          <div class="col-1">-->
-<!--              <img src="{% static 'img/user.png' %}" alt="{{ ads.created_by.username }}" class="w-50">-->
-<!--          </div>-->
-              <div class="col">
 
+              <div class="col">
+<strong>
               <i class="fa-regular fa-circle-user me-2"></i> {{ads.created_by.username}}
+    </strong>
 </div>
       </div>
   </h5>
   <div class="card-body">
-    <h5 class="card-title"><a href="{% url 'adsComments' Section.pk ads.pk %}">{{ads.subject}}</a></h5>
-    <p class="card-text"> {{ads.messageAds|safe}}</p>
+    <h5 class="card-title"><a href="{% url 'adsComments' Section.pk ads.pk %}">{{ads.subject}}</a></h5><hr>
+    <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ ads.img.url }}" target="_blank">
                 <img src="{{ ads.img.url }}" alt="{{ ads.subject}}" class="img-fluid" height="100" width="120"  >
@@ -65,7 +64,36 @@
             <div class="col-1">
 
               <div class="">
-                <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-danger btn-sm" role="button">Delete</a>
+<!--                <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-danger btn-sm" role="button">Delete</a>-->
+
+
+<!-- Button trigger modal -->
+<a href="{{ads.pk}}" type="button"  class="btn btn-danger btn-sm" data-mdb-toggle="modal" data-mdb-target="#ex{{ads.pk}}">
+  Delete
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="ex{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content ">
+      <div class="modal-header bg-danger text-white justify-content-center ">
+        <h3 class="modal-title" id="exampleModalLabel">Are you sure?</h3>
+      </div>
+      <div class="modal-body text-danger text-center "><h1><i class="fa-solid fa-xmark"></i></h1></div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
+
+         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
               </div>
             </div>
 
@@ -73,19 +101,94 @@
             <div class="col-1">
 
               <div class="">
-                <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                  <!-- Button trigger modal -->
+<a href="{{ads.pk}}" type="button"  class="btn btn-danger btn-sm" data-mdb-toggle="modal" data-mdb-target="#exb{{ads.pk}}">
+  Delete
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="exb{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabelb" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content ">
+      <div class="modal-header bg-danger text-white justify-content-center ">
+        <h3 class="modal-title" id="exampleModalLabelb">Are you sure? {{ads.pk}}</h3>
+      </div>
+      <div class="modal-body text-danger text-center "><h1><i class="fa-solid fa-xmark"></i></h1></div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
+
+         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
               </div>
             </div>
             {% elif perms.AdsBoard.remove_ads and user.is_staff      %}
             <div class="col-1">
 
               <div class="">
-                <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-danger btn-sm" role="button">Delete</a>
+<!-- Button trigger modal -->
+<a href="{{ads.pk}}" type="button"  class="btn btn-danger btn-sm" data-mdb-toggle="modal" data-mdb-target="#exa{{ads.pk}}">
+  Delete
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="exa{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabela" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content ">
+      <div class="modal-header bg-danger text-white justify-content-center ">
+        <h3 class="modal-title" id="exampleModalLabela">Are you sure?</h3>
+      </div>
+      <div class="modal-body text-danger text-center "><h1><i class="fa-solid fa-xmark"></i></h1></div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
+
+         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
               </div>
+
             </div>
             <div class="col-1">
                 <div class="">
-                <a href="{% url 'BandUserAds' ads.section.pk ads.created_by.pk %}" class="btn btn-warning btn-sm" role="button">Band</a>
+
+                    <!-- Button trigger modal -->
+<a href="{{ads.pk}}" type="button"  class="btn btn-warning btn-sm" data-mdb-toggle="modal" data-mdb-target="#exba{{ads.pk}}">
+  Band
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="exba{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabelba" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content ">
+      <div class="modal-header bg-warning text-white justify-content-center ">
+        <h3 class="modal-title" id="exampleModalLabelba">Are you sure?</h3>
+      </div>
+      <div class="modal-body text-warning text-center "><h1><i class="fa-solid fa-ban"></i></h1></div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-mdb-dismiss="modal">No</button>
+
+         <a href="{% url 'BandUserAds' ads.section.pk ads.created_by.pk %}" class="btn btn-outline-warning" role="button">Yes</a>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
               </div>
             </div>
 
@@ -111,48 +214,72 @@
 
 
 
-{% if Ads.has_other_pages %}
-  <nav aria-label="Ads pagination" aria-label="..." class="mb-4 pt-3 pb-0">
-    <ul class="pagination pagination-circle justify-content-center">
+<!--{% if Ads.has_other_pages %}-->
+<!--  <nav aria-label="Ads pagination" aria-label="..." class="mb-4 pt-3 pb-0">-->
+<!--    <ul class="pagination pagination-circle justify-content-center">-->
+<!--      {% if Ads.has_previous %}-->
+<!--        <li class="page-item">-->
+<!--          <a class="page-link" href="?page={{ Ads.previous_page_number }}">Previous</a>-->
+<!--        </li>-->
+<!--      {% else %}-->
+<!--        <li class="page-item disabled">-->
+<!--          <span class="page-link">Previous</span>-->
+<!--        </li>-->
+<!--      {% endif %}-->
+
+<!--      {% for page_num in Ads.paginator.page_range %}-->
+<!--        {% if Ads.number == page_num %}-->
+<!--          <li class="page-item active">-->
+<!--            <span class="page-link">-->
+<!--              {{ page_num }}-->
+<!--              <span class="sr-only">(current)</span>-->
+<!--            </span>-->
+<!--          </li>-->
+<!--        {% else %}-->
+<!--          <li class="page-item">-->
+<!--            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>-->
+<!--          </li>-->
+<!--        {% endif %}-->
+<!--      {% endfor %}-->
+
+<!--      {% if Ads.has_next %}-->
+<!--        <li class="page-item">-->
+<!--          <a class="page-link" href="?page={{ Ads.next_page_number }}">Next</a>-->
+<!--        </li>-->
+<!--      {% else %}-->
+<!--        <li class="page-item disabled">-->
+<!--          <span class="page-link">Next</span>-->
+<!--        </li>-->
+<!--      {% endif %}-->
+<!--    </ul>-->
+<!--  </nav>-->
+<!--{% endif %}-->
+
+
+
+<div class="text-center mt-5 mb-3">
+
+
       {% if Ads.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ Ads.previous_page_number }}">Previous</a>
-        </li>
-      {% else %}
-        <li class="page-item disabled">
-          <span class="page-link">Previous</span>
-        </li>
+        <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">Previous</a>
       {% endif %}
 
-      {% for page_num in Ads.paginator.page_range %}
-        {% if Ads.number == page_num %}
-          <li class="page-item active">
-            <span class="page-link">
-              {{ page_num }}
-              <span class="sr-only">(current)</span>
-            </span>
-          </li>
-        {% else %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-          </li>
+      {% for num in Ads.paginator.page_range %}
+        {% if Ads.number == num %}
+          <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > Ads.number|add:'-3' and num < Ads.number|add:'3' %}
+          <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
         {% endif %}
       {% endfor %}
 
       {% if Ads.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ Ads.next_page_number }}">Next</a>
-        </li>
-      {% else %}
-        <li class="page-item disabled">
-          <span class="page-link">Next</span>
-        </li>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">Next</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">Last</a>
       {% endif %}
-    </ul>
-  </nav>
-{% endif %}
 
 
+</div>
 
 
 {%endblock%}

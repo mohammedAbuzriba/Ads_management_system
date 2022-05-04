@@ -17,15 +17,22 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
 
-# def home(request):
-#     Sections = Section.objects.all()
-#     return render(request,'home.html',{'Section':Sections})
+def count_Ads():
+    ads = Ads.objects.filter(active='False')
+    countAds = ads.count()
+    return countAds
+
+
+def home(request):
+    Sections = Section.objects.all()
+    return render(request,'home.html',{'Section':Sections,'countAds':count_Ads()})
 
 #@method_decorator(login_required,name='dispatch')
-class SectionListView(ListView):
-    model = Section
-    context_object_name = 'Section'
-    template_name = 'home.html'
+# class SectionListView(ListView):
+#     model = Section
+#     context_object_name = 'Section'
+#     template_name = 'home.html'
+#     paginate_by = 6
 
 def SectionAds(request,section_id):
     Sections = get_object_or_404(Section,pk=section_id)
@@ -45,13 +52,12 @@ def SectionAds(request,section_id):
         if not request.session.get(session_key, False):
             listView.append(a.pk)
 
-    return render(request,'Ads.html',{'Section':Sections,'Ads':ads,'li':listView})
+    return render(request,'Ads.html',{'Section':Sections,'Ads':ads,'li':listView,'countAds':count_Ads()})
 
 
 def waitingAds(request):
     if request.user.is_staff:
         ads = Ads.objects.filter(active='False').order_by('-created_dt').annotate(commentCount=Count('comments'))
-        countAds = ads.count()
         page = request.GET.get('page',1)
         paginator = Paginator(ads,5)
         try:
@@ -61,7 +67,7 @@ def waitingAds(request):
         except EmptyPage:
             ads = paginator.page(paginator.num_pages)
 
-        return render(request,'waitingAds.html',{'Ads':ads,'countAds':countAds})
+        return render(request,'waitingAds.html',{'Ads':ads,'countAds':count_Ads()})
 
     else:
         return redirect('home')
@@ -158,7 +164,7 @@ def newAds(request, section_id):
 def adsComments(request, section_id,ads_id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
 
-    comments = ads.comments.all()
+    comments = ads.comments.all().order_by('-created_dt')
 
     page = request.GET.get('page', 1)
     paginator = Paginator(comments, 5)
@@ -175,7 +181,7 @@ def adsComments(request, section_id,ads_id):
         ads.save()
         request.session[session_key]=True
 
-    return render(request, 'adsComments.html', {'Ads': ads,'comments':comments})
+    return render(request, 'adsComments.html', {'Ads': ads,'comments':comments,'countAds':count_Ads()})
 
 @login_required
 def replyAds(request, section_id,ads_id):

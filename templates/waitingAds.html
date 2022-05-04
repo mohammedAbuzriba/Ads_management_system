@@ -38,8 +38,8 @@
       </div>
   </h5>
   <div class="card-body">
-    <h5 class="card-title"><a href=" ">{{ads.subject}}</a></h5>
-    <p class="card-text"> {{ads.messageAds}}</p>
+    <h5 class="card-title"><a href=" ">{{ads.subject}}</a></h5><hr>
+    <p class="card-text"> {{ads.messageAds|safe}}</p>
 
   </div>
     <div class="card-footer text-muted">
@@ -50,7 +50,49 @@
             </div>
 
             <div class="col-2">
-                <a href="{% url 'Rejection' ads.pk %}" class="btn btn-danger">Rejection</a>
+<!--                <a href="{% url 'Rejection' ads.pk %}" class="btn btn-danger">Rejection</a>-->
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-mdb-toggle="modal" data-mdb-target="#ex{{ads.pk}}">
+  Rejection
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="ex{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content ">
+      <div class="modal-header bg-danger text-white justify-content-center ">
+        <h3 class="modal-title" id="exampleModalLabel">Are you sure?</h3>
+<!--        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>-->
+      </div>
+      <div class="modal-body text-danger text-center "><h1><i class="fa-solid fa-xmark"></h1></i></div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
+         <a href="{% url 'Rejection' ads.pk %}" class="btn btn-outline-danger">Yes</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
 
             <div class="col"></div>
@@ -67,46 +109,75 @@
 
 
 
-{% if Ads.has_other_pages %}
-  <nav aria-label="Ads pagination" aria-label="..." class="mb-4 pt-3 pb-0">
-    <ul class="pagination pagination-circle justify-content-center">
+
+
+<div class="text-center mt-5 mb-3">
+
+
       {% if Ads.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ Ads.previous_page_number }}">Previous</a>
-        </li>
-      {% else %}
-        <li class="page-item disabled">
-          <span class="page-link">Previous</span>
-        </li>
+        <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">Previous</a>
       {% endif %}
 
-      {% for page_num in Ads.paginator.page_range %}
-        {% if Ads.number == page_num %}
-          <li class="page-item active">
-            <span class="page-link">
-              {{ page_num }}
-              <span class="sr-only">(current)</span>
-            </span>
-          </li>
-        {% else %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-          </li>
+      {% for num in Ads.paginator.page_range %}
+        {% if Ads.number == num %}
+          <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > Ads.number|add:'-3' and num < Ads.number|add:'3' %}
+          <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
         {% endif %}
       {% endfor %}
 
       {% if Ads.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ Ads.next_page_number }}">Next</a>
-        </li>
-      {% else %}
-        <li class="page-item disabled">
-          <span class="page-link">Next</span>
-        </li>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">Next</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">Last</a>
       {% endif %}
-    </ul>
-  </nav>
-{% endif %}
+
+
+</div>
+
+
+
+
+<!--{% if Ads.has_other_pages %}-->
+<!--  <nav aria-label="Ads pagination" aria-label="..." class="mb-4 pt-3 pb-0">-->
+<!--    <ul class="pagination pagination-circle justify-content-center">-->
+<!--      {% if Ads.has_previous %}-->
+<!--        <li class="page-item">-->
+<!--          <a class="page-link" href="?page={{ Ads.previous_page_number }}">Previous</a>-->
+<!--        </li>-->
+<!--      {% else %}-->
+<!--        <li class="page-item disabled">-->
+<!--          <span class="page-link">Previous</span>-->
+<!--        </li>-->
+<!--      {% endif %}-->
+
+<!--      {% for page_num in Ads.paginator.page_range %}-->
+<!--        {% if Ads.number == page_num %}-->
+<!--          <li class="page-item active">-->
+<!--            <span class="page-link">-->
+<!--              {{ page_num }}-->
+<!--              <span class="sr-only">(current)</span>-->
+<!--            </span>-->
+<!--          </li>-->
+<!--        {% else %}-->
+<!--          <li class="page-item">-->
+<!--            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>-->
+<!--          </li>-->
+<!--        {% endif %}-->
+<!--      {% endfor %}-->
+
+<!--      {% if Ads.has_next %}-->
+<!--        <li class="page-item">-->
+<!--          <a class="page-link" href="?page={{ Ads.next_page_number }}">Next</a>-->
+<!--        </li>-->
+<!--      {% else %}-->
+<!--        <li class="page-item disabled">-->
+<!--          <span class="page-link">Next</span>-->
+<!--        </li>-->
+<!--      {% endif %}-->
+<!--    </ul>-->
+<!--  </nav>-->
+<!--{% endif %}-->
 
 
 
