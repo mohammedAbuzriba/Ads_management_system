@@ -3,6 +3,8 @@
 <html lang="en"  >
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>{% block title %}{%endblock%}</title>
     <link
       rel="stylesheet"
@@ -65,6 +67,13 @@
             {% if user.is_staff%}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'waitingAds' %}"  >Admin</a>
+
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'waitingAds' %}" >
+  <i class="fas fa-envelope fa-lg"></i>
+  <p class="badge rounded-pill badge-notification bg-danger"  >{{countAds}}</p>
+</a>
             </li>
             {%endif%}
           </ul>
@@ -161,23 +170,38 @@
     </nav>
     <!-- Navbar -->
 
+
+
+
+
     <main class="my-5 pb-5">
       <div class="container pb-5">
+
         <div class="text-center pt-3 pb-5">
-          <div id="intro" class="border border-1 p-3 pb-1 text-start bg-white">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
+          <div id="intro" class="border border-1  text-start bg-white">
+               <nav class="navbar navbar-expand-lg  bg-white">
+  <div class="container-fluid">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
                 {% block breadcrumb %} {%endblock%}
-              </ol>
-            </nav>
+        </ol>
+    </nav>
+  </div>
+</nav>
           </div>
         </div>
+
+
 
         {% block content %} {%endblock%}
       </div>
     </main>
 
     {%endblock body%}
+
+
+
+
 
     <!--Footer-->
     <footer class="bg-light text-lg-start pt-5">
@@ -236,5 +260,6 @@
     <script src="{%static 'js/popper.min.js'%}"></script>
     <script src="{%static 'Bootstrap/js/bootstrap.bundle.min.js'%}"></script>
     <script src="{%static 'Bootstrap/js/all.min.js'%}"></script>
+    <script src="{%static 'Bootstrap/js/mdb.min.js'%}"></script>
   </body>
 </html>

@@ -38,8 +38,8 @@
       </div>
   </h5>
   <div class="card-body">
-    <h5 class="card-title"><a href=" ">{{ads.subject}}</a></h5>
-    <p class="card-text"> {{ads.messageAds}}</p>
+    <h5 class="card-title"><a href=" ">{{ads.subject}}</a></h5><hr>
+    <p class="card-text"> {{ads.messageAds|safe}}</p>
 
   </div>
     <div class="card-footer text-muted">
@@ -50,7 +50,49 @@
             </div>
 
             <div class="col-2">
-                <a href="{% url 'Rejection' ads.pk %}" class="btn btn-danger">Rejection</a>
+<!--                <a href="{% url 'Rejection' ads.pk %}" class="btn btn-danger">Rejection</a>-->
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-mdb-toggle="modal" data-mdb-target="#ex{{ads.pk}}">
+  Rejection
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="ex{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content ">
+      <div class="modal-header bg-danger text-white justify-content-center ">
+        <h3 class="modal-title" id="exampleModalLabel">Are you sure?</h3>
+<!--        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>-->
+      </div>
+      <div class="modal-body text-danger text-center "><h1><i class="fa-solid fa-xmark"></h1></i></div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
+         <a href="{% url 'Rejection' ads.pk %}" class="btn btn-outline-danger">Yes</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
 
             <div class="col"></div>
@@ -64,6 +106,7 @@
   </div>
 </div>
  {%endfor%}
+
 
 
 
