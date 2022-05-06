@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+     Edit  Ads
+{%endblock%}
+
+
+
+{% block breadcrumb %}
+
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+    <li class="breadcrumb-item "><a href="#">{{section.name}}</a></li>
+ {%endblock%}
+
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data"  novalidate class="mb-4">
+    {% csrf_token %}
+     {{form.media}}
+    {% include 'form.html' %}
+
+    <button type="submit" class="btn btn-success">save</button>
+</form>
+
+{%endblock%}

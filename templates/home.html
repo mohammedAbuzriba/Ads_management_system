@@ -34,11 +34,11 @@
           {% for Sections in Section%}
 
           <div class="col-lg-4 col-md-12 mb-4 ">
-            <div class="card text-start border border-1">
+            <div class="card text-start border border-2 shadow-5">
 
               <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
             {%if Sections.img%}
-                  <img src="{{ Sections.img.url }}" alt="{{ Sections.name }}" class="img-fluid"     >
+                  <img src="{{ Sections.img.url }}" alt="{{ Sections.name }}" class="img-fluid "     >
                   {%else%}
                   <img src="{% static 'img/6070193.jpg' %}" alt="{{ Sections.name }}" class="img-fluid" >
             {%endif%}
@@ -46,13 +46,60 @@
                   <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                 </a>
               </div>
-              <div class="card-body ">
-                  <h5 class="card-title ">
-                      <a href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+
+
+                <div class="card-body row ">
+                  <h5 class="card-title col ">
+                      <a href="{% url 'SectionAds' Sections.pk%}" class="stretched-link">{{Sections.name|upper}}</a>
                         <small class="text-muted d-block">{{Sections.description}}</small>
 
                   </h5>
+<div class="col-1">
+                    {% if user.is_staff%}
 
+
+                    <ul class="navbar-nav">
+                <!-- Dropdown -->
+                <li class="nav-item dropdown ">
+
+
+                  <a
+                    class="nav-link text-dark"
+                    href="#"
+                    id="navbarDropdownMenuLink"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                      <h5>
+                  <i class="fa-solid fa-ellipsis-vertical "></i></h5>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+
+                      <li>
+
+                        <a href="{% url 'SectionEditView' Sections.pk  %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+
+                      </li>
+
+
+
+
+
+
+
+
+
+                  </ul>
+                </li>
+              </ul>
+
+                         {%endif%}
+
+
+
+</div>
 
               </div>
                 <ul class="list-group list-group-flush">
