@@ -73,6 +73,23 @@ def waitingAds(request):
         return redirect('home')
 
 
+def UserProfile(request,user_id):
+    user_profile = get_object_or_404(User,pk=user_id)
+
+    ads = Ads.objects.filter(created_by=user_id).order_by('-created_dt').annotate(commentCount=Count('comments'))
+    page = request.GET.get('page',1)
+    paginator = Paginator(ads,5)
+    try:
+        ads = paginator.page(page)
+    except PageNotAnInteger:
+        ads = paginator.page(1)
+    except EmptyPage:
+        ads = paginator.page(paginator.num_pages)
+
+    return render(request,'UserProfile.html',{'Ads':ads,'countAds':count_Ads(),'user_profile':user_profile})
+
+
+
 
 
 def Accept(request,ads_id):
@@ -200,7 +217,18 @@ def replyAds(request, section_id,ads_id):
     return render(request, 'replyAds.html',{'Ads':ads,'form':form})
 
 
+@method_decorator(login_required,name='dispatch')
+class SectionEditView(UpdateView):
+    model =  Section
+    fields = ['name','description','img']
+    template_name = 'editSection.html'
+    pk_url_kwarg = 'section_id'
+    context_object_name = 'section'
 
+    def form_valid(self, form):
+        section = form.save(commit=True)
+        section.save()
+        return redirect('home',)
 
 @method_decorator(login_required,name='dispatch')
 class AdsUpdateView(UpdateView):

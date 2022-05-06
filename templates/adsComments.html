@@ -8,13 +8,16 @@
 
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+  <li class="breadcrumb-item "><a href="{% url 'home'%}" class="">Section</a></li>
 <li class="breadcrumb-item"><a href="{% url 'SectionAds' Ads.section.pk %}">{{Ads.section.name}}</a></li>
-    <li class="breadcrumb-item active">{{Ads.subject}}</li>
+    <li class="breadcrumb-item active ">{{Ads.subject}}</li>
  {%endblock%}
 
 
 {% block content %}
+
+
+
 
 {% if perms.AdsBoard.add_comments %}
 <div class="mb-4">
@@ -39,30 +42,33 @@
         <div class="row justify-content-center ">
 
           <div class="col-12 mt-2 mb-1">
-            <div class="row mb-0">
-              <div class="col">
+            <div class="d-flex justify-content-between mb-0">
+              <div class="">
                 <strong class=""><i class="fa-regular  fa-circle-user rounded me-1"></i> {{ comment.created_by.username }}</strong>
               </div>
 
-              <div class="col-1 text-center ">
-                <div class=" dropdown  ">
-                <ul class="navbar-nav  ">
-                  <li class="nav-item dropdown ">
-                    <div
-                      class=" ps-4"
-                      id="dropdownMenuButton1"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="true"
-                    >
-                        <h4>
-                      <i class="fa-solid fa-ellipsis-vertical pe-2 ps-2 pb-1"></i></h4>
-                    </div>
-                    <ul
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton1"
-                    >
-                      {% if comment.created_by == user and perms.AdsBoard.change_comments %}
+              <div class=" ">
+
+
+                  <ul class="navbar-nav">
+                <!-- Dropdown -->
+                <li class="nav-item dropdown ">
+
+
+                  <a
+                    class="nav-link text-dark"
+                    href="#"
+                    id="navbarDropdownMenuLink"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                      <h4>
+                  <i class="fa-solid fa-ellipsis-vertical  p-1"></i></h4>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                    {% if comment.created_by == user and perms.AdsBoard.change_comments %}
                       <li>
 
                         <a href="{% url 'CommentUpdateView' comment.ads.section.pk comment.ads.pk comment.pk %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
@@ -96,10 +102,13 @@
 
             {% endif %}
 
-                    </ul>
-                  </li>
-                </ul>
-              </div>
+
+
+                  </ul>
+                </li>
+              </ul>
+
+
               </div>
             </div>
 <div class="row mb-0">

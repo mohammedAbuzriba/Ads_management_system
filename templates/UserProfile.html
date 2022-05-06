@@ -1,24 +1,21 @@
 {% extends 'base.html' %}
 {% load static%}
 {% block title %}
-       {{Section.name}}
+       {{user.username}}
 {%endblock%}
 
 
 
 {% block breadcrumb %}
   <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
-    <li class="breadcrumb-item active">{{Section.name}}</li>
+    <li class="breadcrumb-item active">{{user_profile.username}}</li>
  {%endblock%}
-
-
-
 
 
 {% block content %}
     <div class="mb-4">
         {% if perms.AdsBoard.add_ads %}
-            <a href="{% url 'newAds' Section.pk %}" class="btn btn-primary">New Ads</a>
+            <a href="#" class="btn btn-primary">New Ads</a>
         {%endif%}
     </div>
 
@@ -26,37 +23,22 @@
 
     {%for ads in Ads %}
         {% if ads.pk not in li %}
-            <div class="card border border-3   mt-3 mb-3" >
+            <div class="card   mt-3 mb-3" >
             <h5 class="card-header  bg-light">
-                <div class="row">
-
-                    <div class="col">
-                        <strong>
-                           <i class="fa-regular fa-circle-user me-2"></i><a href="{% url 'UserProfile' ads.created_by.pk %}"> {{ads.created_by.username}}</a>
-                        </strong>
-                    </div>
-                </div>
-            </h5>
             {% else %}
-            <div class="card border border-2   mt-3 mb-3" >
-            <h5 class="card-header   text-primary " >
-                      <div class="row">
-
-              <div class="col">
-<strong>
-              <i class="fa-regular fa-circle-user me-2"></i><a href="{% url 'UserProfile' ads.created_by.pk %}"> {{ads.created_by.username}}</a>
-    </strong>
-</div>
-                          <div class="col-1">
-                              <div class="text-primary" >NEW</div>
-                          </div>
-      </div>
-  </h5>
+            <div class="card border    mt-3 mb-3" >
+            <h5 class="card-header   " >
     {% endif %}
 
+      <div class="row">
 
+              <div class="col">
+                  <strong><i class="fa-regular fa-circle-user me-2"></i> {{ads.created_by.username}}</strong>
+              </div>
+      </div>
+  </h5>
   <div class="card-body">
-    <h5 class="card-title"><a href="{% url 'adsComments' Section.pk ads.pk %}" class="">{{ads.subject}}</a></h5><hr>
+    <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk %}">{{ads.subject}}</a></h5>
     <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ ads.img.url }}" target="_blank">
