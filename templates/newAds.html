@@ -15,9 +15,9 @@
 
 {% block content %}
 
-<form method="post"  novalidate>
+<form method="post" enctype="multipart/form-data"  novalidate>
     {% csrf_token %}
-
+    {{form.media}}
     {% include 'form.html' %}
 <br>
     <button type="submit" class="btn btn-success">Add</button>
