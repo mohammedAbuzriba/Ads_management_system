@@ -13,10 +13,107 @@
 
 
 {% block content %}
+<style>
+    .padding {
+    padding: 0rem !important;
+
+}
+
+.card-img-top{
+    height:300px;
+}
+
+.card-no-border .card {
+    border-color: #d7dfe3;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05)
+}
+
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem
+}
+
+.pro-img {
+    margin-top: -80px;
+    margin-bottom: 20px
+}
+
+.little-profile .pro-img img {
+    width: 128px;
+    height: 128px;
+    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 100%
+}
+
+html body .m-b-0 {
+    margin-bottom: 0px
+}
+
+h3 {
+    line-height: 30px;
+    font-size: 21px
+}
+
+
+
+
+
+
+
+
+.m-t-20 {
+    margin-top: 20px
+}
+
+.text-center {
+    text-align: center !important
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #455a64;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400
+}
+</style>
+
+
     <div class="mb-4">
-        {% if perms.AdsBoard.add_ads %}
-            <a href="#" class="btn btn-primary">New Ads</a>
-        {%endif%}
+
+        <div class="padding d-flex justify-content-center">
+    <div class="col-md-8 ">
+        <!-- Column -->
+        <div class="card"> <img class="card-img-top" src="https://i.imgur.com/K7A78We.jpg" alt="Card image cap">
+            <div class="card-body little-profile text-center">
+                <div class="pro-img"><img src="https://i.imgur.com/8RKXAIV.jpg" alt="user"></div>
+                <h3 class="m-b-0">Brad Macullam</h3>
+                <p>Web Designer &amp; Developer</p>
+                <div class="row text-center m-t-20">
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                        <h3 class="m-b-0 font-light">10434</h3><small>Articles</small>
+                    </div>
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                        <h3 class="m-b-0 font-light">434K</h3><small>Followers</small>
+                    </div>
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                        <h3 class="m-b-0 font-light">5454</h3><small>Following</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     </div>
 
 
