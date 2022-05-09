@@ -83,25 +83,48 @@ def SectionAdsSearch(request,section_id):
                 return render(request, 'Ads.html', {'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
                                                     'countAds': count_Ads()})
         else:
-            ads = Ads.objects.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
-                commentCount=Count('comments'))
-            page = request.GET.get('page', 1)
-            paginator = Paginator(ads, 5)
-            try:
-                ads = paginator.page(page)
-            except PageNotAnInteger:
-                ads = paginator.page(1)
-            except EmptyPage:
-                ads = paginator.page(paginator.num_pages)
+            if section_id != 0:
+                Sections = get_object_or_404(Section, pk=section_id)
+                ads = Sections.ads.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
+                    commentCount=Count('comments'))
+                page = request.GET.get('page', 1)
+                paginator = Paginator(ads, 5)
+                try:
+                    ads = paginator.page(page)
+                except PageNotAnInteger:
+                    ads = paginator.page(1)
+                except EmptyPage:
+                    ads = paginator.page(paginator.num_pages)
 
-            listView = [""]
-            for a in ads:
-                session_key = 'view_ads_{}'.format(a.pk)
-                if not request.session.get(session_key, False):
-                    listView.append(a.pk)
+                listView = [""]
+                for a in ads:
+                    session_key = 'view_ads_{}'.format(a.pk)
+                    if not request.session.get(session_key, False):
+                        listView.append(a.pk)
 
-            return render(request, 'Ads.html', {'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
-                                                'countAds': count_Ads()})
+                return render(request, 'Ads.html',
+                              {'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,
+                               'countAds': count_Ads()})
+            else:
+                ads = Ads.objects.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
+                    commentCount=Count('comments'))
+                page = request.GET.get('page', 1)
+                paginator = Paginator(ads, 5)
+                try:
+                    ads = paginator.page(page)
+                except PageNotAnInteger:
+                    ads = paginator.page(1)
+                except EmptyPage:
+                    ads = paginator.page(paginator.num_pages)
+
+                listView = [""]
+                for a in ads:
+                    session_key = 'view_ads_{}'.format(a.pk)
+                    if not request.session.get(session_key, False):
+                        listView.append(a.pk)
+
+                return render(request, 'Ads.html', {'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
+                                                    'countAds': count_Ads()})
 
 
 
