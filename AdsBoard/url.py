@@ -9,6 +9,7 @@ urlpatterns = [
     path('Section/waitingAds/<int:ads_id>/Rejection/',views.Rejection,name='Rejection'),
     path('Section/<int:section_id>/BandUserAds/<int:user_id>/',views.BandUserAds,name='BandUserAds'),
     path('Section/<int:section_id>/',views.SectionAds,name='SectionAds'),
+    path('Section/<int:section_id>/Search',views.SectionAdsSearch,name='SectionAdsSearch'),
     path('Section/<int:section_id>/edit',views.SectionEditView.as_view(),name='SectionEditView'),
     path('Section/<int:section_id>/new/',views.newAds,name='newAds'),
     path('Section/<int:section_id>/Ads/<int:ads_id>/DeleteAds/',views.DeleteAds,name='DeleteAds'),

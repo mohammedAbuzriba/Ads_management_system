@@ -9,11 +9,13 @@ class NewAdsForm(forms.ModelForm):
     # max_length=4000,
     # help_text='The max length of the text is 4000')
 
-
+    #ubject = forms.CharField(max_length=255, label ='العنوان')
 
     class Meta:
         model = Ads
         fields = ['subject','messageAds','img']
+
+
 
 
 class CommentsForm(forms.ModelForm):

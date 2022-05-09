@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 {% load static%}
 {% block title %}
+{% if Section %}
+
        {{Section.name}}
+{%endif%}
 {%endblock%}
 
 
 
 {% block breadcrumb %}
   <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+{% if Section %}
     <li class="breadcrumb-item active">{{Section.name}}</li>
- {% if Ads %}
-{% else %}
-<li class="breadcrumb-item active"> NO ADS !! </li>
-{% endif %}
+{%else%}
+<li class="breadcrumb-item active">All Section</li>
+{%endif%}
  {%endblock%}
 
 
@@ -20,15 +23,91 @@
 
 
 {% block content %}
-    <div class="mb-4">
-        {% if perms.AdsBoard.add_ads %}
-            <a href="{% url 'newAds' Section.pk %}" class="btn btn-primary">New Ads</a>
+<div class="row">
+
+
+    <div class="col-2 mb-4">
+        {% if Section %}
+            {% if perms.AdsBoard.add_ads %}
+                <a href="{% url 'newAds' Section.pk %}" class="btn btn-primary">New Ads</a>
+            {%endif%}
+        {%else%}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModalnew">
+  New Ads
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalnew" tabindex="-1" aria-labelledby="exampleModalLabelnew" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content ">
+      <div class="modal-header ">
+        <h5 class="modal-title" id="exampleModalLabelnew"> please choice section </h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
         {%endif%}
+
+
+    </div>
+
+    <div class="col-2">
+        <div class="dropdown">
+  <button
+    class="btn btn-primary dropdown-toggle"
+    type="button"
+    id="dropdownMenuButton"
+    data-mdb-toggle="dropdown"
+    aria-expanded="false"
+  >
+    Sections
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="{% url 'SectionAds' 0 %}">All section</a></li>
+    {%for sec in SectionAll %}
+      <li><a class="dropdown-item" href="{% url 'SectionAds' sec.pk%}">{{sec.name}}</a></li>
+  {%endfor%}
+  </ul>
+</div>
     </div>
 
 
+    <div class="col">
+        {% if Section %}
+        <form method="get"  action="{% url 'SectionAdsSearch' Section.pk %}"  class=" row row-cols-lg-auto g-3 align-items-center">
+        {% csrf_token %}
+            {%else%}
+        <form method="get"  action="{% url 'SectionAdsSearch' 0 %}"   class=" row row-cols-lg-auto g-3 align-items-center">
+     {% csrf_token %}
+            {%endif%}
 
-    {%for ads in Ads %}
+  <div class="col">
+    <label class="visually-hidden" for="inlineFormInputGroupSearch">Search</label>
+    <div class="input-group">
+      <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <input type="search" class="form-control" name="Search" id="inlineFormInputGroupSearch" placeholder="Search" />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+
+
+
+
+</form>
+    </div>
+</div>
+
+
+
+
+    <div class="">
+
+
+         {%for ads in Ads %}
         {% if ads.pk not in li %}
             <div class="card border border-3   mt-3 mb-3" >
             <h5 class="card-header  bg-light">
@@ -60,7 +139,7 @@
 
 
   <div class="card-body">
-    <h5 class="card-title"><a href="{% url 'adsComments' Section.pk ads.pk %}" class="">{{ads.subject}}</a></h5>
+    <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk %}" class="">{{ads.subject}}</a></h5><hr>
     <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ ads.img.url }}" target="_blank">
@@ -278,29 +357,43 @@
 
 
 <div class="text-center mt-5 mb-3">
-{% if Ads %}
-
-          {% if Ads.has_previous %}
-            <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
-            <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">Previous</a>
-          {% endif %}
-
-          {% for num in Ads.paginator.page_range %}
-            {% if Ads.number == num %}
-              <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
-            {% elif num > Ads.number|add:'-3' and num < Ads.number|add:'3' %}
-              <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
-            {% endif %}
-          {% endfor %}
-
-          {% if Ads.has_next %}
-            <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">Next</a>
-            <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">Last</a>
-          {% endif %}
 
 
-   {% else %}
+      {% if Ads.has_previous %}
+        <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">Previous</a>
+      {% endif %}
 
-{% endif %}
+      {% for num in Ads.paginator.page_range %}
+        {% if Ads.number == num %}
+          <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > Ads.number|add:'-3' and num < Ads.number|add:'3' %}
+          <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if Ads.has_next %}
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">Next</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+
 </div>
+
+
+
+                </div>
+
+
+</div>
+
 {%endblock%}
+
+
+
+
+
+
+
+
+
