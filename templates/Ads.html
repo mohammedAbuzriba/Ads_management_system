@@ -137,7 +137,7 @@
                           </div>
       </div>
   </h5>
-    {% endif %}
+        {% endif %}
 
 
   <div class="card-body" style="transform: rotate(0);">
@@ -303,7 +303,11 @@
 
             <div class="col-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Comments"> <i class="fa-regular fa-comments"></i> {{ads.commentCount}}</div>
             <div class="col-1" data-bs-toggle="tooltip" data-bs-placement="left" title="View">  <i class="fa-solid fa-eye"></i> {{ads.views}}</div>
-            <div class="col-3">{{ads.created_dt}}</div>
+            <div class="col-3">
+                 <a href="{% url 'SectionAds' ads.section.pk%}" class="">{{ads.section.name|upper}}</a>
+
+            </div>
+
 
 
         </div>
