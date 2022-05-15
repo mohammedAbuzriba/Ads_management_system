@@ -193,8 +193,10 @@ def waitingAds(request):
 
 def UserProfile(request,user_id):
     user_profile = get_object_or_404(User,pk=user_id)
+    
 
     ads = Ads.objects.filter(created_by=user_id).order_by('-created_dt').annotate(commentCount=Count('comments'))
+    CountUserAds = ads.count()
     page = request.GET.get('page',1)
     paginator = Paginator(ads,5)
     try:
@@ -204,7 +206,7 @@ def UserProfile(request,user_id):
     except EmptyPage:
         ads = paginator.page(paginator.num_pages)
 
-    return render(request,'UserProfile.html',{'Ads':ads,'countAds':count_Ads(),'user_profile':user_profile})
+    return render(request,'UserProfile.html',{'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile})
 
 
 
