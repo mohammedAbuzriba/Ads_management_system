@@ -20,7 +20,7 @@
 }
 
 .card-img-top{
-    height:300px;
+    height:400px;
 }
 
 .card-no-border .card {
@@ -38,15 +38,15 @@
 }
 
 .pro-img {
-    margin-top: -80px;
+    margin-top: -100px;
     margin-bottom: 20px
 }
 
 .little-profile .pro-img img {
-    width: 128px;
-    height: 128px;
+    width: 158px;
+    height: 158px;
     -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 20 20 20px rgba(0, 0, 0, 0.2);
     border-radius: 100%
 }
 
@@ -57,13 +57,6 @@ h3 {
     font-size: 21px
 }
 
-
-
-
-
-
-
-
 .m-t-20 {
     margin-top: 20px
 }
@@ -72,38 +65,123 @@ h3 {
     text-align: center !important
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    color: #455a64;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400
+
+.box {
+
+  margin-bottom: 20px;
+  border-radius: 6px;
+  display: flex;
+  border: 2px solid black;
+  position: relative;
+  z-index: 1;
 }
+@media (max-width: 767px) {
+  .box {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.box::before {
+  content: "";
+  left: 50%;
+  top: 50%;
+  position: absolute;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  background-color: #ededed;
+  z-index: -1;
+  transition:  0.3s;
+  border: 3px solid white;
+  border-radius: 6px;
+}
+.box:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+
+.box h3 {
+  margin: 0;
+  font-size: 22px;
+}
+.box p {
+  color: #777;
+  line-height: 1.7;
+  margin: 10px 0 0;
+  font-size: 18px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- .box .info::before {-->
+<!--  content: "0" counter(services);-->
+<!--  position: absolute;-->
+<!--  background-color: #1787e0;-->
+<!--  color: white;-->
+<!--  left: 0;-->
+<!--  top: 0;-->
+<!--  height: 100%;-->
+<!--  width: 80px;-->
+<!--  font-size: 30px;-->
+<!--  font-weight: bold;-->
+<!--  display: flex;-->
+<!--  justify-content: center;-->
+<!--  align-items: center;-->
+<!--  padding-right: 15px;-->
+<!--}-->
+<!-- .box .info::after {-->
+<!--  content: "";-->
+<!--  position: absolute;-->
+<!--  background-color: #d5d5d5;-->
+<!--  top: 0;-->
+<!--  left: 80px;-->
+<!--  width: 50px;-->
+<!--  height: calc(100% + 0.4px);-->
+<!--  transform: skewX(-30deg);-->
+<!--}-->
+<!-- .box .info a {-->
+<!--  color: #1787e0;-->
+<!--}-->
+
 </style>
 
 
     <div class="mb-4">
 
         <div class="padding d-flex justify-content-center">
-    <div class="col-md-8 ">
+    <div class="col-md-12 ">
         <!-- Column -->
-        <div class="card"> <img class="card-img-top" src="https://i.imgur.com/K7A78We.jpg" alt="Card image cap">
+        <div class="card"> <img class="card-img-top" src="{% static 'img/it.jpg' %}" alt="image">
             <div class="card-body little-profile text-center">
-                <div class="pro-img"><img src="https://i.imgur.com/8RKXAIV.jpg" alt="user"></div>
-                <h3 class="m-b-0">{{user_profile.username}}</h3>
-                <p>Web Designer &amp; Developer</p>
-                <div class="row text-center m-t-20">
+                <div class="pro-img"><img src="{% static 'img/avatar-06.png' %}" alt="user"></div>
+                <h3 class="m-b-0">@{{user_profile.username}}</h3>
+                    <div><i class="fa-regular fa-user"></i> {{user_profile.first_name}} {{user_profile.last_name}}
+
+                    </div>
+<i class="fa-regular fa-envelope"></i> <a href="mailto:{{user_profile.email}}">{{user_profile.email}}</a>
+
+
+<!--    <p>Web Designer &amp; Developer</p>-->
+                <div class="row text-center m-t-10">
                     <div class="col-lg-4 col-md-4 m-t-20">
-                        <h3 class="m-b-0 font-light">10434</h3><small>Articles</small>
                     </div>
                     <div class="col-lg-4 col-md-4 m-t-20">
-                        <h3 class="m-b-0 font-light">434K</h3><small>Followers</small>
+                        <h3 class="m-b-0 font-light"><i class="fa-regular fa-copy"></i> Ads  {{CountUserAds}}</h3>
                     </div>
                     <div class="col-lg-4 col-md-4 m-t-20">
-                        <h3 class="m-b-0 font-light">5454</h3><small>Following</small>
                     </div>
                 </div>
             </div>
@@ -118,10 +196,10 @@ h6 {
 
     {%for ads in Ads %}
         {% if ads.pk not in li %}
-            <div class="card   mt-3 mb-3" >
+            <div class="card  box mt-3 mb-3" >
             <h5 class="card-header  bg-light">
             {% else %}
-            <div class="card border    mt-3 mb-3" >
+            <div class="card box  border    mt-3 mb-3" >
             <h5 class="card-header   " >
     {% endif %}
 
@@ -132,7 +210,7 @@ h6 {
               </div>
       </div>
   </h5>
-  <div class="card-body">
+  <div class="card-body ">
     <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk %}">{{ads.subject}}</a></h5>
     <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
      {%if ads.img%}
