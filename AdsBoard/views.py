@@ -4,7 +4,7 @@ from django.contrib.auth.models import User,Group
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
-from .models import Section
+from .models import Section,Archives
 from .models import Ads
 from .models import Comments
 from .forms import NewAdsForm,CommentsForm
@@ -209,6 +209,25 @@ def UserProfile(request,user_id):
     return render(request,'UserProfile.html',{'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile})
 
 
+def saveArchivesAds(request,ads_id):
+    ads = get_object_or_404(Ads, pk=ads_id)
+    Arch = Archives(ads=ads,save_by=request.user)
+    Arch.save()
+    return redirect('home')
+
+def ArchivesAds(request):
+    Ads.objectsall()
+    ads =Ads
+    page = request.GET.get('page',1)
+    paginator = Paginator(ads,5)
+    try:
+        ads = paginator.page(page)
+    except PageNotAnInteger:
+        ads = paginator.page(1)
+    except EmptyPage:
+        ads = paginator.page(paginator.num_pages)
+
+    return render(request,'waitingAds.html',{'Ads':ads,'countAds':count_Ads()})
 
 
 

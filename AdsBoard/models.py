@@ -32,6 +32,7 @@ class Ads(models.Model):
     img = models.ImageField(null=True,blank=True,upload_to='static/img')
     views = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=False)
+    Archives = models.BooleanField(default=False)
     updated_by = models.ForeignKey(User, null=True, related_name='+', on_delete=models.CASCADE)
     updated_dt = models.DateTimeField(null=True)
 

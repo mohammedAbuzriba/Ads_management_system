@@ -54,14 +54,14 @@
             {% if Ads.created_by == user and perms.AdsBoard.change_ads  %}
             <div class="col-1">
               <div class="">
-                <a href="{% url 'AdsUpdateView' ads.section.pk ads.pk  %}" class="btn btn-info btn-sm" role="button">Edit</a>
+                <a href="{% url 'AdsUpdateView' Ads.section.pk Ads.pk  %}" class="btn btn-info btn-sm" role="button">Edit</a>
               </div>
 
             </div>
             <div class="col-1">
 
               <div class="">
-<!--                <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-danger btn-sm" role="button">Delete</a>-->
+<!--                <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk  %}" class="btn btn-danger btn-sm" role="button">Delete</a>-->
 
 
 <!-- Button trigger modal -->
@@ -80,7 +80,7 @@
       <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+         <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
 
 
       </div>
@@ -145,7 +145,7 @@
       <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+         <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
 
 
       </div>
@@ -176,7 +176,7 @@
       <div class="modal-footer">
           <button type="button" class="btn btn-warning" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'BandUserAds' ads.section.pk ads.created_by.pk %}" class="btn btn-outline-warning" role="button">Yes</a>
+         <a href="{% url 'BandUserAds' Ads.section.pk Ads.created_by.pk %}" class="btn btn-outline-warning" role="button">Yes</a>
 
 
       </div>
