@@ -51,3 +51,12 @@ class Comments(models.Model):
     # def __str__(self):
     #     truncatedMessage = Truncator(self.message)
     #     return self.truncatedMessage.chars(30)
+
+
+
+
+class Archives(models.Model):
+    ads = models.ForeignKey(Ads, related_name='archive', on_delete=models.CASCADE)
+    save_by = models.ForeignKey(User, related_name='archive', on_delete=models.CASCADE)
+    save_dt = models.DateTimeField(auto_now_add=True)
+
