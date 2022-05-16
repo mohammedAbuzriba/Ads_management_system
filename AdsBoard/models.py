@@ -32,6 +32,7 @@ class Ads(models.Model):
     img = models.ImageField(null=True,blank=True,upload_to='static/img')
     views = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=False)
+    Archives = models.BooleanField(default=False)
     updated_by = models.ForeignKey(User, null=True, related_name='+', on_delete=models.CASCADE)
     updated_dt = models.DateTimeField(null=True)
 
@@ -51,3 +52,12 @@ class Comments(models.Model):
     # def __str__(self):
     #     truncatedMessage = Truncator(self.message)
     #     return self.truncatedMessage.chars(30)
+
+
+
+
+class Archives(models.Model):
+    ads = models.ForeignKey(Ads, related_name='archive', on_delete=models.CASCADE)
+    save_by = models.ForeignKey(User, related_name='archive', on_delete=models.CASCADE)
+    save_dt = models.DateTimeField(auto_now_add=True)
+

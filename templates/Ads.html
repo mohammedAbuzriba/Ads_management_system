@@ -119,6 +119,14 @@
                         </strong>
                         <small class="text-muted d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
                     </div>
+                     <div class="col-1">
+                              <div class="text-primary" >
+                                  <form action="">
+
+                                  </form>
+                                  <a href="{% url 'saveArchivesAds' ads.pk %}" >save</a>
+                              </div>
+                          </div>
                 </div>
             </h5>
             {% else %}
