@@ -66,52 +66,52 @@ h3 {
 }
 
 
-.box {
+<!--.box {-->
 
-  margin-bottom: 20px;
-  border-radius: 6px;
-  display: flex;
-  border: 2px solid black;
-  position: relative;
-  z-index: 1;
-}
-@media (max-width: 767px) {
-  .box {
-    flex-direction: column;
-    text-align: center;
-  }
-}
+<!--  margin-bottom: 20px;-->
+<!--  border-radius: 6px;-->
+<!--  display: flex;-->
+<!--  border: 2px solid black;-->
+<!--  position: relative;-->
+<!--  z-index: 1;-->
+<!--}-->
+<!--@media (max-width: 767px) {-->
+<!--  .box {-->
+<!--    flex-direction: column;-->
+<!--    text-align: center;-->
+<!--  }-->
+<!--}-->
 
-.box::before {
-  content: "";
-  left: 50%;
-  top: 50%;
-  position: absolute;
-  width: 0;
-  height: 0;
-  transform: translate(-50%, -50%);
-  background-color: #ededed;
-  z-index: -1;
-  transition:  0.3s;
-  border: 3px solid white;
-  border-radius: 6px;
-}
-.box:hover::before {
-  width: 100%;
-  height: 100%;
-}
+<!--.box::before {-->
+<!--  content: "";-->
+<!--  left: 50%;-->
+<!--  top: 50%;-->
+<!--  position: absolute;-->
+<!--  width: 0;-->
+<!--  height: 0;-->
+<!--  transform: translate(-50%, -50%);-->
+<!--  background-color: #ededed;-->
+<!--  z-index: -1;-->
+<!--  transition:  0.3s;-->
+<!--  border: 3px solid white;-->
+<!--  border-radius: 6px;-->
+<!--}-->
+<!--.box:hover::before {-->
+<!--  width: 100%;-->
+<!--  height: 100%;-->
+<!--}-->
 
 
-.box h3 {
-  margin: 0;
-  font-size: 22px;
-}
-.box p {
-  color: #777;
-  line-height: 1.7;
-  margin: 10px 0 0;
-  font-size: 18px;
-}
+<!--.box h3 {-->
+<!--  margin: 0;-->
+<!--  font-size: 22px;-->
+<!--}-->
+<!--.box p {-->
+<!--  color: #777;-->
+<!--  line-height: 1.7;-->
+<!--  margin: 10px 0 0;-->
+<!--  font-size: 18px;-->
+<!--}-->
 
 
 
@@ -194,24 +194,59 @@ h3 {
 
 
 
-    {%for ads in Ads %}
+         {%for ads in Ads %}
         {% if ads.pk not in li %}
-            <div class="card  box mt-3 mb-3" >
+            <div class="card border border-1   mt-3 mb-3" >
             <h5 class="card-header  bg-light">
-            {% else %}
-            <div class="card box  border    mt-3 mb-3" >
-            <h5 class="card-header   " >
-    {% endif %}
+                <div class="row">
 
-      <div class="row">
+                    <div class="col">
+                        <strong>
+                            <a href="{% url 'UserProfile' ads.created_by.pk %}">@{{ads.created_by.username}}</a>
+                        </strong>
+                        <small class="text-muted d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
+                    </div>
+                     <div class="col-1">
+                              <div class="text-primary" >
+                                  {% if ads.pk not in l %}
+                                  <a href="{% url 'saveArchivesAds' ads.pk %}" ><i class="fa-regular fa-bookmark"></i></a>
+                                  {% else%}
+                                  <a href="{% url 'deleteArchivesAds' ads.pk %}" ><i class="fa-solid fa-bookmark"></i></a>
+                                  {% endif%}
+                              </div>
+                          </div>
+                </div>
+            </h5>
+            {% else %}
+            <div class="card border 1   mt-3 mb-3" >
+            <h5 class="card-header  bg-light text-primary " >
+                      <div class="row">
 
               <div class="col">
-                  <strong><i class="fa-regular fa-circle-user me-2"></i> {{ads.created_by.username}}</strong>
-              </div>
+<strong>
+               </i><a href="{% url 'UserProfile' ads.created_by.pk %}" class=""> @{{ads.created_by.username}}</a>
+    </strong>
+                   <small class="text-muted d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
+</div>
+                          <div class="col-1">
+                              <div class="text-primary" >NEW</div>
+                          </div>
+                          <div class="col-1">
+                              <div class="text-primary" >
+                                 {% if ads.pk not in l %}
+                                  <a href="{% url 'saveArchivesAds' ads.pk %}" ><i class="fa-regular fa-bookmark"></i></a>
+                                  {% elif ads.pk  in l%}
+                                  <a href="{% url 'deleteArchivesAds' ads.pk %}" ><i class="fa-solid fa-bookmark"></i></a>
+                                  {% endif%}
+                              </div>
+                          </div>
       </div>
   </h5>
-  <div class="card-body ">
-    <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk %}">{{ads.subject}}</a></h5>
+        {% endif %}
+
+
+  <div class="card-body" style="transform: rotate(0);">
+    <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk %}" class="stretched-link text-decoration-underline" >{{ads.subject}}</a></h5>
     <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ ads.img.url }}" target="_blank">
@@ -373,7 +408,11 @@ h3 {
 
             <div class="col-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Comments"> <i class="fa-regular fa-comments"></i> {{ads.commentCount}}</div>
             <div class="col-1" data-bs-toggle="tooltip" data-bs-placement="left" title="View">  <i class="fa-solid fa-eye"></i> {{ads.views}}</div>
-            <div class="col-3">{{ads.created_dt}}</div>
+            <div class="col-3">
+                 <a href="{% url 'SectionAds' ads.section.pk%}" class="">{{ads.section.name|upper}}</a>
+
+            </div>
+
 
 
         </div>

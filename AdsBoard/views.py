@@ -131,6 +131,10 @@ def SectionAdsSearch(request,section_id):
 def SectionAds(request,section_id):
     SectionAll = Section.objects.all()
 
+    Archive = Archives.objects.filter(save_by=request.user.id)
+
+    user_profile = get_object_or_404(User, pk=request.user.id)
+
 
 
     if section_id!=0:
@@ -151,7 +155,13 @@ def SectionAds(request,section_id):
             if not request.session.get(session_key, False):
                 listView.append(a.pk)
 
-        return render(request,'Ads.html',{'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'countAds':count_Ads()})
+        l=[""]
+        for ar in Archive:
+            for a in ads:
+                if a.pk == ar.ads.pk:
+                    l.append(a.pk)
+
+        return render(request,'Ads.html',{'user_profile':user_profile,'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'countAds':count_Ads()})
     else:
         ads = Ads.objects.filter(active='True').order_by('-created_dt').annotate(commentCount=Count('comments'))
         page = request.GET.get('page', 1)
@@ -169,7 +179,15 @@ def SectionAds(request,section_id):
             if not request.session.get(session_key, False):
                 listView.append(a.pk)
 
-        return render(request, 'Ads.html', {'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
+        l = [""]
+        for ar in Archive:
+            for a in ads:
+                if a.pk == ar.ads.pk:
+                    l.append(a.pk)
+
+
+
+        return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
                                             'countAds': count_Ads()})
 
 
@@ -193,7 +211,8 @@ def waitingAds(request):
 
 def UserProfile(request,user_id):
     user_profile = get_object_or_404(User,pk=user_id)
-    
+    Archive = Archives.objects.filter(save_by=request.user.id,)
+
 
     ads = Ads.objects.filter(created_by=user_id).order_by('-created_dt').annotate(commentCount=Count('comments'))
     CountUserAds = ads.count()
@@ -206,20 +225,50 @@ def UserProfile(request,user_id):
     except EmptyPage:
         ads = paginator.page(paginator.num_pages)
 
-    return render(request,'UserProfile.html',{'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile})
+    l = [""]
+    for ar in Archive:
+        for a in ads:
+            if a.pk == ar.ads.pk:
+                l.append(a.pk)
+    listView = [""]
+    for a in ads:
+        session_key = 'view_ads_{}'.format(a.pk)
+        if not request.session.get(session_key, False):
+            listView.append(a.pk)
+
+
+    return render(request,'UserProfile.html',{'li': listView,'l':l,'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile})
 
 
 def saveArchivesAds(request,ads_id):
     ads = get_object_or_404(Ads, pk=ads_id)
     Arch = Archives(ads=ads,save_by=request.user)
     Arch.save()
-    return redirect('home')
+    return redirect('ArchivesAds')
+
+def deleteArchivesAds(request,ads_id):
+    ads = get_object_or_404(Ads, pk=ads_id)
+    archive = Archives.objects.filter(ads=ads,)
+    archive.delete()
+
+    return redirect('ArchivesAds')
+
+
+
 
 def ArchivesAds(request):
-    Ads.objectsall()
-    ads =Ads
-    page = request.GET.get('page',1)
-    paginator = Paginator(ads,5)
+    user_profile = get_object_or_404(User, pk=request.user.id)
+    Archive = Archives.objects.filter(save_by=request.user.id,)
+    adsAll = Ads.objects.filter(active='True',).order_by('-created_dt').annotate(commentCount=Count('comments'))
+    ads=[]
+    for ar in Archive:
+        for a in adsAll:
+            if a.pk == ar.ads.pk:
+                ads.append(a)
+
+    CountUserAds = len(ads)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(ads, 5)
     try:
         ads = paginator.page(page)
     except PageNotAnInteger:
@@ -227,7 +276,23 @@ def ArchivesAds(request):
     except EmptyPage:
         ads = paginator.page(paginator.num_pages)
 
-    return render(request,'waitingAds.html',{'Ads':ads,'countAds':count_Ads()})
+    l = [""]
+    for ar in Archive:
+        for a in ads:
+            if a.pk == ar.ads.pk:
+                l.append(a.pk)
+
+    listView = [""]
+    for a in ads:
+        session_key = 'view_ads_{}'.format(a.pk)
+        if not request.session.get(session_key, False):
+            listView.append(a.pk)
+
+    return render(request, 'UserProfile.html',
+                  {'li': listView,'l':l,'Ads': ads, 'CountUserAds': CountUserAds, 'countAds': count_Ads(), 'user_profile': user_profile})
+
+
+
 
 
 
