@@ -121,17 +121,18 @@
                     </div>
                      <div class="col-1">
                               <div class="text-primary" >
-                                  <form action="">
-
-                                  </form>
-                                  <a href="{% url 'saveArchivesAds' ads.pk %}" >save</a>
+                                  {% if ads.pk not in l %}
+                                  <a href="{% url 'saveArchivesAds' ads.pk %}" ><i class="fa-regular fa-bookmark"></i></a>
+                                  {% elif ads.pk  in l%}
+                                  <a href="{% url 'deleteArchivesAds' ads.pk %}" ><i class="fa-solid fa-bookmark"></i></a>
+                                  {% endif%}
                               </div>
                           </div>
                 </div>
             </h5>
             {% else %}
             <div class="card border 1   mt-3 mb-3" >
-            <h5 class="card-header   text-primary " >
+            <h5 class="card-header  bg-light text-primary " >
                       <div class="row">
 
               <div class="col">
@@ -142,6 +143,15 @@
 </div>
                           <div class="col-1">
                               <div class="text-primary" >NEW</div>
+                          </div>
+                          <div class="col-1">
+                              <div class="text-primary" >
+                                 {% if ads.pk not in l %}
+                                  <a href="{% url 'saveArchivesAds' ads.pk %}" ><i class="fa-regular fa-bookmark"></i></a>
+                                  {% elif ads.pk  in l%}
+                                  <a href="" ><i class="fa-solid fa-bookmark"></i></a>
+                                  {% endif%}
+                              </div>
                           </div>
       </div>
   </h5>

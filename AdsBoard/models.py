@@ -61,3 +61,4 @@ class Archives(models.Model):
     save_by = models.ForeignKey(User, related_name='archive', on_delete=models.CASCADE)
     save_dt = models.DateTimeField(auto_now_add=True)
 
+

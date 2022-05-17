@@ -7,6 +7,7 @@ urlpatterns = [
     path('ArchivesAds/',views.ArchivesAds,name='ArchivesAds'),
     path('UserProfile/<int:user_id>',views.UserProfile,name='UserProfile'),
     path('Section/Ads/<int:ads_id>/save', views.saveArchivesAds, name='saveArchivesAds'),
+    path('Section/Ads/<int:ads_id>/delete', views.deleteArchivesAds, name='deleteArchivesAds'),
     path('Section/waitingAds/<int:ads_id>/Accept/',views.Accept,name='Accept'),
     path('Section/waitingAds/<int:ads_id>/Rejection/',views.Rejection,name='Rejection'),
     path('Section/<int:section_id>/BandUserAds/<int:user_id>/',views.BandUserAds,name='BandUserAds'),
