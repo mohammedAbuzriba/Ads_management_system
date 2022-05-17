@@ -9,7 +9,16 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item "><a href="{% url 'home'%}" class="">Section</a></li>
+{% if idpage == 0 %}
 <li class="breadcrumb-item"><a href="{% url 'SectionAds' Ads.section.pk %}">{{Ads.section.name}}</a></li>
+{% elif idpage == 1 %}
+<li class="breadcrumb-item active">Profile</li>
+<li class="breadcrumb-item"><a href="{% url 'UserProfile'  user.id %}">{{user.username}}</a></li>
+{% elif idpage == 2 %}
+<li class="breadcrumb-item"><a href="{% url 'ArchivesAds' %}">Archives</a></li>
+{% elif idpage == 3 %}
+{%endif%}
+
     <li class="breadcrumb-item active ">{{Ads.subject}}</li>
  {%endblock%}
 
@@ -37,7 +46,7 @@
 
 
   <div class="card-body" style="transform: rotate(0);">
-    <h5 class="card-title"><a href="{% url 'adsComments' Ads.section.pk Ads.pk %}" class="stretched-link text-decoration-underline" >{{Ads.subject}}</a></h5>
+    <h5 class="card-title"><a href="{% url 'adsComments' Ads.section.pk Ads.pk 3 %}" class="stretched-link text-decoration-underline" >{{Ads.subject}}</a></h5>
     <p class="card-text text-justify"> {{Ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ Ads.img.url }}" target="_blank">

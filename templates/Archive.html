@@ -1,110 +1,198 @@
 {% extends 'base.html' %}
 {% load static%}
 {% block title %}
-{% if Section %}
-
-       {{Section.name}}
-{%endif%}
+       {{user.username}}
 {%endblock%}
 
 
 
 {% block breadcrumb %}
   <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
-{% if Section %}
-    <li class="breadcrumb-item active">{{Section.name}}</li>
-{%else%}
-<li class="breadcrumb-item active">All Section</li>
-{%endif%}
+    <li class="breadcrumb-item active">Archives</li>
+    <li class="breadcrumb-item active">{{user_profile.username}}</li>
  {%endblock%}
 
 
-
-
-
 {% block content %}
-<div class="row">
+<style>
+    .padding {
+    padding: 0rem !important;
+
+}
+
+.card-img-top{
+    height:400px;
+}
+
+.card-no-border .card {
+    border-color: #d7dfe3;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05)
+}
+
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem
+}
+
+.pro-img {
+    margin-top: -100px;
+    margin-bottom: 20px
+}
+
+.little-profile .pro-img img {
+    width: 158px;
+    height: 158px;
+    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 20 20 20px rgba(0, 0, 0, 0.2);
+    border-radius: 100%
+}
 
 
-    <div class="col-2 mb-4">
-        {% if Section %}
-            {% if perms.AdsBoard.add_ads %}
-                <a href="{% url 'newAds' Section.pk %}" class="btn btn-primary">New Ads</a>
-            {%endif%}
-        {%else%}
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModalnew">
-  New Ads
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalnew" tabindex="-1" aria-labelledby="exampleModalLabelnew" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content ">
-      <div class="modal-header ">
-        <h5 class="modal-title" id="exampleModalLabelnew"> please choice section </h5>
-        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-      </div>
+h3 {
+    line-height: 30px;
+    font-size: 21px
+}
 
+.m-t-20 {
+    margin-top: 20px
+}
+
+.text-center {
+    text-align: center !important
+}
+
+
+<!--.box {-->
+
+<!--  margin-bottom: 20px;-->
+<!--  border-radius: 6px;-->
+<!--  display: flex;-->
+<!--  border: 2px solid black;-->
+<!--  position: relative;-->
+<!--  z-index: 1;-->
+<!--}-->
+<!--@media (max-width: 767px) {-->
+<!--  .box {-->
+<!--    flex-direction: column;-->
+<!--    text-align: center;-->
+<!--  }-->
+<!--}-->
+
+<!--.box::before {-->
+<!--  content: "";-->
+<!--  left: 50%;-->
+<!--  top: 50%;-->
+<!--  position: absolute;-->
+<!--  width: 0;-->
+<!--  height: 0;-->
+<!--  transform: translate(-50%, -50%);-->
+<!--  background-color: #ededed;-->
+<!--  z-index: -1;-->
+<!--  transition:  0.3s;-->
+<!--  border: 3px solid white;-->
+<!--  border-radius: 6px;-->
+<!--}-->
+<!--.box:hover::before {-->
+<!--  width: 100%;-->
+<!--  height: 100%;-->
+<!--}-->
+
+
+<!--.box h3 {-->
+<!--  margin: 0;-->
+<!--  font-size: 22px;-->
+<!--}-->
+<!--.box p {-->
+<!--  color: #777;-->
+<!--  line-height: 1.7;-->
+<!--  margin: 10px 0 0;-->
+<!--  font-size: 18px;-->
+<!--}-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- .box .info::before {-->
+<!--  content: "0" counter(services);-->
+<!--  position: absolute;-->
+<!--  background-color: #1787e0;-->
+<!--  color: white;-->
+<!--  left: 0;-->
+<!--  top: 0;-->
+<!--  height: 100%;-->
+<!--  width: 80px;-->
+<!--  font-size: 30px;-->
+<!--  font-weight: bold;-->
+<!--  display: flex;-->
+<!--  justify-content: center;-->
+<!--  align-items: center;-->
+<!--  padding-right: 15px;-->
+<!--}-->
+<!-- .box .info::after {-->
+<!--  content: "";-->
+<!--  position: absolute;-->
+<!--  background-color: #d5d5d5;-->
+<!--  top: 0;-->
+<!--  left: 80px;-->
+<!--  width: 50px;-->
+<!--  height: calc(100% + 0.4px);-->
+<!--  transform: skewX(-30deg);-->
+<!--}-->
+<!-- .box .info a {-->
+<!--  color: #1787e0;-->
+<!--}-->
+
+</style>
+
+
+    <div class="mb-4">
+
+        <div class="padding d-flex justify-content-center">
+    <div class="col-md-12 ">
+        <!-- Column -->
+        <div class="card"> <img class="card-img-top" src="{% static 'img/it.jpg' %}" alt="image">
+            <div class="card-body little-profile text-center">
+                <div class="pro-img"><img src="{% static 'img/avatar-06.png' %}" alt="user"></div>
+                <h3 class="m-b-0">@{{user_profile.username}}</h3>
+                    <div><i class="fa-regular fa-user"></i> {{user_profile.first_name}} {{user_profile.last_name}}
+
+                    </div>
+<i class="fa-regular fa-envelope"></i> <a href="mailto:{{user_profile.email}}">{{user_profile.email}}</a>
+
+
+<!--    <p>Web Designer &amp; Developer</p>-->
+                <div class="row text-center m-t-10">
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                    </div>
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                        <h3 class="m-b-0 font-light"><i class="fa-regular fa-copy"></i> Ads  {{CountUserAds}}</h3>
+                    </div>
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-        {%endif%}
-
 
     </div>
 
-    <div class="col-2">
-        <div class="dropdown">
-  <button
-    class="btn btn-primary dropdown-toggle"
-    type="button"
-    id="dropdownMenuButton"
-    data-mdb-toggle="dropdown"
-    aria-expanded="false"
-  >
-    Sections
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="{% url 'SectionAds' 0 %}">All section</a></li>
-    {%for sec in SectionAll %}
-      <li><a class="dropdown-item" href="{% url 'SectionAds' sec.pk%}">{{sec.name}}</a></li>
-  {%endfor%}
-  </ul>
-</div>
-    </div>
-
-
-    <div class="col">
-        {% if Section %}
-        <form method="get"  action="{% url 'SectionAdsSearch' Section.pk %}"  class=" row row-cols-lg-auto g-3 align-items-center">
-        {% csrf_token %}
-            {%else%}
-        <form method="get"  action="{% url 'SectionAdsSearch' 0 %}"   class=" row row-cols-lg-auto g-3 align-items-center">
-     {% csrf_token %}
-            {%endif%}
-
-  <div class="col">
-    <label class="visually-hidden" for="inlineFormInputGroupSearch">Search</label>
-    <div class="input-group">
-      <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
-      <input type="search" class="form-control" name="Search" id="inlineFormInputGroupSearch" placeholder="Search" />
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-  </div>
-
-
-
-
-</form>
-    </div>
-</div>
-
-
-
-
-    <div class="">
 
 
          {%for ads in Ads %}
@@ -122,9 +210,9 @@
                      <div class="col-1">
                               <div class="text-primary" >
                                   {% if ads.pk not in l %}
-                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" ><i class="fa-regular fa-bookmark"></i></a>
-                                  {% elif ads.pk  in l%}
-                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}" ><i class="fa-solid fa-bookmark"></i></a>
+                                  <a href="{% url 'saveArchivesAds' ads.pk 2 %}" ><i class="fa-regular fa-bookmark"></i></a>
+                                  {% else%}
+                                  <a href="{% url 'deleteArchivesAds' ads.pk 2 %}" ><i class="fa-solid fa-bookmark"></i></a>
                                   {% endif%}
                               </div>
                           </div>
@@ -147,9 +235,9 @@
                           <div class="col-1">
                               <div class="text-primary" >
                                  {% if ads.pk not in l %}
-                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" ><i class="fa-regular fa-bookmark"></i></a>
+                                  <a href="{% url 'saveArchivesAds' ads.pk 2 %}" ><i class="fa-regular fa-bookmark"></i></a>
                                   {% elif ads.pk  in l%}
-                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}" ><i class="fa-solid fa-bookmark"></i></a>
+                                  <a href="{% url 'deleteArchivesAds' ads.pk 2 %}" ><i class="fa-solid fa-bookmark"></i></a>
                                   {% endif%}
                               </div>
                           </div>
@@ -159,7 +247,7 @@
 
 
   <div class="card-body" style="transform: rotate(0);">
-    <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk 0 %}" class="stretched-link text-decoration-underline" >{{ads.subject}}</a></h5>
+    <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk 2%}" class="stretched-link text-decoration-underline" >{{ads.subject}}</a></h5>
     <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ ads.img.url }}" target="_blank">
@@ -405,19 +493,4 @@
 </div>
 
 
-
-                </div>
-
-
-</div>
-
 {%endblock%}
-
-
-
-
-
-
-
-
-

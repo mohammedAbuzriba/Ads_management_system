@@ -240,18 +240,30 @@ def UserProfile(request,user_id):
     return render(request,'UserProfile.html',{'li': listView,'l':l,'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile})
 
 
-def saveArchivesAds(request,ads_id):
+def saveArchivesAds(request,ads_id,id):
     ads = get_object_or_404(Ads, pk=ads_id)
     Arch = Archives(ads=ads,save_by=request.user)
     Arch.save()
-    return redirect('ArchivesAds')
 
-def deleteArchivesAds(request,ads_id):
+    if id ==0:
+        return redirect('SectionAds',ads.section.pk)
+    elif id ==1:
+        return redirect('UserProfile',ads.created_by.id)
+    else:
+        return redirect('ArchivesAds')
+
+
+def deleteArchivesAds(request,ads_id,id):
     ads = get_object_or_404(Ads, pk=ads_id)
     archive = Archives.objects.filter(ads=ads,)
     archive.delete()
 
-    return redirect('ArchivesAds')
+    if id ==0:
+        return redirect('SectionAds',ads.section.pk)
+    elif id ==1:
+        return redirect('UserProfile',ads.created_by.id)
+    else:
+        return redirect('ArchivesAds')
 
 
 
@@ -288,7 +300,7 @@ def ArchivesAds(request):
         if not request.session.get(session_key, False):
             listView.append(a.pk)
 
-    return render(request, 'UserProfile.html',
+    return render(request, 'Archive.html',
                   {'li': listView,'l':l,'Ads': ads, 'CountUserAds': CountUserAds, 'countAds': count_Ads(), 'user_profile': user_profile})
 
 
@@ -382,7 +394,7 @@ def newAds(request, section_id):
     return render(request,'newAds.html',{'Section':Sections,'form':form})
 
 
-def adsComments(request, section_id,ads_id):
+def adsComments(request, section_id,ads_id,id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
 
     comments = ads.comments.all().order_by('-created_dt')
@@ -402,7 +414,8 @@ def adsComments(request, section_id,ads_id):
         ads.save()
         request.session[session_key]=True
 
-    return render(request, 'adsComments.html', {'Ads': ads,'comments':comments,'countAds':count_Ads()})
+    idpage=id
+    return render(request, 'adsComments.html', {'Ads': ads,'comments':comments,'idpage':idpage,'countAds':count_Ads()})
 
 @login_required
 def replyAds(request, section_id,ads_id):

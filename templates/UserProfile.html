@@ -8,6 +8,7 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+    <li class="breadcrumb-item active">Profile</li>
     <li class="breadcrumb-item active">{{user_profile.username}}</li>
  {%endblock%}
 
@@ -209,9 +210,9 @@ h3 {
                      <div class="col-1">
                               <div class="text-primary" >
                                   {% if ads.pk not in l %}
-                                  <a href="{% url 'saveArchivesAds' ads.pk %}" ><i class="fa-regular fa-bookmark"></i></a>
+                                  <a href="{% url 'saveArchivesAds' ads.pk  1 %}" ><i class="fa-regular fa-bookmark"></i></a>
                                   {% else%}
-                                  <a href="{% url 'deleteArchivesAds' ads.pk %}" ><i class="fa-solid fa-bookmark"></i></a>
+                                  <a href="{% url 'deleteArchivesAds' ads.pk 1 %}" ><i class="fa-solid fa-bookmark"></i></a>
                                   {% endif%}
                               </div>
                           </div>
@@ -234,9 +235,9 @@ h3 {
                           <div class="col-1">
                               <div class="text-primary" >
                                  {% if ads.pk not in l %}
-                                  <a href="{% url 'saveArchivesAds' ads.pk %}" ><i class="fa-regular fa-bookmark"></i></a>
+                                  <a href="{% url 'saveArchivesAds' ads.pk 1 %}" ><i class="fa-regular fa-bookmark"></i></a>
                                   {% elif ads.pk  in l%}
-                                  <a href="{% url 'deleteArchivesAds' ads.pk %}" ><i class="fa-solid fa-bookmark"></i></a>
+                                  <a href="{% url 'deleteArchivesAds' ads.pk 1 %}" ><i class="fa-solid fa-bookmark"></i></a>
                                   {% endif%}
                               </div>
                           </div>
@@ -246,7 +247,8 @@ h3 {
 
 
   <div class="card-body" style="transform: rotate(0);">
-    <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk %}" class="stretched-link text-decoration-underline" >{{ads.subject}}</a></h5>
+
+    <h5 class="card-title"><a href="{% url 'adsComments' ads.section.pk ads.pk 1 %}" class="stretched-link text-decoration-underline" >{{ads.subject}}</a></h5>
     <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ ads.img.url }}" target="_blank">
