@@ -50,8 +50,15 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'ArchivesAds' %}" rel="nofollow"
-                >Profile</a
+                >Archive</a
               >
+            </li>
+              <li class="nav-item">
+                {% if user.id%}
+              <a class="nav-link" href="{% url 'UserProfile' user.id %}" rel="nofollow">Profile</a>
+                {%else%}
+
+                {%endif%}
             </li>
             {% if user.is_staff%}
             <li class="nav-item">
