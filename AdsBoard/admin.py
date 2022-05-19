@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Section
+from .models import Section,Archives
 from .models import Ads
 from .models import Comments
 # Register your models here.
@@ -28,3 +28,4 @@ class SectionAdmin(admin.ModelAdmin):
 admin.site.register(Section,SectionAdmin)
 admin.site.register(Ads)
 admin.site.register(Comments)
+admin.site.register(Archives)

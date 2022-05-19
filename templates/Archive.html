@@ -21,7 +21,7 @@
 }
 
 .card-img-top{
-    height:400px;
+
 }
 
 .card-no-border .card {
@@ -38,20 +38,6 @@
     padding: 1.25rem
 }
 
-.pro-img {
-    margin-top: -100px;
-    margin-bottom: 20px
-}
-
-.little-profile .pro-img img {
-    width: 158px;
-    height: 158px;
-    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    box-shadow: 20 20 20px rgba(0, 0, 0, 0.2);
-    border-radius: 100%
-}
-
-
 
 h3 {
     line-height: 30px;
@@ -59,103 +45,12 @@ h3 {
 }
 
 .m-t-20 {
-    margin-top: 20px
+    margin-top: 10px
 }
 
 .text-center {
     text-align: center !important
 }
-
-
-<!--.box {-->
-
-<!--  margin-bottom: 20px;-->
-<!--  border-radius: 6px;-->
-<!--  display: flex;-->
-<!--  border: 2px solid black;-->
-<!--  position: relative;-->
-<!--  z-index: 1;-->
-<!--}-->
-<!--@media (max-width: 767px) {-->
-<!--  .box {-->
-<!--    flex-direction: column;-->
-<!--    text-align: center;-->
-<!--  }-->
-<!--}-->
-
-<!--.box::before {-->
-<!--  content: "";-->
-<!--  left: 50%;-->
-<!--  top: 50%;-->
-<!--  position: absolute;-->
-<!--  width: 0;-->
-<!--  height: 0;-->
-<!--  transform: translate(-50%, -50%);-->
-<!--  background-color: #ededed;-->
-<!--  z-index: -1;-->
-<!--  transition:  0.3s;-->
-<!--  border: 3px solid white;-->
-<!--  border-radius: 6px;-->
-<!--}-->
-<!--.box:hover::before {-->
-<!--  width: 100%;-->
-<!--  height: 100%;-->
-<!--}-->
-
-
-<!--.box h3 {-->
-<!--  margin: 0;-->
-<!--  font-size: 22px;-->
-<!--}-->
-<!--.box p {-->
-<!--  color: #777;-->
-<!--  line-height: 1.7;-->
-<!--  margin: 10px 0 0;-->
-<!--  font-size: 18px;-->
-<!--}-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- .box .info::before {-->
-<!--  content: "0" counter(services);-->
-<!--  position: absolute;-->
-<!--  background-color: #1787e0;-->
-<!--  color: white;-->
-<!--  left: 0;-->
-<!--  top: 0;-->
-<!--  height: 100%;-->
-<!--  width: 80px;-->
-<!--  font-size: 30px;-->
-<!--  font-weight: bold;-->
-<!--  display: flex;-->
-<!--  justify-content: center;-->
-<!--  align-items: center;-->
-<!--  padding-right: 15px;-->
-<!--}-->
-<!-- .box .info::after {-->
-<!--  content: "";-->
-<!--  position: absolute;-->
-<!--  background-color: #d5d5d5;-->
-<!--  top: 0;-->
-<!--  left: 80px;-->
-<!--  width: 50px;-->
-<!--  height: calc(100% + 0.4px);-->
-<!--  transform: skewX(-30deg);-->
-<!--}-->
-<!-- .box .info a {-->
-<!--  color: #1787e0;-->
-<!--}-->
 
 </style>
 
@@ -165,14 +60,10 @@ h3 {
         <div class="padding d-flex justify-content-center">
     <div class="col-md-12 ">
         <!-- Column -->
-        <div class="card"> <img class="card-img-top" src="{% static 'img/it.jpg' %}" alt="image">
+        <div class="card"> <img class="card-img-top" src="{% static 'img/archive1.jpg' %}" alt="image">
             <div class="card-body little-profile text-center">
-                <div class="pro-img"><img src="{% static 'img/avatar-06.png' %}" alt="user"></div>
-                <h3 class="m-b-0">@{{user_profile.username}}</h3>
-                    <div><i class="fa-regular fa-user"></i> {{user_profile.first_name}} {{user_profile.last_name}}
 
-                    </div>
-<i class="fa-regular fa-envelope"></i> <a href="mailto:{{user_profile.email}}">{{user_profile.email}}</a>
+
 
 
 <!--    <p>Web Designer &amp; Developer</p>-->
@@ -264,14 +155,14 @@ h3 {
             {% if ads.created_by == user and perms.AdsBoard.change_ads  %}
             <div class="col-1">
               <div class="">
-                <a href="{% url 'AdsUpdateView' ads.section.pk ads.pk  %}" class="btn btn-info btn-sm" role="button">Edit</a>
+                <a href="{% url 'AdsUpdateView' ads.section.pk ads.pk 2 %}" class="btn btn-info btn-sm" role="button">Edit</a>
               </div>
 
             </div>
             <div class="col-1">
 
               <div class="">
-<!--                <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-danger btn-sm" role="button">Delete</a>-->
+<!--                <a href="{% url 'DeleteAds' ads.section.pk  ads.pk 2 %}" class="btn btn-danger btn-sm" role="button">Delete</a>-->
 
 
 <!-- Button trigger modal -->
@@ -290,7 +181,7 @@ h3 {
       <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk 2 %}" class="btn btn-outline-danger" role="button">Yes</a>
 
 
       </div>
@@ -324,7 +215,7 @@ h3 {
       <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk 2 %}" class="btn btn-outline-danger" role="button">Yes</a>
 
 
       </div>
@@ -355,7 +246,7 @@ h3 {
       <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk 2 %}" class="btn btn-outline-danger" role="button">Yes</a>
 
 
       </div>
@@ -386,7 +277,7 @@ h3 {
       <div class="modal-footer">
           <button type="button" class="btn btn-warning" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'BandUserAds' ads.section.pk ads.created_by.pk %}" class="btn btn-outline-warning" role="button">Yes</a>
+         <a href="{% url 'BandUserAds' ads.section.pk ads.created_by.pk 2 %}" class="btn btn-outline-warning" role="button">Yes</a>
 
 
       </div>

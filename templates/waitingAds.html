@@ -23,25 +23,44 @@
 </div>
 
 
+         {%for ads in Ads %}
+            <div class="card border border-1 border-primary  mt-3 mb-3" >
+            <h5 class="card-header  bg-primary  " >
+                <div class="row">
 
-    {%for ads in Ads %}
-<div class="card border border-2   mt-3 mb-3" >
-  <h5 class="card-header">
-      <div class="row">
-          <div class="col-1">
-              <img src="{% static 'img/user.png' %}" alt="{{ ads.created_by.username }}" class="w-50">
-          </div>
-              <div class="col-1">
+                    <div class="col">
+                        <strong>
+                            <a href="{% url 'UserProfile' ads.created_by.pk %} " class="text-white">@{{ads.created_by.username}}</a>
+                        </strong>
+                        <small class="  text-white d-block fs-6 lh-base" >{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
+                    </div>
+                     <div class="col-1">
+                              <div class="" >
+                                  {% if ads.pk not in l %}
+                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" class="text-white"><i class="fa-regular fa-bookmark"></i></a>
+                                  {% elif ads.pk  in l%}
+                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}"class="text-white" ><i class="fa-solid fa-bookmark"></i></a>
+                                  {% endif%}
+                              </div>
+                          </div>
+                </div>
+            </h5>
 
-              {{ads.created_by.username}}
-</div>
-      </div>
-  </h5>
-  <div class="card-body">
-    <h5 class="card-title"><a href=" ">{{ads.subject}}</a></h5><hr>
-    <p class="card-text"> {{ads.messageAds|safe}}</p>
 
+
+  <div class="card-body" style="transform: rotate(0);">
+    <h5 class="card-title"><a href="#" class="stretched-link text-decoration-underline" >{{ads.subject}}</a></h5>
+    <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
+     {%if ads.img%}
+      <a href="{{ ads.img.url }}" target="_blank">
+                <img src="{{ ads.img.url }}" alt="{{ ads.subject}}" class="img-fluid" height="100" width="120"  >
+
+      </a>
+
+      {%endif%}
   </div>
+
+
     <div class="card-footer text-muted">
 
         <div class="row">

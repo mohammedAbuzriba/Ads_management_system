@@ -36,6 +36,8 @@ def home(request):
 
 def SectionAdsSearch(request,section_id):
     SectionAll = Section.objects.all()
+    Archive = Archives.objects.filter(save_by=request.user.id)
+
     subject = None
     if 'Search' in request.GET:
         subject = request.GET['Search']
@@ -58,9 +60,14 @@ def SectionAdsSearch(request,section_id):
                     session_key = 'view_ads_{}'.format(a.pk)
                     if not request.session.get(session_key, False):
                         listView.append(a.pk)
+                l = [""]
+                for ar in Archive:
+                    for a in ads:
+                        if a.pk == ar.ads.pk:
+                            l.append(a.pk)
 
                 return render(request, 'Ads.html',
-                              {'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,
+                              {'l':l,'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,
                                'countAds': count_Ads()})
             else:
                 ads = Ads.objects.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
@@ -80,7 +87,13 @@ def SectionAdsSearch(request,section_id):
                     if not request.session.get(session_key, False):
                         listView.append(a.pk)
 
-                return render(request, 'Ads.html', {'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
+                l = [""]
+                for ar in Archive:
+                    for a in ads:
+                        if a.pk == ar.ads.pk:
+                            l.append(a.pk)
+
+                return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
                                                     'countAds': count_Ads()})
         else:
             if section_id != 0:
@@ -102,8 +115,14 @@ def SectionAdsSearch(request,section_id):
                     if not request.session.get(session_key, False):
                         listView.append(a.pk)
 
+                l = [""]
+                for ar in Archive:
+                    for a in ads:
+                        if a.pk == ar.ads.pk:
+                            l.append(a.pk)
+
                 return render(request, 'Ads.html',
-                              {'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,
+                              {'l':l,'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,
                                'countAds': count_Ads()})
             else:
                 ads = Ads.objects.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
@@ -123,7 +142,13 @@ def SectionAdsSearch(request,section_id):
                     if not request.session.get(session_key, False):
                         listView.append(a.pk)
 
-                return render(request, 'Ads.html', {'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
+                l = [""]
+                for ar in Archive:
+                    for a in ads:
+                        if a.pk == ar.ads.pk:
+                            l.append(a.pk)
+
+                return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
                                                     'countAds': count_Ads()})
 
 
@@ -133,7 +158,6 @@ def SectionAds(request,section_id):
 
     Archive = Archives.objects.filter(save_by=request.user.id)
 
-    user_profile = get_object_or_404(User, pk=request.user.id)
 
 
 
@@ -161,7 +185,13 @@ def SectionAds(request,section_id):
                 if a.pk == ar.ads.pk:
                     l.append(a.pk)
 
-        return render(request,'Ads.html',{'user_profile':user_profile,'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'countAds':count_Ads()})
+        if request.user.id:
+            user_profile = get_object_or_404(User, pk=request.user.id)
+
+            return render(request,'Ads.html',{'user_profile':user_profile,'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'countAds':count_Ads()})
+        else:
+            return render(request,'Ads.html',{'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'countAds':count_Ads()})
+
     else:
         ads = Ads.objects.filter(active='True').order_by('-created_dt').annotate(commentCount=Count('comments'))
         page = request.GET.get('page', 1)
@@ -270,13 +300,15 @@ def deleteArchivesAds(request,ads_id,id):
 
 def ArchivesAds(request):
     user_profile = get_object_or_404(User, pk=request.user.id)
-    Archive = Archives.objects.filter(save_by=request.user.id,)
+    Archive = Archives.objects.filter(save_by=request.user.id,).order_by('-save_dt')
     adsAll = Ads.objects.filter(active='True',).order_by('-created_dt').annotate(commentCount=Count('comments'))
-    ads=[]
-    for ar in Archive:
-        for a in adsAll:
-            if a.pk == ar.ads.pk:
-                ads.append(a)
+    ads=Ads.objects.prefetch_related('archivetest').filter(archivetest__save_by=request.user.id).order_by('-archivetest__save_dt')
+
+    # ads=[]
+    # for ar in Archive:
+    #     for a in adsAll:
+    #         if a.pk == ar.ads.pk:
+    #             ads.append(a)
 
     CountUserAds = len(ads)
     page = request.GET.get('page', 1)
@@ -325,7 +357,7 @@ def Rejection(request,ads_id):
     else:
         return redirect('home')
 
-def BandUserAds(request,section_id,user_id):
+def BandUserAds(request,section_id,user_id,id):
     user = User.objects.filter(id=user_id).first()
     if user and request.user.is_staff:
         try:
@@ -357,11 +389,17 @@ def BandUserComment(request,section_id,ads_id,user_id):
         return redirect('home')
 
 @login_required
-def DeleteAds(request,section_id,ads_id):
+def DeleteAds(request,section_id,ads_id,id):
     ads = get_object_or_404(Ads, pk=ads_id)
     if request.user.is_staff or request.user == ads.created_by :
         ads.delete()
-        return redirect('SectionAds',section_id=section_id)
+        if id == 0:
+            return redirect('SectionAds',section_id=section_id)
+        elif id == 1:
+            return redirect('UserProfile', ads.created_by.id)
+        else:
+            return redirect('ArchivesAds')
+
     else:
         return redirect('home')
 
@@ -393,10 +431,10 @@ def newAds(request, section_id):
 
     return render(request,'newAds.html',{'Section':Sections,'form':form})
 
-
+@login_required
 def adsComments(request, section_id,ads_id,id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
-
+    Archive = Archives.objects.filter(save_by=request.user.id)
     comments = ads.comments.all().order_by('-created_dt')
 
     page = request.GET.get('page', 1)
@@ -414,11 +452,13 @@ def adsComments(request, section_id,ads_id,id):
         ads.save()
         request.session[session_key]=True
 
+
     idpage=id
     return render(request, 'adsComments.html', {'Ads': ads,'comments':comments,'idpage':idpage,'countAds':count_Ads()})
 
 @login_required
-def replyAds(request, section_id,ads_id):
+def replyAds(request, section_id,ads_id,id):
+
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
     if request.method == "POST":
         form = CommentsForm(request.POST)
@@ -428,7 +468,7 @@ def replyAds(request, section_id,ads_id):
             comments.created_by = request.user
             comments.save()
 
-            return redirect('adsComments',section_id=section_id, ads_id=ads_id)
+            return redirect('adsComments',section_id=section_id, ads_id=ads_id,id=id)
     else:
         form = CommentsForm()
     return render(request, 'replyAds.html',{'Ads':ads,'form':form})
@@ -455,12 +495,25 @@ class AdsUpdateView(UpdateView):
     pk_url_kwarg = 'ads_id'
     context_object_name = 'ads'
 
-    def form_valid(self, form):
+
+    def form_valid(self, form,**kwargs):
+        id = self.kwargs['id']
+
         ads = form.save(commit=True)
         ads.updated_by = self.request.user
         ads.updated_dt = timezone.now()
         ads.save()
-        return redirect('SectionAds',section_id=ads.section.pk)
+        if self.kwargs['id'] == 0:
+            return redirect('SectionAds',section_id=ads.section.pk)
+        elif self.kwargs['id'] == 1:
+            return redirect('UserProfile', ads.created_by.id)
+        elif self.kwargs['id'] == 2:
+            return redirect('ArchivesAds')
+        elif self.kwargs['id'] == 3:
+            return redirect('adsComments', section_id=ads.section.pk, ads_id=ads.pk, id=id)
+        else:
+            return redirect('home')
+
 
 
 
@@ -472,19 +525,20 @@ class CommentUpdateView(UpdateView):
     pk_url_kwarg = 'comment_id'
     context_object_name = 'comment'
 
-    def form_valid(self, form):
+    def form_valid(self, form,**kwargs):
+        id = self.kwargs['id']
         comment = form.save(commit=False)
         comment.updated_by = self.request.user
         comment.updated_dt = timezone.now()
         comment.save()
-        return redirect('adsComments',section_id=comment.ads.section.pk,ads_id=comment.ads.pk)
+        return redirect('adsComments',section_id=comment.ads.section.pk,ads_id=comment.ads.pk, id=id)
 
 
-def CommentDelete(request,section_id,ads_id,comment_id):
+def CommentDelete(request,section_id,ads_id,comment_id,id):
     comment = get_object_or_404(Comments, pk=comment_id)
     if request.user.is_staff or request.user == comment.created_by :
         comment.delete()
-        return redirect('adsComments',section_id=comment.ads.section.pk,ads_id=comment.ads.pk)
+        return redirect('adsComments',section_id=comment.ads.section.pk,ads_id=comment.ads.pk, id=id)
     else:
         return redirect('home')
 

@@ -7,14 +7,18 @@
 {% endblock %}
 
 {% block body %}
-  <div class="container">
+  <div class="container mb-5">
     <h1 class="text-center logo my-4">
       <a href="{% url 'home' %}">Ads Boards</a>
     </h1>
     <div class="row justify-content-center">
-      <div class="col-lg-8 col-md-10 col-sm-12">
+
+
+
+      <div class="col-lg-10 ">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body row">
+            <div class="col-5">
             <h3 class="card-title">Sign up</h3>
             <form method="post" novalidate>
               {% csrf_token %}
@@ -23,11 +27,17 @@
               <button type="submit" class="btn btn-primary btn-block">Create an account</button>
             </form>
           </div>
+            <div class="col-7">
+              <img class="card-img-top mt-5" src="{% static 'img/sign.jpg' %}" alt="image">
+            </div>
+
+            </div>
           <div class="card-footer text-muted text-center">
             Already have an account? <a href="{% url 'login' %}">Log in</a>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 {% endblock %}
