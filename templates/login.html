@@ -10,26 +10,40 @@
 
 
 
-  <div class="container">
+  <div class="container mb-5">
     <h1 class="text-center logo my-4">
       <a href="{% url 'home' %}">Ads Boards</a>
     </h1>
     <div class="row justify-content-center">
-      <div class="col-lg-8 col-md-10 col-sm-12">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Log in</h3>
+      <div class="col-8 ">
+        <div class="card ">
+
+          <div class="card-body row">
+
+            <div class="col-6">
+ <h3 class="card-title">Log in</h3>
             <form method="post" novalidate>
               {% csrf_token %}
               <input type="hidden" name="next" value="{{ next }}">
               {% include 'form.html' %}<br>
               <button type="submit" class="btn btn-primary btn-block">Log in</button>
             </form>
+
+            </div>
+ <div class="col-6"><img class="card-img-top" src="{% static 'img/log.jpg' %}" alt="image"></div>
           </div>
           <div class="card-footer text-muted text-center">
             Create New account  <a href="{% url 'signup' %}">Sign up</a>
           </div>
         </div>
+
+      </div>
+
+
+
+    </div>
+
+
       </div>
     </div>
   </div>

@@ -16,7 +16,8 @@
 <li class="breadcrumb-item"><a href="{% url 'UserProfile'  user.id %}">{{user.username}}</a></li>
 {% elif idpage == 2 %}
 <li class="breadcrumb-item"><a href="{% url 'ArchivesAds' %}">Archives</a></li>
-{% elif idpage == 3 %}
+{% else %}
+<li class="breadcrumb-item"><a href="{% url 'UserProfile'  idpage %}">Profile</a></li>
 {%endif%}
 
     <li class="breadcrumb-item active ">{{Ads.subject}}</li>
@@ -46,7 +47,7 @@
 
 
   <div class="card-body" style="transform: rotate(0);">
-    <h5 class="card-title"><a href="{% url 'adsComments' Ads.section.pk Ads.pk 3 %}" class="stretched-link text-decoration-underline" >{{Ads.subject}}</a></h5>
+    <h5 class="card-title"><a href="#" class="stretched-link text-decoration-underline" >{{Ads.subject}}</a></h5>
     <p class="card-text text-justify"> {{Ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ Ads.img.url }}" target="_blank">
@@ -63,14 +64,14 @@
             {% if Ads.created_by == user and perms.AdsBoard.change_ads  %}
             <div class="col-1">
               <div class="">
-                <a href="{% url 'AdsUpdateView' Ads.section.pk Ads.pk  %}" class="btn btn-info btn-sm" role="button">Edit</a>
+                <a href="{% url 'AdsUpdateView' Ads.section.pk Ads.pk idpage %}" class="btn btn-info btn-sm" role="button">Edit</a>
               </div>
 
             </div>
             <div class="col-1">
 
               <div class="">
-<!--                <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk  %}" class="btn btn-danger btn-sm" role="button">Delete</a>-->
+<!--                <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk idpage %}" class="btn btn-danger btn-sm" role="button">Delete</a>-->
 
 
 <!-- Button trigger modal -->
@@ -89,7 +90,7 @@
       <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+         <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk idpage %}" class="btn btn-outline-danger" role="button">Yes</a>
 
 
       </div>
@@ -123,7 +124,7 @@
       <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+         <a href="{% url 'DeleteAds' ads.section.pk  ads.pk 3 %}" class="btn btn-outline-danger" role="button">Yes</a>
 
 
       </div>
@@ -154,7 +155,7 @@
       <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk  %}" class="btn btn-outline-danger" role="button">Yes</a>
+         <a href="{% url 'DeleteAds' Ads.section.pk  Ads.pk 3 %}" class="btn btn-outline-danger" role="button">Yes</a>
 
 
       </div>
@@ -185,7 +186,7 @@
       <div class="modal-footer">
           <button type="button" class="btn btn-warning" data-mdb-dismiss="modal">No</button>
 
-         <a href="{% url 'BandUserAds' Ads.section.pk Ads.created_by.pk %}" class="btn btn-outline-warning" role="button">Yes</a>
+         <a href="{% url 'BandUserAds' Ads.section.pk Ads.created_by.pk 3 %}" class="btn btn-outline-warning" role="button">Yes</a>
 
 
       </div>
@@ -236,7 +237,7 @@
 
 {% if perms.AdsBoard.add_comments %}
 <div class="mb-4">
-    <a href="{% url 'replyAds' Ads.section.pk Ads.pk %}" class="btn btn-primary">Reply</a>
+    <a href="{% url 'replyAds' Ads.section.pk Ads.pk idpage %}" class="btn btn-primary">Reply</a>
 </div>
 {%endif%}
 
@@ -296,32 +297,32 @@
                     {% if comment.created_by == user and perms.AdsBoard.change_comments %}
                       <li>
 
-                        <a href="{% url 'CommentUpdateView' comment.ads.section.pk comment.ads.pk comment.pk %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                        <a href="{% url 'CommentUpdateView' comment.ads.section.pk comment.ads.pk comment.pk idpage %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
 
                       </li>
 
                       <li>
 
-                        <a href="{% url 'CommentDelete' comment.ads.section.pk comment.ads.pk comment.pk %}" class="dropdown-item  " role="button"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                        <a href="{% url 'CommentDelete' comment.ads.section.pk comment.ads.pk comment.pk idpage %}" class="dropdown-item  " role="button"><i class="fa-solid fa-trash-can"></i> Delete</a>
 
 
                       </li>
                       {% elif comment.created_by.is_active == False  and user.is_staff  %}
                       <li>
 
-                        <a href="{% url 'CommentDelete' comment.ads.section.pk comment.ads.pk comment.pk %}" class="dropdown-item  " role="button"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                        <a href="{% url 'CommentDelete' comment.ads.section.pk comment.ads.pk comment.pk idpage %}" class="dropdown-item  " role="button"><i class="fa-solid fa-trash-can"></i> Delete</a>
 
                       </li>
             {% elif perms.AdsBoard.remove_comments and user.is_staff      %}
                       <li>
 
-                <a href="{% url 'BandUserComment' comment.ads.section.pk comment.ads.pk  comment.created_by.pk %}" class="dropdown-item  " role="button"> <i class="fa-solid fa-ban"></i> Band</a>
+                <a href="{% url 'BandUserComment' comment.ads.section.pk comment.ads.pk  comment.created_by.pk idpage %}" class="dropdown-item  " role="button"> <i class="fa-solid fa-ban"></i> Band</a>
 
                       </li>
 
                       <li>
 
-                        <a href="{% url 'CommentDelete' comment.ads.section.pk comment.ads.pk comment.pk %}" class="dropdown-item " role="button"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                        <a href="{% url 'CommentDelete' comment.ads.section.pk comment.ads.pk comment.pk idpage %}" class="dropdown-item " role="button"><i class="fa-solid fa-trash-can"></i> Delete</a>
 
                       </li>
 

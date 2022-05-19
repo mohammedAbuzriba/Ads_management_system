@@ -57,8 +57,6 @@ class Comments(models.Model):
 
 
 class Archives(models.Model):
-    ads = models.ForeignKey(Ads, related_name='archive', on_delete=models.CASCADE)
+    ads = models.ForeignKey(Ads, related_name='archivetest', on_delete=models.CASCADE)
     save_by = models.ForeignKey(User, related_name='archive', on_delete=models.CASCADE)
     save_dt = models.DateTimeField(auto_now_add=True)
-
-
