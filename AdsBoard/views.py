@@ -25,7 +25,8 @@ def count_Ads():
 
 def home(request):
     Sections = Section.objects.all()
-    return render(request,'home.html',{'Section':Sections,'countAds':count_Ads()})
+    adslast = Ads.objects.filter(active='True').order_by('-created_dt')[:10]
+    return render(request,'home.html',{'adslast':adslast,'Section':Sections,'countAds':count_Ads()})
 
 #@method_decorator(login_required,name='dispatch')
 # class SectionListView(ListView):
@@ -296,19 +297,11 @@ def deleteArchivesAds(request,ads_id,id):
         return redirect('ArchivesAds')
 
 
-
-
 def ArchivesAds(request):
     user_profile = get_object_or_404(User, pk=request.user.id)
     Archive = Archives.objects.filter(save_by=request.user.id,).order_by('-save_dt')
     adsAll = Ads.objects.filter(active='True',).order_by('-created_dt').annotate(commentCount=Count('comments'))
     ads=Ads.objects.prefetch_related('archivetest').filter(archivetest__save_by=request.user.id).order_by('-archivetest__save_dt')
-
-    # ads=[]
-    # for ar in Archive:
-    #     for a in adsAll:
-    #         if a.pk == ar.ads.pk:
-    #             ads.append(a)
 
     CountUserAds = len(ads)
     page = request.GET.get('page', 1)
@@ -334,10 +327,6 @@ def ArchivesAds(request):
 
     return render(request, 'Archive.html',
                   {'li': listView,'l':l,'Ads': ads, 'CountUserAds': CountUserAds, 'countAds': count_Ads(), 'user_profile': user_profile})
-
-
-
-
 
 
 def Accept(request,ads_id):
