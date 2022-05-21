@@ -27,7 +27,7 @@
 
     <div class="card  text-white mb-5">
         {% if Section%}
-            <img src="{{ Section.img.url }}" class="card-img" alt="Stony Beach"/>
+            <img src="{{ Section.img.url }}" class="card-img" style="height:275px;" alt="Stony Beach"/>
             <div class="card-img-overlay">
                         <h5 class="card-title">{{Section.name}}</h5>
                         <p class="card-text">
@@ -36,7 +36,7 @@
                         <p class="card-text">Last updated 3 mins ago</p>
             </div>
         {%else%}
-          <img src="{% static 'img/sec1.jpg' %}" class="card-img" alt="Stony Beach"/>
+          <img src="{% static 'img/img_code.jpg' %}" class="card-img" alt="Stony Beach"/>
           <div class="card-img-overlay">
     <h5 class="card-title">All Section</h5>
     <p class="card-text">
@@ -148,9 +148,9 @@
                      <div class="col-1">
                               <div class="" >
                                   {% if ads.pk not in l %}
-                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" class="text-white"><i class="fa-regular fa-bookmark"></i></a>
+                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" class="text-white"><i class="fa-regular fa-bookmark fs-1"></i></a>
                                   {% elif ads.pk  in l%}
-                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}"class="text-white" ><i class="fa-solid fa-bookmark"></i></a>
+                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}"class="text-white" ><i class="fa-solid fa-bookmark fs-1"></i></a>
                                   {% endif%}
                               </div>
                           </div>
@@ -173,9 +173,9 @@
                           <div class="col-1">
                               <div class="text-primary" >
                                  {% if ads.pk not in l %}
-                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" class="text-white" ><i class="fa-regular fa-bookmark"></i></a>
+                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" class="text-white" ><i class="fa-regular fa-bookmark fs-1"></i></a>
                                   {% elif ads.pk  in l%}
-                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}" class="text-white"><i class="fa-solid fa-bookmark"></i></a>
+                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}" class="text-white"><i class="fa-solid fa-bookmark fs-1"></i></a>
                                   {% endif%}
                               </div>
                           </div>
