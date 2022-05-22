@@ -49,6 +49,35 @@
               >
             </li>
             <li class="nav-item">
+              <ul class="navbar-nav">
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+
+
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownMenuLinks"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                  Section
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinks">
+                    <li>
+                      <a class="dropdown-item" href="{% url 'SectionAds' 0 %}">All Section</a>
+                    </li>
+                    {% block section %}
+                    {%endblock%}
+
+
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
               {% if user.id%}
               <a class="nav-link" href="{% url 'ArchivesAds' %}" rel="nofollow"
                 >Archive</a>

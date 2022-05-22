@@ -5,6 +5,14 @@
 {%endblock%}
 
 
+{% block section %}
+        {% for Sections in getSection%}
+                    <li>
+                      <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                    </li>
+
+        {%endfor%}
+{%endblock%}
 
 {% block breadcrumb %}
   <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
@@ -56,30 +64,26 @@ h3 {
 
 
     <div class="mb-4">
+        <div class="padding ">
+            <div class="card text-center col-md-12  ">
+                <!-- Column -->
 
-        <div class="padding d-flex justify-content-center">
-    <div class="col-md-12 ">
-        <!-- Column -->
-        <div class="card"> <img class="card-img-top" src="{% static 'img/archive1.jpg' %}" alt="image">
-            <div class="card-body little-profile text-center">
-
-
-
-
-<!--    <p>Web Designer &amp; Developer</p>-->
-                <div class="row text-center m-t-10">
-                    <div class="col-lg-4 col-md-4 m-t-20">
+                    <div class=" ">
+                            <img class="col-8" src="{% static 'img/archive1.jpg' %}" alt="image">
+                            <div class="card-body little-profile text-center">
+                    <!--    <p>Web Designer &amp; Developer</p>-->
+                                    <div class="row text-center m-t-10">
+                                        <div class="col-lg-4 col-md-4 m-t-20"></div>
+                                        <div class="col-lg-4 col-md-4 m-t-20">
+                                            <h3 class="m-b-0 font-light"><i class="fa-regular fa-copy"></i> Ads  {{CountUserAds}}</h3>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 m-t-20"></div>
+                                    </div>
+                            </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 m-t-20">
-                        <h3 class="m-b-0 font-light"><i class="fa-regular fa-copy"></i> Ads  {{CountUserAds}}</h3>
-                    </div>
-                    <div class="col-lg-4 col-md-4 m-t-20">
-                    </div>
-                </div>
+
             </div>
         </div>
-    </div>
-</div>
 
 
     </div>

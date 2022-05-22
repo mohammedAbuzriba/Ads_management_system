@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
 
 {% load static %}
 
@@ -34,6 +35,21 @@
             </div>
           <div class="card-footer text-muted text-center">
             Already have an account? <a href="{% url 'login' %}">Log in</a>
+
+                            <form action="{% provider_login_url 'google' %}" method="post">
+                  {% csrf_token %}
+                  <!-- Google -->
+                    <button class="btn btn-primary mt-3" style="background-color: #dd4b39;" href="{% provider_login_url 'google' %}" role="button" type="submit">
+                      <i class="fab fa-google"></i>
+                    </button>
+                    <button class="btn btn-primary mt-3" style="background-color: #55acee;" href="{% provider_login_url 'google' %}" role="button" type="submit">
+                     <i class="fab fa-twitter"></i>
+                    </button>
+                    <button class="btn btn-primary mt-3" style="background-color: #3b5998;" href="{% provider_login_url 'google' %}" role="button" type="submit">
+                      <i class="fab fa-facebook-f"></i>
+                    </button>
+                </form>
+
           </div>
         </div>
       </div>

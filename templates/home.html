@@ -5,7 +5,14 @@
         Section
 {%endblock%}
 
+{% block section %}
+        {% for Sections in getSection%}
+                    <li>
+                      <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                    </li>
 
+        {%endfor%}
+{%endblock%}
 
 {% block breadcrumb %}
       <!-- Jumbotron -->
@@ -150,7 +157,7 @@ height:120px;
 
 
 <div class="row mt-5">
-          {% for Sections in Section%}
+          {% for Sections in getSection%}
 
           <div class="col-lg-4 col-md-12 mb-4 ">
             <div class="card text-start border border-2 shadow-5">
