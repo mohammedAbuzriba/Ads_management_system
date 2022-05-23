@@ -171,11 +171,11 @@
                       <div class="row">
 
               <div class="col">
-<strong>
-               </i><a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white"> @{{ads.created_by.username}}</a>
-    </strong>
-                   <small class=" text-white d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
-</div>
+                    <strong>
+                        </i><a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white"> @{{ads.created_by.username}}</a>
+                    </strong>
+                        <small class=" text-white d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
+                </div>
                           <div class="col-1">
                               <div class="text-white " >NEW</div>
                           </div>

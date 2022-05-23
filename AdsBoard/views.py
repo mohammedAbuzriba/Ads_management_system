@@ -281,8 +281,10 @@ def saveArchivesAds(request,ads_id,id):
         return redirect('SectionAds',ads.section.pk)
     elif id ==1:
         return redirect('UserProfile',ads.created_by.id)
-    else:
+    elif id ==2:
         return redirect('ArchivesAds')
+    else:
+        return redirect('adsComments', ads.section.pk, ads.pk ,0)
 
 
 def deleteArchivesAds(request,ads_id,id):
@@ -294,8 +296,10 @@ def deleteArchivesAds(request,ads_id,id):
         return redirect('SectionAds',ads.section.pk)
     elif id ==1:
         return redirect('UserProfile',ads.created_by.id)
-    else:
+    elif id == 2:
         return redirect('ArchivesAds')
+    else:
+        return redirect('adsComments', ads.section.pk, ads.pk ,0)
 
 
 def ArchivesAds(request):
@@ -442,9 +446,14 @@ def adsComments(request, section_id,ads_id,id):
         ads.save()
         request.session[session_key]=True
 
+    l = [""]
+    for ar in Archive:
+        if ads.pk == ar.ads.pk:
+            l.append(ads.pk)
+
 
     idpage=id
-    return render(request, 'adsComments.html', {'Ads': ads,'comments':comments,'idpage':idpage,'countAds':count_Ads(),'getSection':getSection()})
+    return render(request, 'adsComments.html', {'l':l,'Ads': ads,'comments':comments,'idpage':idpage,'countAds':count_Ads(),'getSection':getSection()})
 
 @login_required
 def replyAds(request, section_id,ads_id,id):

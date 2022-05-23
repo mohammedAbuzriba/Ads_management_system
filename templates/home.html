@@ -108,7 +108,12 @@ height:120px;
       <div class="carousel-caption d-none d-md-block">
         <h4 class="text-start  text-uppercase mb-5">{{ads.section.name}}</h4>
         <h5 class="text-start mt-5">{{ads.subject}}</h5>
-        <p class="text-start">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+<!--              {% if ads.messageAds|wordcount >= 4 %}-->
+<!--               <small class="text-start">{{ads.messageAds|truncatewords_html:3|safe}}</small>-->
+<!--              {% else %}-->
+<!--                <small class="text-start">{{ads.messageAds|safe}}</small>-->
+<!--              {% endif %}-->
+
       </div>
     </div>
 
@@ -255,6 +260,16 @@ height:120px;
 
 
   <!--Main layout-->
+
+
+
+
+
+
+
+
+
+
 
 
  {%endblock%}

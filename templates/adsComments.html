@@ -16,7 +16,7 @@
 <li class="breadcrumb-item"><a href="{% url 'UserProfile'  user.id %}">{{user.username}}</a></li>
 {% elif idpage == 2 %}
 <li class="breadcrumb-item"><a href="{% url 'ArchivesAds' %}">Archives</a></li>
-{% else %}
+{% elif idpage == 3 %}
 <li class="breadcrumb-item"><a href="{% url 'UserProfile'  idpage %}">Profile</a></li>
 {%endif%}
 
@@ -41,6 +41,15 @@
                         </strong>
                         <small class="text-muted d-block fs-6 lh-base">{{Ads.created_dt|date:"H:i A , d/m/Y"}}</small>
                     </div>
+                    <div class="col-1">
+                              <div class="text-primary" >
+                                 {% if Ads.pk not in l %}
+                                  <a href="{% url 'saveArchivesAds' Ads.pk    idpage %}"   ><i class="fa-regular fa-bookmark fs-1"></i></a>
+                                  {% elif Ads.pk  in l%}
+                                  <a href="{% url 'deleteArchivesAds' Ads.pk   idpage %}"   ><i class="fa-solid fa-bookmark fs-1"></i></a>
+                                  {% endif%}
+                              </div>
+                          </div>
                 </div>
             </h5>
 
