@@ -41,6 +41,15 @@ INSTALLED_APPS = [
     'AdsBoard',
     'accounts',
     'ckeditor',
+    'django.contrib.sites',
+    'allauth',
+    "allauth.account",
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.github',
+    # 'sslserver',
+
 ]
 
 MIDDLEWARE = [
@@ -50,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'Ads.urls'
@@ -66,9 +75,17 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
+]
+
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'Ads.wsgi.application'
@@ -85,6 +102,7 @@ DATABASES = {
         'PASSWORD': 'p@ssw0rd',
         'HOST': 'localhost',
         'PORT': '5432',
+
     }
 }
 
@@ -128,6 +146,41 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static'),
 ]
 
+
+SITE_ID = 2
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    },
+    'facebook': {
+            'METHOD': 'oauth2',
+            # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+            'SCOPE': ['email', 'public_profile'],
+            'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+            'INIT_PARAMS': {'cookie': True},
+            'FIELDS': [
+                'id',
+                'first_name',
+                'last_name',
+                'middle_name',
+                'name',
+                'name_format',
+                'picture',
+                'short_name'
+            ],
+            'EXCHANGE_TOKEN': True,
+            # 'LOCALE_FUNC': 'path.to.callable',
+            'VERIFIED_EMAIL': False,
+            'VERSION': 'v13.0',
+        }
+}
+
 # # Base url to serve media files
 # MEDIA_URL = '/media/'
 #
@@ -140,6 +193,28 @@ STATICFILES_DIRS=[
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-LOGOUT_REDIRECT_URL = 'home'
-LOGIN_REDIRECT_URL  = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mohrealmdridammed@gmail.com'
+EMAIL_HOST_PASSWORD = '0917369487'
+
+#django-allauth registraion settings
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+
+# 1 day
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
+
+
+
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True

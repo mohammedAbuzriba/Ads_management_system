@@ -2,9 +2,18 @@
 {% load static%}
 {% block title %}
 {% if Section %}
-
        {{Section.name}}
 {%endif%}
+{%endblock%}
+
+
+{% block section %}
+        {% for Sections in getSection%}
+                    <li>
+                      <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                    </li>
+
+        {%endfor%}
 {%endblock%}
 
 
@@ -27,7 +36,7 @@
 
     <div class="card  text-white mb-5">
         {% if Section%}
-            <img src="{{ Section.img.url }}" class="card-img" style="height:275px;" alt="Stony Beach"/>
+            <img src="{{ Section.img.url }}" class="card-img"  alt="Stony Beach"/>
             <div class="card-img-overlay">
                         <h5 class="card-title">{{Section.name}}</h5>
                         <p class="card-text">
@@ -162,11 +171,11 @@
                       <div class="row">
 
               <div class="col">
-<strong>
-               </i><a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white"> @{{ads.created_by.username}}</a>
-    </strong>
-                   <small class=" text-white d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
-</div>
+                    <strong>
+                        </i><a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white"> @{{ads.created_by.username}}</a>
+                    </strong>
+                        <small class=" text-white d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
+                </div>
                           <div class="col-1">
                               <div class="text-white " >NEW</div>
                           </div>

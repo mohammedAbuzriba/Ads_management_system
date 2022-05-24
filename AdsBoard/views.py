@@ -22,11 +22,14 @@ def count_Ads():
     countAds = ads.count()
     return countAds
 
+def getSection():
+    Sections = Section.objects.all()
+    return Sections
 
 def home(request):
-    Sections = Section.objects.all()
+
     adslast = Ads.objects.filter(active='True').order_by('-created_dt')[:10]
-    return render(request,'home.html',{'adslast':adslast,'Section':Sections,'countAds':count_Ads()})
+    return render(request,'home.html',{'adslast':adslast,'getSection':getSection(),'countAds':count_Ads()})
 
 #@method_decorator(login_required,name='dispatch')
 # class SectionListView(ListView):
@@ -68,7 +71,7 @@ def SectionAdsSearch(request,section_id):
                             l.append(a.pk)
 
                 return render(request, 'Ads.html',
-                              {'l':l,'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,
+                              {'l':l,'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,'getSection':getSection(),
                                'countAds': count_Ads()})
             else:
                 ads = Ads.objects.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
@@ -94,7 +97,7 @@ def SectionAdsSearch(request,section_id):
                         if a.pk == ar.ads.pk:
                             l.append(a.pk)
 
-                return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
+                return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,'getSection':getSection(),
                                                     'countAds': count_Ads()})
         else:
             if section_id != 0:
@@ -123,7 +126,7 @@ def SectionAdsSearch(request,section_id):
                             l.append(a.pk)
 
                 return render(request, 'Ads.html',
-                              {'l':l,'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,
+                              {'l':l,'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,'getSection':getSection(),
                                'countAds': count_Ads()})
             else:
                 ads = Ads.objects.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
@@ -149,7 +152,7 @@ def SectionAdsSearch(request,section_id):
                         if a.pk == ar.ads.pk:
                             l.append(a.pk)
 
-                return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
+                return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,'getSection':getSection(),
                                                     'countAds': count_Ads()})
 
 
@@ -158,8 +161,6 @@ def SectionAds(request,section_id):
     SectionAll = Section.objects.all()
 
     Archive = Archives.objects.filter(save_by=request.user.id)
-
-
 
 
     if section_id!=0:
@@ -189,9 +190,9 @@ def SectionAds(request,section_id):
         if request.user.id:
             user_profile = get_object_or_404(User, pk=request.user.id)
 
-            return render(request,'Ads.html',{'user_profile':user_profile,'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'countAds':count_Ads()})
+            return render(request,'Ads.html',{'user_profile':user_profile,'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'getSection':getSection(),'countAds':count_Ads()})
         else:
-            return render(request,'Ads.html',{'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'countAds':count_Ads()})
+            return render(request,'Ads.html',{'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'getSection':getSection(),'countAds':count_Ads()})
 
     else:
         ads = Ads.objects.filter(active='True').order_by('-created_dt').annotate(commentCount=Count('comments'))
@@ -218,7 +219,7 @@ def SectionAds(request,section_id):
 
 
 
-        return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,
+        return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,'getSection':getSection(),
                                             'countAds': count_Ads()})
 
 
@@ -234,7 +235,7 @@ def waitingAds(request):
         except EmptyPage:
             ads = paginator.page(paginator.num_pages)
 
-        return render(request,'waitingAds.html',{'Ads':ads,'countAds':count_Ads()})
+        return render(request,'waitingAds.html',{'Ads':ads,'countAds':count_Ads(),'getSection':getSection()})
 
     else:
         return redirect('home')
@@ -245,7 +246,7 @@ def UserProfile(request,user_id):
     Archive = Archives.objects.filter(save_by=request.user.id,)
 
 
-    ads = Ads.objects.filter(created_by=user_id).order_by('-created_dt').annotate(commentCount=Count('comments'))
+    ads = Ads.objects.filter(created_by=user_id,active='True').order_by('-created_dt').annotate(commentCount=Count('comments'))
     CountUserAds = ads.count()
     page = request.GET.get('page',1)
     paginator = Paginator(ads,5)
@@ -268,7 +269,7 @@ def UserProfile(request,user_id):
             listView.append(a.pk)
 
 
-    return render(request,'UserProfile.html',{'li': listView,'l':l,'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile})
+    return render(request,'UserProfile.html',{'li': listView,'l':l,'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile,'getSection':getSection()})
 
 
 def saveArchivesAds(request,ads_id,id):
@@ -280,8 +281,10 @@ def saveArchivesAds(request,ads_id,id):
         return redirect('SectionAds',ads.section.pk)
     elif id ==1:
         return redirect('UserProfile',ads.created_by.id)
-    else:
+    elif id ==2:
         return redirect('ArchivesAds')
+    else:
+        return redirect('adsComments', ads.section.pk, ads.pk ,0)
 
 
 def deleteArchivesAds(request,ads_id,id):
@@ -293,15 +296,17 @@ def deleteArchivesAds(request,ads_id,id):
         return redirect('SectionAds',ads.section.pk)
     elif id ==1:
         return redirect('UserProfile',ads.created_by.id)
-    else:
+    elif id == 2:
         return redirect('ArchivesAds')
+    else:
+        return redirect('adsComments', ads.section.pk, ads.pk ,0)
 
 
 def ArchivesAds(request):
     user_profile = get_object_or_404(User, pk=request.user.id)
     Archive = Archives.objects.filter(save_by=request.user.id,).order_by('-save_dt')
-    adsAll = Ads.objects.filter(active='True',).order_by('-created_dt').annotate(commentCount=Count('comments'))
-    ads=Ads.objects.prefetch_related('archivetest').filter(archivetest__save_by=request.user.id).order_by('-archivetest__save_dt')
+    #adsAll = Ads.objects.filter(active='True',).order_by('-created_dt').annotate(commentCount=Count('comments'))
+    ads=Ads.objects.prefetch_related('archivetest').filter(archivetest__save_by=request.user.id).order_by('-archivetest__save_dt').annotate(commentCount=Count('comments'))
 
     CountUserAds = len(ads)
     page = request.GET.get('page', 1)
@@ -326,7 +331,7 @@ def ArchivesAds(request):
             listView.append(a.pk)
 
     return render(request, 'Archive.html',
-                  {'li': listView,'l':l,'Ads': ads, 'CountUserAds': CountUserAds, 'countAds': count_Ads(), 'user_profile': user_profile})
+                  {'li': listView,'l':l,'Ads': ads, 'CountUserAds': CountUserAds, 'countAds': count_Ads(), 'user_profile': user_profile,'getSection':getSection()})
 
 
 def Accept(request,ads_id):
@@ -441,9 +446,14 @@ def adsComments(request, section_id,ads_id,id):
         ads.save()
         request.session[session_key]=True
 
+    l = [""]
+    for ar in Archive:
+        if ads.pk == ar.ads.pk:
+            l.append(ads.pk)
+
 
     idpage=id
-    return render(request, 'adsComments.html', {'Ads': ads,'comments':comments,'idpage':idpage,'countAds':count_Ads()})
+    return render(request, 'adsComments.html', {'l':l,'Ads': ads,'comments':comments,'idpage':idpage,'countAds':count_Ads(),'getSection':getSection()})
 
 @login_required
 def replyAds(request, section_id,ads_id,id):

@@ -49,6 +49,35 @@
               >
             </li>
             <li class="nav-item">
+              <ul class="navbar-nav">
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+
+
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownMenuLinks"
+                    role="button"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                  Section
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinks">
+                    <li>
+                      <a class="dropdown-item" href="{% url 'SectionAds' 0 %}">All Section</a>
+                    </li>
+                    {% block section %}
+                    {%endblock%}
+
+
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
               {% if user.id%}
               <a class="nav-link" href="{% url 'ArchivesAds' %}" rel="nofollow"
                 >Archive</a>
@@ -259,6 +288,55 @@
       <!-- Copyright -->
     </footer>
     <!--Footer-->
+
+
+
+
+
+
+
+    <div class="loader bg-white">
+      <img src="{% static 'img/load-gif.gif' %}" alt="">
+
+    </div>
+
+<style>
+    .loader{
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: dark;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.disppear{
+  animation: vanish 1s forwards;
+}
+@keyframes vanish {
+  100%{
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+
+</style>
+
+
+<script>
+var loader = document.querySelector(".loader")
+
+window.addEventListener("load", vanish);
+
+function vanish() {
+  loader.classList.add("disppear");
+}
+</script>
 
 
 
