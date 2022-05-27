@@ -56,7 +56,7 @@
 
 
   <div class="card-body" style="transform: rotate(0);">
-    <h5 class="card-title"><a href="#" class="stretched-link text-decoration-underline" >{{Ads.subject}}</a></h5>
+    <h5 class="card-title"><a href="#" class=" text-decoration-underline" >{{Ads.subject}}</a></h5>
     <p class="card-text text-justify"> {{Ads.messageAds|safe}}</p>
      {%if ads.img%}
       <a href="{{ Ads.img.url }}" target="_blank">
@@ -113,7 +113,7 @@
               </div>
             </div>
 
-            {% elif ads.created_by.is_active == False  and user.is_staff  %}
+            {% elif ads.created_by.is_active == False  and user.is_superuser  %}
             <div class="col-1">
 
               <div class="">
@@ -144,7 +144,7 @@
 
               </div>
             </div>
-            {% elif perms.AdsBoard.remove_ads and user.is_staff      %}
+            {% elif perms.AdsBoard.remove_ads and user.is_superuser      %}
             <div class="col-1">
 
               <div class="">

@@ -143,42 +143,34 @@
 
 
          {%for ads in Ads %}
-        {% if ads.pk not in li %}
-            <div class="card border border-1 border-primary  mt-3 mb-3" >
-            <h5 class="card-header bg-primary  " >
-                <div class="row">
-
-                    <div class="col">
-                        <strong>
-                            <a href="{% url 'UserProfile' ads.created_by.pk %} " class="text-white">@{{ads.created_by.username}}</a>
-                        </strong>
-                        <small class=" text-white d-block fs-6 lh-base" >{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
-                    </div>
-                     <div class="col-1">
-                              <div class="" >
-                                  {% if ads.pk not in l %}
-                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" class="text-white"><i class="fa-regular fa-bookmark fs-1"></i></a>
-                                  {% elif ads.pk  in l%}
-                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}"class="text-white" ><i class="fa-solid fa-bookmark fs-1"></i></a>
-                                  {% endif%}
-                              </div>
-                          </div>
-                </div>
-            </h5>
-            {% else %}
-            <div class="card border 1  border-primary mt-3 mb-3" >
+            {% if user.id == ads.created_by.id %}
+            <div class="card border 1   mt-5 mb-5" >
             <h5 class="card-header  bg-primary   " >
+
+            {% else %}
+
+            <div class="card border 1   mt-5 mb-5" style="border-color:#55acee;" >
+            <h5 class="card-header     " style="background-color:#55acee;" >
+            {% endif %}
+
                       <div class="row">
 
               <div class="col">
-                    <strong>
-                        </i><a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white"> @{{ads.created_by.username}}</a>
-                    </strong>
-                        <small class=" text-white d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
+
+                        <a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white"> @{{ads.created_by.username}}</a>
+
+                        <small class=" text-white fw-light d-block fs-6 lh-base">{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
                 </div>
+                          {% if ads.pk not in li %}
+
+
+                            {% else %}
                           <div class="col-1">
                               <div class="text-white " >NEW</div>
                           </div>
+                          {% endif %}
+
+
                           <div class="col-1">
                               <div class="text-primary" >
                                  {% if ads.pk not in l %}
@@ -190,7 +182,7 @@
                           </div>
       </div>
   </h5>
-        {% endif %}
+
 
 
   <div class="card-body" style="transform: rotate(0);">
@@ -279,7 +271,7 @@
               </div>
             </div>
 
-            {% elif ads.created_by.is_active == False  and user.is_staff  %}
+            {% elif ads.created_by.is_active == False  and user.is_superuser  %}
             <div class="col-1">
 
               <div class="">
@@ -310,7 +302,7 @@
 
               </div>
             </div>
-            {% elif perms.AdsBoard.remove_ads and user.is_staff      %}
+            {% elif perms.AdsBoard.remove_ads and user.is_superuser      %}
             <div class="col-1">
 
               <div class="">

@@ -286,7 +286,6 @@ def saveArchivesAds(request,ads_id,id):
     else:
         return redirect('adsComments', ads.section.pk, ads.pk ,0)
 
-
 def deleteArchivesAds(request,ads_id,id):
     ads = get_object_or_404(Ads, pk=ads_id)
     archive = Archives.objects.filter(ads=ads,)
@@ -300,7 +299,6 @@ def deleteArchivesAds(request,ads_id,id):
         return redirect('ArchivesAds')
     else:
         return redirect('adsComments', ads.section.pk, ads.pk ,0)
-
 
 def ArchivesAds(request):
     user_profile = get_object_or_404(User, pk=request.user.id)
@@ -332,7 +330,6 @@ def ArchivesAds(request):
 
     return render(request, 'Archive.html',
                   {'li': listView,'l':l,'Ads': ads, 'CountUserAds': CountUserAds, 'countAds': count_Ads(), 'user_profile': user_profile,'getSection':getSection()})
-
 
 def Accept(request,ads_id):
     if request.user.is_staff:
@@ -366,13 +363,10 @@ def BandUserAds(request,section_id,user_id,id):
     else:
         return redirect('home')
 
-
 def BandUserComment(request,section_id,ads_id,user_id):
     user = User.objects.filter(id=user_id).first()
     if user and request.user.is_staff:
         try:
-            group = Group.objects.get(name='user')
-            group.user_set.remove(user)
             user.is_active=False
             user.save()
         except:
@@ -542,5 +536,32 @@ def CommentDelete(request,section_id,ads_id,comment_id,id):
         return redirect('home')
 
 
+def listuser(request):
+    listuser = User.objects.all()
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(listuser, 5)
+    try:
+        ads = paginator.page(page)
+    except PageNotAnInteger:
+        ads = paginator.page(1)
+    except EmptyPage:
+        ads = paginator.page(paginator.num_pages)
+
+    return render(request, 'Users.html', {'listuser': listuser, 'getSection': getSection(), 'countAds': count_Ads()})
+
+
+@method_decorator(login_required,name='dispatch')
+class usersEditView(UpdateView):
+    model =  User
+    fields = ['username','first_name','last_name','email','is_active','is_staff','is_superuser',]
+    template_name = 'edituser.html'
+    pk_url_kwarg = 'user_id'
+    context_object_name = 'users'
+
+    def form_valid(self, form):
+        users = form.save(commit=True)
+        users.save()
+        return redirect('listuser',)
 
 

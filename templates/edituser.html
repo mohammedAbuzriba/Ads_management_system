@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}
+     Edit  Ads
+{%endblock%}
+
+
+
+{% block breadcrumb %}
+
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">User</a></li>
+    <li class="breadcrumb-item "><a href="#">{{user.username}}</a></li>
+ {%endblock%}
+
+
+{% block content %}
+<div class="card">
+    <div class="card-body row form-group">
+
+<form method="post"  enctype="multipart/form-data"  novalidate class=" mb-4">
+    {% csrf_token %}
+<table class="form-control">
+    {{ form.as_p }}
+    </table>
+
+<p></p>
+    <button type="submit" class="btn btn-success">save</button>
+</form>
+    </div></div>
+{%endblock%}
