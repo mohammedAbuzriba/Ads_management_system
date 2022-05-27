@@ -90,9 +90,13 @@
 
                 {%endif%}
             </li>
-            {% if user.is_staff%}
+            {% if user.is_superuser%}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'waitingAds' %}"  >Admin</a>
+              <a class="nav-link" href="{% url 'listuser' %}"  >Users</a>
+
+            </li>
+              <li class="nav-item">
+              <a class="nav-link" href="{% url 'waitingAds' %}"  >Waiting Ads</a>
 
             </li>
             <li class="nav-item">
@@ -297,7 +301,14 @@
 
     <div class="loader bg-white">
       <img src="{% static 'img/load-gif.gif' %}" alt="">
+    </div>
 
+
+
+    <div class="fixed-top top-50  btnfixed1 ms-5" id="btnfixed1">
+        <button class="btn btn-floating btn-primary btn-lg" style="background-color: #f44336;">
+             <i class="fa-solid fa-angles-up"></i>
+        </button>
     </div>
 
 <style>
@@ -324,6 +335,10 @@
   }
 }
 
+.btnfixed1 {
+display:none;
+}
+
 
 </style>
 
@@ -335,6 +350,25 @@ window.addEventListener("load", vanish);
 
 function vanish() {
   loader.classList.add("disppear");
+}
+
+var myBtn = document.getElementById('btnfixed1');
+window.onscroll = function (){
+  'use strict';
+  if (window.pageYOffset>=400)
+  {
+      myBtn.style.display ='block';
+  }
+  else
+  {
+      myBtn.style.display ='none';
+  }
+};
+
+
+myBtn.onclick = function(){
+    'use strict';
+    window.scrollTo(0,0);
 }
 </script>
 

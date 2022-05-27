@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block title %}
+       {{user.username}}
+{%endblock%}
+
+
+{% block section %}
+        {% for Sections in getSection%}
+                    <li>
+                      <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                    </li>
+
+        {%endfor%}
+{%endblock%}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+    <li class="breadcrumb-item active">Users</li>
+ {%endblock%}
+
+
+{% block content %}
+<style>
+    .padding {
+    padding: 0rem !important;
+
+}
+
+.card-img-top{
+
+}
+
+.card-no-border .card {
+    border-color: #d7dfe3;
+    border-radius: 4px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05)
+}
+
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem
+}
+
+
+h3 {
+    line-height: 30px;
+    font-size: 21px
+}
+
+.m-t-20 {
+    margin-top: 10px
+}
+
+.text-center {
+    text-align: center !important
+}
+
+</style>
+
+
+    <div class="mb-4">
+        <div class="padding ">
+            <div class="card text-center col-md-12  ">
+                <!-- Column -->
+
+                    <div class=" ">
+                            <img class="col-8" src="{% static 'img/20943447.jpg' %}" alt="image">
+                            <div class="card-body little-profile text-center">
+                    <!--    <p>Web Designer &amp; Developer</p>-->
+                                    <div class="row text-center m-t-10">
+                                        <div class="col-lg-4 col-md-4 m-t-20"></div>
+                                        <div class="col-lg-4 col-md-4 m-t-20">
+                                            <h3 class="m-b-0 font-light"><i class="fa-regular fa-copy"></i> User 20</h3>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 m-t-20"></div>
+                                    </div>
+                            </div>
+                    </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+<table class="table table-hover align-middle mt-5 bg-white border border-2">
+              <thead class="bg-light table-dark">
+                <tr>
+                  <th>Name</th>
+                  <th>User Name</th>
+                  <th>Status</th>
+                  <th>Date joined</th>
+                  <th>Last login</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for user in listuser %}
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                          src="{% static 'img/avatar-06.png' %}"
+                          class="rounded-circle"
+                          alt=""
+                          style="width: 45px; height: 45px"
+                          />
+                      <div class="ms-3">
+                        <p class="fw-bold mb-1">{{user.first_name}} {{user.last_name}}</p>
+                        <p class="text-muted mb-0">{{user.email}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="fw-normal mb-1">{{user.username}}</p>
+                      {% if user.is_superuser == True%}
+                         <p class="text-muted mb-0">superuser</p>
+                      {% elif user.is_staff == True%}
+                         <p class="text-muted mb-0">staff</p>
+                      {%else%}
+                         <p class="text-muted mb-0">user</p>
+                      {%endif%}
+                  </td>
+                  <td>
+                      {% if user.is_active == True%}
+                       <span class="badge badge-success rounded-pill d-inline">Active</span>
+                      {%else%}
+                      <span class="badge badge-warning rounded-pill d-inline">stopped</span>
+
+                      {%endif%}
+                  </td>
+                  <td>
+                      {{user.date_joined}}
+                  </td>
+                  <td>
+                      {{user.last_login}}
+                  </td>
+
+                  <td>
+                    <a
+                            href="{% url 'usersEditView' user.id %}"
+                            type="button"
+                            class="btn btn-link btn-rounded btn-sm fw-bold"
+                            data-mdb-ripple-color="dark"
+                            >
+                      Edit
+                    </a>
+                  </td>
+                </tr>
+              {%endfor%}
+              </tbody>
+            </table>
+
+
+
+
+
+<div class="text-center mt-5 mb-3">
+
+
+      {% if Ads.has_previous %}
+        <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in Ads.paginator.page_range %}
+        {% if Ads.number == num %}
+          <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > Ads.number|add:'-3' and num < Ads.number|add:'3' %}
+          <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if Ads.has_next %}
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">Next</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+
+</div>
+
+
+{%endblock%}

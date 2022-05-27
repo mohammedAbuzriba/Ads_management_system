@@ -3,6 +3,8 @@ from . import views
 urlpatterns = [
     path('',views.home,name='home'),
     # path('',views.SectionListView.as_view(),name='home'),
+    path('users/',views.listuser,name='listuser'),
+    path('users/<int:user_id>/edit', views.usersEditView.as_view(), name='usersEditView'),
     path('waitingAds/',views.waitingAds,name='waitingAds'),
     path('ArchivesAds/',views.ArchivesAds,name='ArchivesAds'),
     path('UserProfile/<int:user_id>',views.UserProfile,name='UserProfile'),

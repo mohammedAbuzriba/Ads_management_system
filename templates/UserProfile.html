@@ -240,7 +240,7 @@ h3 {
               </div>
             </div>
 
-            {% elif ads.created_by.is_active == False  and user.is_staff  %}
+            {% elif ads.created_by.is_active == False  and user.is_superuser  %}
             <div class="col-1">
 
               <div class="">
@@ -271,7 +271,7 @@ h3 {
 
               </div>
             </div>
-            {% elif perms.AdsBoard.remove_ads and user.is_staff      %}
+            {% elif perms.AdsBoard.remove_ads and user.is_superuser      %}
             <div class="col-1">
 
               <div class="">

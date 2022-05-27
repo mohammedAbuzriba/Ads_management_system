@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
      Edit  Ads
 {%endblock%}
@@ -14,13 +14,21 @@
 
 
 {% block content %}
+<div class="card">
+    <div class="card-body row">
+            <div class="col-6">
+                    <form method="post" enctype="multipart/form-data"  novalidate class="mb-4 mt-5">
+                        {% csrf_token %}
+                         {{form.media}}
+                        {% include 'form.html' %}
 
-<form method="post" enctype="multipart/form-data"  novalidate class="mb-4">
-    {% csrf_token %}
-     {{form.media}}
-    {% include 'form.html' %}
+                        <button type="submit" class="btn btn-success mt-2">save</button>
+                    </form>
+            </div>
+            <div class="col-6">
+            <img class="card-img-top" src="{% static 'img/20943483.jpg' %}" alt="image">
+        </div>
 
-    <button type="submit" class="btn btn-success">save</button>
-</form>
-
+    </div>
+</div>
 {%endblock%}
