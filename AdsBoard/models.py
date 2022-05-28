@@ -6,21 +6,18 @@ from ckeditor.fields import RichTextField
 # Create your models here.
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+
 
 class Section(models.Model):
     name = models.CharField(max_length=50,unique=True)
+    name_ar = models.CharField(default='section',max_length=50)
     description = models.CharField(max_length=150)
+    description_ar = models.CharField(default='section',max_length=150)
     img = models.ImageField(null=True,blank=True,upload_to='static/img')
     def __str__(self):
         return self.name
-
-    # def get_Comments_Count(self):
-    #     return Comments.objects.filter(ads__section=Ads).count()
-    #
-    #
-    # def get_Last_Ads(self):
-    #     return Comments.objects.filter(ads__section=self).order_by('-created_dt').first()
-
 
 class Ads(models.Model):
     subject = models.CharField(max_length=255)

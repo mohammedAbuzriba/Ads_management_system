@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static%}
-
+{% load i18n %}
 {% block title %}
         Section
 {%endblock%}
@@ -8,7 +8,11 @@
 {% block section %}
         {% for Sections in getSection%}
                     <li>
-                      <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                        {% if LANGUAGE_CODE == 'ar' %}
+                       <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name_ar}}</a>
+                        {%else%}
+                       <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                        {%endif%}
                     </li>
 
         {%endfor%}
@@ -50,7 +54,10 @@ padding: 0px -120px;
 height:120px;
 
 }
+.bg_hover:hover{
+background-color: #555;
 
+}
 </style>
 
   <!--Main Navigation-->
@@ -95,21 +102,29 @@ height:120px;
 <!--      </div>-->
 <!--    </div>-->
 
-            {% for ads in adslast%}
+      {% for ads in adslast%}
 
           <!-- Single item -->
       {% if forloop.counter == 1 %}
-    <div class="carousel-item active">
-    {% else %}
-    <div class="carousel-item">
-    {% endif %}
-      <img src="{{ ads.section.img.url }}" class="d-block w-100"
-        alt="Cliff Above a Stormy Sea" />
-      <div class="carousel-caption d-none d-md-block">
-        <h4 class="text-start  text-uppercase mb-5">{{ads.section.name}}</h4>
-        <p class="text-start  mt-5 ">@{{ads.created_by}}</p>
-        <p class="text-start   "><i class="fa-regular fa-file"></i> {{ads.subject|truncatewords_html:4}}</p>
-        <p class="text-start  fw-light mb-3"><i class="fa-regular fa-clock"></i> {{ads.created_dt|date:"H:i A , d/m/Y"}}</p>
+        <div class="carousel-item active ">
+        {% else %}
+        <div class="carousel-item ">
+        {% endif %}
+          <img src="{{ ads.section.img.url }}" class="img_ar d-block w-100"
+            alt="Cliff Above a Stormy Sea" />
+          <div class="carousel-caption d-none d-md-block ">
+              {% if LANGUAGE_CODE == 'ar' %}
+                <h4 class="text-end  text-uppercase mb-5">{{ads.section.name_ar}}</h4>
+               <p class="text-end  mt-5 ">{{ads.created_by}}@</p>
+                <p class="text-end  bg_hover"><i class="fa-regular fa-file"></i> {{ads.subject|truncatewords_html:15}}</p>
+                <p class="text-end  fw-light mb-3"><i class="fa-regular fa-clock"></i> {{ads.created_dt|date:"H:i A , d/m/Y"}}</p>
+              {%else%}
+                <h4 class="text-start  text-uppercase mb-5">{{ads.section.name}}</h4>
+               <p class="text-start  mt-5 ">@{{ads.created_by}}</p>
+                <p class="text-start   "><i class="fa-regular fa-file"></i> {{ads.subject|truncatewords_html:4}}</p>
+                <p class="text-start  fw-light mb-3"><i class="fa-regular fa-clock"></i> {{ads.created_dt|date:"H:i A , d/m/Y"}}</p>
+              {%endif%}
+
 <!--              {% if ads.messageAds|wordcount >= 4 %}-->
 <!--               <small class="text-start">{{ads.messageAds|truncatewords_html:3|safe}}</small>-->
 <!--              {% else %}-->
@@ -149,7 +164,17 @@ height:120px;
   <!-- Inner -->
 
   <!-- Controls -->
-  <button class="carousel-control-prev" type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide="prev">
+      {% if LANGUAGE_CODE == 'ar' %}
+  <button class="carousel-control-prev" type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide="next">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide="prev">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+      {%else%}
+      <button class="carousel-control-prev" type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
   </button>
@@ -157,6 +182,7 @@ height:120px;
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
+      {%endif%}
 </div>
 <!-- Carousel wrapper -->
 
@@ -169,14 +195,14 @@ height:120px;
           <div class="col-lg-4 col-md-12 mb-4 ">
             <div class="card text-start border border-2 shadow-5">
 
-              <div class="bg-image hover-overlay ripple hh"   data-mdb-ripple-color="light">
+              <div class="bg-image hover-overlay ripple w-100 hh"   data-mdb-ripple-color="light">
             {%if Sections.img%}
                   <div class="inner">
-                        <img src="{{ Sections.img.url }}" alt="{{ Sections.name }}"  class="img-fluid "     >
+                        <img src="{{ Sections.img.url }}" alt="{{ Sections.name }}"  class="img_ar img-fluid "     >
                   </div>
                   {%else%}
                   <div class="inner">
-                  <img src="{% static 'img/6070193.jpg' %}" alt="{{ Sections.name }}" class="img-fluid" >
+                  <img src="{% static 'img/6070193.jpg' %}" alt="{{ Sections.name }}" class="img_ar img-fluid" >
                       </div>
             {%endif%}
                 <a href="{% url 'SectionAds' Sections.pk%}">
@@ -186,69 +212,138 @@ height:120px;
 
 
                 <div class="card-body row " >
-                  <h5 class="card-title  col " >
-                      <a href="{% url 'SectionAds' Sections.pk%}" class="">{{Sections.name|upper}}</a>
-                        <small class="text-muted d-block">{{Sections.description}}</small>
 
-                  </h5>
-<div class="col-1">
+                      {% if LANGUAGE_CODE == 'ar' %}
+                    <div class="d-flex justify-content-between">
+
+                        <h5 class="card-title text-end" >
+                      <a href="{% url 'SectionAds' Sections.pk%}" class="text-end">{{Sections.name_ar|upper}}</a>
+                        <small class="text-muted d-block">{{Sections.description_ar}}</small>
+                         </h5>
+                        <div class=" ">
+                                        {% if user.is_superuser%}
+
+
+                                            <ul class="navbar-nav">
+                                            <!-- Dropdown -->
+                                            <li class="nav-item dropdown ">
+
+
+                                              <a
+                                                class="nav-link text-dark"
+                                                href="#"
+                                                id="navbarDropdownMenuLink"
+                                                role="button"
+                                                data-mdb-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                  <h5>
+                                              <i class="fa-solid fa-ellipsis-vertical "></i></h5>
+                                              </a>
+                                              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+
+                                                  <li>
+
+                                                    <a href="{% url 'SectionEditView' Sections.pk  %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+
+                                                  </li>
+
+
+
+
+
+
+
+
+
+                                              </ul>
+                                            </li>
+                                          </ul>
+
+                                             {%endif%}
+
+
+
+                    </div>
+                    </div>
+
+
+                        {% else %}
+                        <div class="d-flex justify-content-between">
+                        <h5 class="card-title   text-start" >
+                       <a href="{% url 'SectionAds' Sections.pk%}" class="">{{Sections.name|upper}}</a>
+                        <small class="text-muted d-block">{{Sections.description}}</small>
+                             </h5>
+                        <div class="">
                     {% if user.is_superuser%}
 
 
-                    <ul class="navbar-nav">
-                <!-- Dropdown -->
-                <li class="nav-item dropdown ">
+                        <ul class="navbar-nav">
+                        <!-- Dropdown -->
+                        <li class="nav-item dropdown ">
 
 
-                  <a
-                    class="nav-link text-dark"
-                    href="#"
-                    id="navbarDropdownMenuLink"
-                    role="button"
-                    data-mdb-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                      <h5>
-                  <i class="fa-solid fa-ellipsis-vertical "></i></h5>
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <a
+                            class="nav-link text-dark"
+                            href="#"
+                            id="navbarDropdownMenuLink2"
+                            role="button"
+                            data-mdb-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                              <h5>
+                          <i class="fa-solid fa-ellipsis-vertical "></i></h5>
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
 
 
-                      <li>
+                              <li>
 
-                        <a href="{% url 'SectionEditView' Sections.pk  %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                                <a href="{% url 'SectionEditView' Sections.pk  %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
 
-                      </li>
-
-
-
+                              </li>
 
 
 
 
 
 
-                  </ul>
-                </li>
-              </ul>
+
+
+
+                          </ul>
+                        </li>
+                      </ul>
 
                          {%endif%}
 
 
-
 </div>
-
+                        </div>
+                      {% endif %}
               </div>
-                <ul class="list-group list-group-flush">
-    <li class="list-group-item"> <i class="fa-regular fa-copy"></i> Ads  {{Sections.ads.count}}</li>
-    </ul>
-                <div class="card-footer text-muted">
+
+                {% if LANGUAGE_CODE == 'ar' %}
+                 <div class="card-footer text-muted text-end ">
+                    <div class="">
+                        <i class="fa-regular fa-copy"></i> {{Sections.ads.count}} {% trans 'Ads' %}</div>
+                    {% with ads=Sections.ads.last %}
+                    {%if ads%}
+                         {% trans 'update by' %} {{ads.created_by.username}}  <i class="fa-regular fa-circle-user"></i>
+                     <small class="text-muted d-block"> {% trans 'at' %} {{ads.created_dt}}</small>{%else%} {% trans 'NO ADS' %} {%endif%} {%endwith%}
+
+                </div>
+                {% else %}
+                <div class="card-footer text-muted ">
+                    <div><i class="fa-regular fa-copy"></i> {{Sections.ads.count}} Ads  </div>
                     {% with ads=Sections.ads.last %}
                     {%if ads%}
                      update   by   <i class="fa-regular fa-circle-user"></i> {{ads.created_by.username}}
-    <small class="text-muted d-block"> at    {{ads.created_dt}}</small>{%else%} NO ADS {%endif%} {%endwith%}
+                     <small class="text-muted d-block"> at    {{ads.created_dt}}</small>{%else%} NO ADS {%endif%} {%endwith%}
 
-  </div>
+                </div>
+                {% endif %}
             </div>
           </div>
 

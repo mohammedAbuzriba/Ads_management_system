@@ -1,6 +1,10 @@
 {% load static%}
-<!--<html lang="ar" dir="rtl" >-->
-<html lang="en"    >
+{% load i18n %}
+{% if LANGUAGE_CODE == 'ar' %}
+<html lang="ar" dir="rtl" >
+{% else %}
+<html lang="en" dir="ltr"   >
+{% endif %}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -13,13 +17,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap"rel="stylesheet"/>
   </head>
-  <body class="" style="background-color: #f3f3f3;">
+  <body class="font_ar" style="background-color: #f3f3f3;">
 
 
     <style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
+
+
     .aLink:hover {
     text-decoration: underline;
     }
+    {% if LANGUAGE_CODE == 'ar' %}
+    *{
+     font-family: 'Cairo', sans-serif;
+      direction: rtl;
+    }
+    .img_ar {
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+    }
+    {%else%}
+    {%endif%}
+
 
       #intro {
         /* Margin to fix overlapping fixed navbar */
@@ -39,14 +58,17 @@
 
       <div class="container-fluid ">
         <!-- Navbar brand -->
-        <a class="logo" href="{% url 'home' %}"> Ads Board </a>
+        <a class="logo" href="{% url 'home' %}">{% trans 'Ads Board' %}  </a>
 
         <div class="collapse navbar-collapse" id="navbarExample01">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            {% if LANGUAGE_CODE == 'ar' %}
+          <ul class="navbar-nav ms-auto ">
+              {%else%}
+              <ul class="navbar-nav me-auto ">
+              {%endif%}
             <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="{% url 'home' %}"
-                >Home</a
-              >
+
+                <a class="nav-link" aria-current="page" href="{% url 'home' %}">{% trans 'Home' %}</a>
             </li>
             <li class="nav-item">
               <ul class="navbar-nav">
@@ -54,19 +76,17 @@
                 <li class="nav-item dropdown">
 
 
-                  <a
-                    class="nav-link dropdown-toggle"
+                  <a class="nav-link dropdown-toggle"
                     href="#"
                     id="navbarDropdownMenuLinks"
                     role="button"
                     data-mdb-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                  Section
+                    aria-expanded="false">
+                  {% trans 'Section' %}
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinks">
                     <li>
-                      <a class="dropdown-item" href="{% url 'SectionAds' 0 %}">All Section</a>
+                      <a class="dropdown-item" href="{% url 'SectionAds' 0 %}">{% trans 'All Section' %}</a>
                     </li>
                     {% block section %}
                     {%endblock%}
@@ -79,24 +99,23 @@
 
             <li class="nav-item">
               {% if user.id%}
-              <a class="nav-link" href="{% url 'ArchivesAds' %}" rel="nofollow"
-                >Archive</a>
+              <a class="nav-link" href="{% url 'ArchivesAds' %}" rel="nofollow">{% trans 'Archive' %}</a>
               {%endif%}
             </li>
               <li class="nav-item">
                 {% if user.id%}
-              <a class="nav-link" href="{% url 'UserProfile' user.id %}" rel="nofollow">Profile</a>
+              <a class="nav-link" href="{% url 'UserProfile' user.id %}" rel="nofollow">{% trans 'Profile' %}</a>
                 {%else%}
 
                 {%endif%}
             </li>
             {% if user.is_superuser%}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'listuser' %}"  >Users</a>
+              <a class="nav-link" href="{% url 'listuser' %}"  >{% trans 'Users' %}</a>
 
             </li>
               <li class="nav-item">
-              <a class="nav-link" href="{% url 'waitingAds' %}"  >Waiting Ads</a>
+              <a class="nav-link" href="{% url 'waitingAds' %}"  >{% trans 'Waiting Ads' %}</a>
 
             </li>
             <li class="nav-item">
@@ -128,25 +147,24 @@
                     data-mdb-toggle="dropdown"
                     aria-expanded="false"
                   >
-                  Welcome  {{ user.username }}
+                  {% trans 'Welcome' %}  {{ user.username }}
                   </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
                     <li>
                       <a class="dropdown-item" href="{% url 'myAccount'%}"
-                          ><i class="fas fa-user"></i> My account</a
+                          ><i class="fas fa-user"></i> {% trans 'My account' %}</a
                         >
                     </li>
                     <li>
                       <a
                       class="dropdown-item"
                       href="{% url 'changePassword' %}"
-                      > <i class="fa-solid fa-unlock-keyhole"></i> Change password</a
+                      > <i class="fa-solid fa-unlock-keyhole"></i> {% trans 'Change password' %}</a
                     >
                     </li>
                     <li>
                       <a class="dropdown-item" href="{% url 'logout' %}"
-                          > <i class="fa-solid fa-right-from-bracket"></i> Log out</a
-                        >
+                          > <i class="fa-solid fa-right-from-bracket"></i> {% trans 'Log out' %}</a>
                     </li>
                   </ul>
                 </li>
@@ -157,14 +175,28 @@
                 <a
                   class="btn btn-primary m-2"
                   href="{% url 'login' %}"
-
-                  role="button"
-                  >Login
+                  role="button">
+                    {% trans 'Login' %}
                 </a>
 
               </div>
+          {%endif%}
 
-{%endif%}
+            <div class="ps-1 pe-1 d-none d-lg-block">
+                  <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                {% get_current_language as LANGUAGE_CODE %}
+                <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
+                {% if LANGUAGE_CODE == 'ar' %}
+                    <button type='submit' name='language' value='en' class="btn btn-primary btn-sm">
+                        <span class="label"></span> en
+                    </button>
+                {% else %}
+                    <button type='submit' name='language' value='ar' class="btn btn-primary btn-sm">
+                        <span class="label"></span> ar
+                    </button>
+                {% endif %}
+            </form>
+            </div>
 
 
 
@@ -183,6 +215,7 @@
 
           <ul class="navbar-nav d-flex flex-row">
             <!-- Icons -->
+
             <li class="nav-item me-3 me-lg-0">
               <a class="nav-link" href="https://www.youtube.com" rel="nofollow"
                 target="_blank">
@@ -305,11 +338,19 @@
 
 
 
-    <div class="fixed-top top-50  btnfixed1 ms-5" id="btnfixed1">
-        <button class="btn btn-floating btn-primary btn-lg" style="background-color: #f44336;">
-             <i class="fa-solid fa-angles-up"></i>
-        </button>
-    </div>
+<!--    <div class="fixed-top top-50  btnfixed1 ms-5" id="btnfixed1">-->
+<!--        <button class="btn btn-floating btn-primary btn-lg" style="background-color: #f44336;">-->
+<!--             <i class="fa-solid fa-angles-up"></i>-->
+<!--        </button>-->
+<!--    </div>-->
+
+
+
+<!--<div class="fixed-action-btn btnfixed1" id="btnfixed1">-->
+<!--  <button class="btn btn-floating btn-primary " style="background-color: #f44336;">-->
+<!--    <i class="fa-solid fa-angles-up"></i>-->
+<!--  </button>-->
+<!--</div>-->
 
 <style>
     .loader{
@@ -337,6 +378,7 @@
 
 .btnfixed1 {
 display:none;
+z-index: -1;
 }
 
 

@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from .models import Section,Archives
 from .models import Ads
 from .models import Comments
-from .forms import NewAdsForm,CommentsForm
+from .forms import NewAdsForm,NewAdsForm_ar,CommentsForm
 from django.contrib.auth.decorators import login_required , permission_required
 from django.db.models import Count
 from django.views.generic import UpdateView, ListView, DeleteView
@@ -397,23 +397,25 @@ def DeleteAds(request,section_id,ads_id,id):
 def newAds(request, section_id):
     Sections = get_object_or_404(Section,pk=section_id)
     if request.method == "POST":
-        form = NewAdsForm(request.POST)
+
+        form = NewAdsForm(request.POST,)
         if form.is_valid():
-            ads = form.save(commit=False)
-            ads.section = Sections
-            # ads.messageAds=form.cleaned_data.get('message')
-            ads.created_by = request.user
+                ads = form.save(commit=False)
+                ads.section = Sections
+                # ads.messageAds=form.cleaned_data.get('message')
+                ads.created_by = request.user
 
-            if len(request.FILES)!=0:
-                ads.img=request.FILES['img']
+                if len(request.FILES)!=0:
+                    ads.img=request.FILES['img']
 
-            ads.save()
-            # comment = Comments.objects.create(
-            #     message = form.cleaned_data.get('message'),
-            #     created_by = request.user,
-            #     ads = ads
-            # )
-            return redirect('SectionAds',section_id=Sections.pk)
+                ads.save()
+                # comment = Comments.objects.create(
+                #     message = form.cleaned_data.get('message'),
+                #     created_by = request.user,
+                #     ads = ads
+                # )
+                return redirect('SectionAds',section_id=Sections.pk)
+
     else:
         form = NewAdsForm()
 
@@ -470,7 +472,7 @@ def replyAds(request, section_id,ads_id,id):
 @method_decorator(login_required,name='dispatch')
 class SectionEditView(UpdateView):
     model =  Section
-    fields = ['name','description','img']
+    fields = ['name','name_ar','description','description_ar','img']
     template_name = 'editSection.html'
     pk_url_kwarg = 'section_id'
     context_object_name = 'section'
