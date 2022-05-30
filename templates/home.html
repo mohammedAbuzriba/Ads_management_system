@@ -21,7 +21,7 @@
 {% block breadcrumb %}
       <!-- Jumbotron -->
 
-<li class="breadcrumb-item active" aria-current="page">Section</li>
+<li class="breadcrumb-item active" aria-current="page">{% trans 'Section' %}</li>
 
     <!-- Jumbotron -->
  {%endblock%}
@@ -58,6 +58,7 @@ height:120px;
 background-color: #555;
 
 }
+
 </style>
 
   <!--Main Navigation-->
@@ -69,7 +70,7 @@ background-color: #555;
 
 
           <!-- Carousel wrapper -->
-<div id="carouselMaterialStyle" class=" carousel slide carousel-fade mb-5" data-mdb-ride="carousel">
+<div id="carouselMaterialStyle" class="carousel slide  mb-5" data-mdb-ride="carousel">
   <!-- Indicators -->
   <div class="carousel-indicators">
     <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="0"  aria-label="Slide 1" class="active" aria-current="true"></button>
@@ -87,7 +88,7 @@ background-color: #555;
   </div>
 
   <!-- Inner -->
-  <div class="carousel-inner rounded-5 shadow-4-strong">
+  <div class="carousel-inner rounded-5 shadow-4-strong align-items-start text-start">
     <!-- Single item -->
 
 
@@ -106,24 +107,27 @@ background-color: #555;
 
           <!-- Single item -->
       {% if forloop.counter == 1 %}
-        <div class="carousel-item active ">
+        <div class="carousel-item active align-items-start text-start ">
         {% else %}
-        <div class="carousel-item ">
+        <div class="carousel-item align-items-start text-start">
         {% endif %}
-          <img src="{{ ads.section.img.url }}" class="img_ar d-block w-100"
-            alt="Cliff Above a Stormy Sea" />
-          <div class="carousel-caption d-none d-md-block ">
-              {% if LANGUAGE_CODE == 'ar' %}
-                <h4 class="text-end  text-uppercase mb-5">{{ads.section.name_ar}}</h4>
-               <p class="text-end  mt-5 ">{{ads.created_by}}@</p>
-                <p class="text-end  bg_hover"><i class="fa-regular fa-file"></i> {{ads.subject|truncatewords_html:15}}</p>
-                <p class="text-end  fw-light mb-3"><i class="fa-regular fa-clock"></i> {{ads.created_dt|date:"H:i A , d/m/Y"}}</p>
-              {%else%}
-                <h4 class="text-start  text-uppercase mb-5">{{ads.section.name}}</h4>
-               <p class="text-start  mt-5 ">@{{ads.created_by}}</p>
-                <p class="text-start   "><i class="fa-regular fa-file"></i> {{ads.subject|truncatewords_html:4}}</p>
-                <p class="text-start  fw-light mb-3"><i class="fa-regular fa-clock"></i> {{ads.created_dt|date:"H:i A , d/m/Y"}}</p>
-              {%endif%}
+
+            <img src="{{ ads.section.img.url }}" class=" img_ar d-block w-100"  alt="Cliff Above a Stormy Sea" />
+            <div class="carousel-caption d-none d-md-block row ">
+
+
+                <div class="col">
+                  {% if LANGUAGE_CODE == 'ar' %}
+                        <h4 class="  text-uppercase mb-2 ">{{ads.section.name_ar}}</h4>
+                        <a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white  mt-2 ">{{ads.created_by}}@</a>
+                  {%else%}
+                        <h4 class="  text-uppercase mb-5">{{ads.section.name}}</h4>
+                        <p><a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white bg_hover mt-5 ">@{{ads.created_by}}</a></p>
+                   {%endif%}
+                    <p><a href="{% url 'adsComments' ads.section.pk ads.pk 0 %}" class="text-white text-start bg_hover"><i class="fa-regular fa-file"></i> {{ads.subject|truncatewords_html:15}}</a></p>
+                    <p class="  fw-light mb-3"><i class="fa-regular fa-clock"></i> {{ads.created_dt|timesince}}</p>
+
+                </div>
 
 <!--              {% if ads.messageAds|wordcount >= 4 %}-->
 <!--               <small class="text-start">{{ads.messageAds|truncatewords_html:3|safe}}</small>-->
@@ -195,9 +199,9 @@ background-color: #555;
           <div class="col-lg-4 col-md-12 mb-4 ">
             <div class="card text-start border border-2 shadow-5">
 
-              <div class="bg-image hover-overlay ripple w-100 hh"   data-mdb-ripple-color="light">
+              <div class="bg-image  hover-overlay ripple w-100 hh"   data-mdb-ripple-color="light">
             {%if Sections.img%}
-                  <div class="inner">
+                  <div class="inner ">
                         <img src="{{ Sections.img.url }}" alt="{{ Sections.name }}"  class="img_ar img-fluid "     >
                   </div>
                   {%else%}
@@ -245,7 +249,7 @@ background-color: #555;
 
                                                   <li>
 
-                                                    <a href="{% url 'SectionEditView' Sections.pk  %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                                                    <a href="{% url 'SectionEditView' Sections.pk  %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> {% trans 'Edit' %}</a>
 
                                                   </li>
 
@@ -304,14 +308,6 @@ background-color: #555;
 
                               </li>
 
-
-
-
-
-
-
-
-
                           </ul>
                         </li>
                       </ul>
@@ -319,7 +315,7 @@ background-color: #555;
                          {%endif%}
 
 
-</div>
+                        </div>
                         </div>
                       {% endif %}
               </div>

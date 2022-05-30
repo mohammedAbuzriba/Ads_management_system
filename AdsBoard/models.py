@@ -6,9 +6,6 @@ from ckeditor.fields import RichTextField
 # Create your models here.
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
-
 
 class Section(models.Model):
     name = models.CharField(max_length=50,unique=True)
@@ -24,13 +21,13 @@ class Ads(models.Model):
     messageAds = RichTextField(null=True)
     #messageAds = models.TextField(null=True,max_length=4000)
     section = models.ForeignKey(Section,related_name='ads',on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User,related_name='ads',on_delete=models.CASCADE)
+    created_by = models.ForeignKey(to=User,related_name='ads',on_delete=models.CASCADE)
     created_dt = models.DateTimeField(auto_now_add=True)
     img = models.ImageField(null=True,blank=True,upload_to='static/img')
     views = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=False)
     Archives = models.BooleanField(default=False)
-    updated_by = models.ForeignKey(User, null=True, related_name='+', on_delete=models.CASCADE)
+    updated_by = models.ForeignKey(to=User, null=True, related_name='+', on_delete=models.CASCADE)
     updated_dt = models.DateTimeField(null=True)
 
     def __str__(self):
@@ -41,9 +38,9 @@ class Ads(models.Model):
 class Comments(models.Model):
     message = models.TextField(max_length=4000)
     ads = models.ForeignKey(Ads,related_name='comments',on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User,related_name='comments',on_delete=models.CASCADE)
+    created_by = models.ForeignKey(to=User,related_name='comments',on_delete=models.CASCADE)
     created_dt = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(User,null=True,related_name='+',on_delete=models.CASCADE)
+    updated_by = models.ForeignKey(to=User,null=True,related_name='+',on_delete=models.CASCADE)
     updated_dt = models.DateTimeField(null=True)
 
     # def __str__(self):
@@ -55,5 +52,5 @@ class Comments(models.Model):
 
 class Archives(models.Model):
     ads = models.ForeignKey(Ads, related_name='archivetest', on_delete=models.CASCADE)
-    save_by = models.ForeignKey(User, related_name='archive', on_delete=models.CASCADE)
+    save_by = models.ForeignKey(to=User, related_name='archive', on_delete=models.CASCADE)
     save_dt = models.DateTimeField(auto_now_add=True)

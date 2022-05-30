@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-28 14:15+0200\n"
+"POT-Creation-Date: 2022-05-30 22:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,73 +31,267 @@ msgstr "محتوي الاعلان"
 msgid "image"
 msgstr "تحميل صورة"
 
-#: .\templates\base.html:61
-msgid "Ads Board"
-msgstr "نظام الاعلانات"
+#: .\AdsBoard\forms.py:31 .\templates\Ads.html:397 .\templates\Archive.html:333
+#: .\templates\UserProfile.html:375
+msgid "Comment"
+msgstr "التعليق"
 
-#: .\templates\base.html:71
-msgid "Home"
-msgstr "الرئيسية"
+#: .\AdsBoard\forms.py:41
+msgid "Name"
+msgstr ""
 
-#: .\templates\base.html:85
+#: .\AdsBoard\forms.py:42
+msgid "Name Arabic"
+msgstr ""
+
+#: .\AdsBoard\forms.py:43
+#, fuzzy
+#| msgid "Section"
+msgid "Description"
+msgstr "الاقسام"
+
+#: .\AdsBoard\forms.py:44
+msgid "Description Arabic"
+msgstr ""
+
+#: .\AdsBoard\forms.py:45 .\templates\editSection.html:34
+#, fuzzy
+#| msgid "image"
+msgid "Image"
+msgstr "تحميل صورة"
+
+#: .\templates\Ads.html:28 .\templates\Ads.html:122 .\templates\Archive.html:23
+#: .\templates\UserProfile.html:23 .\templates\Users.html:23
+#: .\templates\adsComments.html:25 .\templates\base.html:100
+#: .\templates\editSection.html:12 .\templates\home.html:24
+#: .\templates\waitingAds.html:22
 msgid "Section"
 msgstr "الاقسام"
 
-#: .\templates\base.html:89
+#: .\templates\Ads.html:37 .\templates\Ads.html:70 .\templates\Ads.html:125
+#: .\templates\base.html:105
 msgid "All Section"
 msgstr "كل الاقسام"
 
-#: .\templates\base.html:102
+#: .\templates\Ads.html:72
+msgid "Here ads from all sections are displayed"
+msgstr "هنا يتم عرض الاعلانات من كل الاقسام"
+
+#: .\templates\Ads.html:87 .\templates\Ads.html:92
+msgid "New Ads"
+msgstr "اعلان جديد"
+
+#: .\templates\Ads.html:148 .\templates\Ads.html:151
+msgid "Search"
+msgstr "بحث"
+
+#: .\templates\Ads.html:201 .\templates\Archive.html:137
+#: .\templates\UserProfile.html:179 .\templates\adsComments.html:78
+msgid "NEW"
+msgstr "جديد"
+
+#: .\templates\Ads.html:252 .\templates\Archive.html:188
+#: .\templates\UserProfile.html:230 .\templates\adsComments.html:137
+#: .\templates\adsComments.html:580 .\templates\home.html:252
+msgid "Edit"
+msgstr "تعديل"
+
+#: .\templates\Ads.html:264 .\templates\Ads.html:298 .\templates\Ads.html:329
+#: .\templates\Archive.html:200 .\templates\Archive.html:234
+#: .\templates\Archive.html:265 .\templates\UserProfile.html:242
+#: .\templates\UserProfile.html:276 .\templates\UserProfile.html:307
+#: .\templates\adsComments.html:149 .\templates\adsComments.html:183
+#: .\templates\adsComments.html:214 .\templates\adsComments.html:586
+#: .\templates\adsComments.html:593 .\templates\adsComments.html:605
+msgid "Delete"
+msgstr ""
+
+#: .\templates\Ads.html:272 .\templates\Ads.html:306 .\templates\Ads.html:337
+#: .\templates\Ads.html:368 .\templates\Archive.html:208
+#: .\templates\Archive.html:242 .\templates\Archive.html:273
+#: .\templates\Archive.html:304 .\templates\UserProfile.html:250
+#: .\templates\UserProfile.html:284 .\templates\UserProfile.html:315
+#: .\templates\UserProfile.html:346 .\templates\adsComments.html:157
+#: .\templates\adsComments.html:191 .\templates\adsComments.html:222
+#: .\templates\adsComments.html:253
+msgid "Are you sure?"
+msgstr ""
+
+#: .\templates\Ads.html:276 .\templates\Ads.html:310 .\templates\Ads.html:341
+#: .\templates\Ads.html:374 .\templates\Archive.html:212
+#: .\templates\Archive.html:246 .\templates\Archive.html:277
+#: .\templates\Archive.html:310 .\templates\UserProfile.html:254
+#: .\templates\UserProfile.html:288 .\templates\UserProfile.html:319
+#: .\templates\UserProfile.html:352 .\templates\adsComments.html:161
+#: .\templates\adsComments.html:195 .\templates\adsComments.html:226
+#: .\templates\adsComments.html:259
+msgid "No"
+msgstr "لا"
+
+#: .\templates\Ads.html:278 .\templates\Ads.html:312 .\templates\Ads.html:343
+#: .\templates\Ads.html:376 .\templates\Archive.html:214
+#: .\templates\Archive.html:248 .\templates\Archive.html:279
+#: .\templates\Archive.html:312 .\templates\UserProfile.html:256
+#: .\templates\UserProfile.html:290 .\templates\UserProfile.html:321
+#: .\templates\UserProfile.html:354 .\templates\adsComments.html:163
+#: .\templates\adsComments.html:197 .\templates\adsComments.html:228
+#: .\templates\adsComments.html:261
+msgid "Yes"
+msgstr "نعم"
+
+#: .\templates\Ads.html:360 .\templates\Archive.html:296
+#: .\templates\UserProfile.html:338 .\templates\adsComments.html:245
+#: .\templates\adsComments.html:599
+msgid "Band"
+msgstr "حظر"
+
+#: .\templates\Ads.html:398 .\templates\Archive.html:334
+#: .\templates\UserProfile.html:376
+msgid "View"
+msgstr ""
+
+#: .\templates\Ads.html:468 .\templates\Archive.html:638
+#: .\templates\UserProfile.html:678 .\templates\adsComments.html:657
+#: .\templates\waitingAds.html:221
+msgid "First"
+msgstr "الاولي"
+
+#: .\templates\Ads.html:469 .\templates\Archive.html:639
+#: .\templates\UserProfile.html:679 .\templates\adsComments.html:658
+#: .\templates\waitingAds.html:222
+msgid "Previous"
+msgstr "السابقة"
+
+#: .\templates\Ads.html:481 .\templates\Archive.html:651
+#: .\templates\UserProfile.html:691 .\templates\adsComments.html:670
+#: .\templates\waitingAds.html:234
+msgid "Next"
+msgstr "التالية"
+
+#: .\templates\Ads.html:482 .\templates\Archive.html:652
+#: .\templates\UserProfile.html:692 .\templates\adsComments.html:671
+#: .\templates\waitingAds.html:235
+msgid "Last"
+msgstr "الاخيرة"
+
+#: .\templates\Archive.html:24 .\templates\base.html:121
 msgid "Archive"
 msgstr "الارشبف"
 
-#: .\templates\base.html:107
-msgid "Profile"
-msgstr "الملف الشخصي"
-
-#: .\templates\base.html:114
-msgid "Users"
-msgstr "المستخدمون"
-
-#: .\templates\base.html:118
-msgid "Waiting Ads"
-msgstr "إعلانات في الانتظار"
-
-#: .\templates\base.html:150
-msgid "Welcome"
-msgstr "مرحبا"
-
-#: .\templates\base.html:155
-msgid "My account"
-msgstr "حسابي"
-
-#: .\templates\base.html:162
-msgid "Change password"
-msgstr "تغيير كلمة المرور"
-
-#: .\templates\base.html:167
-msgid "Log out"
-msgstr "تسجيل الخروج"
-
-#: .\templates\base.html:179
-msgid "Login"
-msgstr "تسجيل الدخول"
-
-#: .\templates\home.html:330
+#: .\templates\Archive.html:84 .\templates\UserProfile.html:132
+#: .\templates\home.html:326 .\templates\waitingAds.html:94
 msgid "Ads"
 msgstr "اعلان"
 
-#: .\templates\home.html:333
+#: .\templates\ProfileUpdate.html:18 .\templates\base.html:178
+#: .\templates\myAccount.html:10
+msgid "My account"
+msgstr "حسابي"
+
+#: .\templates\UserProfile.html:24 .\templates\adsComments.html:35
+#: .\templates\adsComments.html:40 .\templates\base.html:126
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+#: .\templates\Users.html:24 .\templates\Users.html:82
+#: .\templates\base.html:133
+msgid "Users"
+msgstr "المستخدمون"
+
+#: .\templates\adsComments.html:38
+#, fuzzy
+#| msgid "Archive"
+msgid "Archives"
+msgstr "الارشبف"
+
+#: .\templates\adsComments.html:520
+msgid "Reply"
+msgstr ""
+
+#: .\templates\base.html:78
+msgid "Ads Board"
+msgstr "نظام الاعلانات"
+
+#: .\templates\base.html:86
+msgid "Home"
+msgstr "الرئيسية"
+
+#: .\templates\base.html:137
+msgid "Waiting Ads"
+msgstr "إعلانات في الانتظار"
+
+#: .\templates\base.html:169
+msgid "Welcome"
+msgstr "مرحبا"
+
+#: .\templates\base.html:184
+msgid "Change password"
+msgstr "تغيير كلمة المرور"
+
+#: .\templates\base.html:189
+msgid "Log out"
+msgstr "تسجيل الخروج"
+
+#: .\templates\base.html:201
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+#: .\templates\base.html:303
+msgid "Follow You Can on social media"
+msgstr ""
+
+#: .\templates\changePassword.html:12 .\templates\changePassword.html:25
+#: .\templates\changePasswordDone.html:11
+#, fuzzy
+#| msgid "Change password"
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+#: .\templates\changePasswordDone.html:12
+msgid "Success"
+msgstr ""
+
+#: .\templates\changePasswordDone.html:19
+msgid "Your password has been changed  ^_^"
+msgstr ""
+
+#: .\templates\changePasswordDone.html:22
+msgid "Return to home"
+msgstr ""
+
+#: .\templates\editSection.html:30 .\templates\myAccount.html:27
+msgid "Save"
+msgstr ""
+
+#: .\templates\home.html:329
 msgid "update by"
 msgstr " اخر تحديث بواسطة "
 
-#: .\templates\home.html:334
+#: .\templates\home.html:330
 msgid "at"
 msgstr "عند"
 
-#: .\templates\home.html:334
+#: .\templates\home.html:330
 msgid "NO ADS"
 msgstr "لا يوجد اعلانات"
+
+#: .\templates\myAccount.html:18
+#, fuzzy
+#| msgid "Profile"
+msgid "My Profile"
+msgstr "الملف الشخصي"
+
+#: .\templates\waitingAds.html:24
+#, fuzzy
+#| msgid "New Ads"
+msgid "Show Ads"
+msgstr "اعلان جديد"
+
+#: .\templates\waitingAds.html:26
+#, fuzzy
+#| msgid "New Ads"
+msgid "No Ads !!"
+msgstr "اعلان جديد"
 
 #, fuzzy
 #~| msgid "NO ADS"

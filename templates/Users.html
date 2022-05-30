@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static%}
+{% load i18n %}
 {% block title %}
        {{user.username}}
 {%endblock%}
@@ -8,15 +9,19 @@
 {% block section %}
         {% for Sections in getSection%}
                     <li>
-                      <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                      {% if LANGUAGE_CODE == 'ar' %}
+                       <a class="dropdown-item text-end" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name_ar}}</a>
+                        {%else%}
+                       <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                        {%endif%}
                     </li>
 
         {%endfor%}
 {%endblock%}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
-    <li class="breadcrumb-item active">Users</li>
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'Section' %}</a></li><div class="vr ms-2 me-2"></div>
+    <li class="breadcrumb-item active">{% trans 'Users' %}</li>
  {%endblock%}
 
 
@@ -67,14 +72,15 @@ h3 {
             <div class="card text-center col-md-12  ">
                 <!-- Column -->
 
-                    <div class=" ">
+                    <div class=" text-center ">
                             <img class="col-8" src="{% static 'img/20943447.jpg' %}" alt="image">
                             <div class="card-body little-profile text-center">
                     <!--    <p>Web Designer &amp; Developer</p>-->
                                     <div class="row text-center m-t-10">
                                         <div class="col-lg-4 col-md-4 m-t-20"></div>
                                         <div class="col-lg-4 col-md-4 m-t-20">
-                                            <h3 class="m-b-0 font-light"><i class="fa-regular fa-copy"></i> User 20</h3>
+                                            <h3 class="m-b-0 font-light text-center "><i class="fa-regular fa-copy"></i> {% trans 'Users' %}  20</h3>
+
                                         </div>
                                         <div class="col-lg-4 col-md-4 m-t-20"></div>
                                     </div>

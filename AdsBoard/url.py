@@ -6,6 +6,7 @@ urlpatterns = [
     path('users/',views.listuser,name='listuser'),
     path('users/<int:user_id>/edit', views.usersEditView.as_view(), name='usersEditView'),
     path('waitingAds/',views.waitingAds,name='waitingAds'),
+    # path('profile/<int:user_id>', views.ProfileUpdateview.as_view(), name='ProfileUpdate'),
     path('ArchivesAds/',views.ArchivesAds,name='ArchivesAds'),
     path('UserProfile/<int:user_id>',views.UserProfile,name='UserProfile'),
     path('Section/Ads/<int:ads_id>/save/<int:id>', views.saveArchivesAds, name='saveArchivesAds'),

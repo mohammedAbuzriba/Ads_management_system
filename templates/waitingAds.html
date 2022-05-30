@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static%}
+{% load i18n %}
 {% block title %}
        {{Section.name}}
 {%endblock%}
@@ -7,18 +8,22 @@
 {% block section %}
         {% for Sections in getSection%}
                     <li>
-                      <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                       {% if LANGUAGE_CODE == 'ar' %}
+                       <a class="dropdown-item text-end" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name_ar}}</a>
+                        {%else%}
+                       <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                        {%endif%}
                     </li>
 
         {%endfor%}
 {%endblock%}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'Section' %}</a></li><div class="vr ms-2 me-2"></div>
     {%if Ads %}
-    <li class="breadcrumb-item active">Show Ads {{countAds}}</li>
+    <li class="breadcrumb-item active">{% trans 'Show Ads' %}</li>
    {%else%}
-    <li class="breadcrumb-item active">No Ads !!</li>
+    <li class="breadcrumb-item active">{% trans 'No Ads !!' %}</li>
 
    {%endif%}
  {%endblock%}
@@ -74,7 +79,7 @@ h3 {
             <div class="card text-center col-md-12  ">
                 <!-- Column -->
 
-                    <div class=" ">
+                    <div class=" text-center">
                             <img class="col-8" src="{% static 'img/20943595.jpg' %}" alt="image">
             <div class="card-body little-profile text-center">
 
@@ -85,8 +90,8 @@ h3 {
                 <div class="row text-center m-t-10">
                     <div class="col-lg-4 col-md-4 m-t-20">
                     </div>
-                    <div class="col-lg-4 col-md-4 m-t-20">
-                        <h3 class="m-b-0 font-light"><i class="fa-regular fa-copy"></i> Ads  {{countAds}}</h3>
+                    <div class="col-lg-4 col-md-4 m-t-20 ">
+                        <h3 class="m-b-0 font-light text-center"><i class="fa-regular fa-copy"></i>  {{countAds}} {% trans 'Ads' %}   </h3>
                     </div>
                     <div class="col-lg-4 col-md-4 m-t-20">
                     </div>
@@ -213,8 +218,8 @@ h3 {
 
 
       {% if Ads.has_previous %}
-        <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
-        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">Previous</a>
+        <a class="btn btn-outline-primary mb-4" href="?page=1">{% trans 'First' %}</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">{% trans 'Previous' %}</a>
       {% endif %}
 
       {% for num in Ads.paginator.page_range %}
@@ -226,8 +231,8 @@ h3 {
       {% endfor %}
 
       {% if Ads.has_next %}
-        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">Next</a>
-        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">Last</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">{% trans 'Next' %}</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">{% trans 'Last' %}</a>
       {% endif %}
 
 

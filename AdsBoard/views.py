@@ -1,13 +1,14 @@
 import os
+from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth.models import User,Group
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
-from .models import Section,Archives
+from .models import Section, Archives
 from .models import Ads
 from .models import Comments
-from .forms import NewAdsForm,NewAdsForm_ar,CommentsForm
+from .forms import NewAdsForm, CommentsForm, SectionUpdateForm
 from django.contrib.auth.decorators import login_required , permission_required
 from django.db.models import Count
 from django.views.generic import UpdateView, ListView, DeleteView
@@ -21,6 +22,11 @@ def count_Ads():
     ads = Ads.objects.filter(active='False')
     countAds = ads.count()
     return countAds
+
+def count_comment(ads):
+    comment = Comments.objects.filter(ads=ads)
+    countcomment = comment.count()
+    return countcomment
 
 def getSection():
     Sections = Section.objects.all()
@@ -240,7 +246,6 @@ def waitingAds(request):
     else:
         return redirect('home')
 
-
 def UserProfile(request,user_id):
     user_profile = get_object_or_404(User,pk=user_id)
     Archive = Archives.objects.filter(save_by=request.user.id,)
@@ -270,7 +275,6 @@ def UserProfile(request,user_id):
 
 
     return render(request,'UserProfile.html',{'li': listView,'l':l,'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile,'getSection':getSection()})
-
 
 def saveArchivesAds(request,ads_id,id):
     ads = get_object_or_404(Ads, pk=ads_id)
@@ -424,6 +428,8 @@ def newAds(request, section_id):
 @login_required
 def adsComments(request, section_id,ads_id,id):
     ads = get_object_or_404(Ads, section__pk=section_id ,pk=ads_id,)
+    #ads = Ads.objects.get(pk=ads_id,active='True').annotate(commentCount=Count('comments'))
+
     Archive = Archives.objects.filter(save_by=request.user.id)
     comments = ads.comments.all().order_by('-created_dt')
 
@@ -449,7 +455,7 @@ def adsComments(request, section_id,ads_id,id):
 
 
     idpage=id
-    return render(request, 'adsComments.html', {'l':l,'Ads': ads,'comments':comments,'idpage':idpage,'countAds':count_Ads(),'getSection':getSection()})
+    return render(request, 'adsComments.html', {'l':l,'Ads': ads,'comments':comments,'idpage':idpage,'count_comment':count_comment(ads),'countAds':count_Ads(),'getSection':getSection()})
 
 @login_required
 def replyAds(request, section_id,ads_id,id):
@@ -472,7 +478,7 @@ def replyAds(request, section_id,ads_id,id):
 @method_decorator(login_required,name='dispatch')
 class SectionEditView(UpdateView):
     model =  Section
-    fields = ['name','name_ar','description','description_ar','img']
+    form_class = SectionUpdateForm
     template_name = 'editSection.html'
     pk_url_kwarg = 'section_id'
     context_object_name = 'section'
@@ -485,7 +491,7 @@ class SectionEditView(UpdateView):
 @method_decorator(login_required,name='dispatch')
 class AdsUpdateView(UpdateView):
     model =  Ads
-    fields = ['subject','messageAds','img']
+    form_class = NewAdsForm
     template_name = 'editAds.html'
     pk_url_kwarg = 'ads_id'
     context_object_name = 'ads'
@@ -515,7 +521,7 @@ class AdsUpdateView(UpdateView):
 @method_decorator(login_required,name='dispatch')
 class CommentUpdateView(UpdateView):
     model =  Comments
-    fields = {'message',}
+    form_class = CommentsForm
     template_name = 'editComment.html'
     pk_url_kwarg = 'comment_id'
     context_object_name = 'comment'
@@ -567,3 +573,18 @@ class usersEditView(UpdateView):
         return redirect('listuser',)
 
 
+
+# @method_decorator(login_required,name='dispatch')
+# class ProfileUpdateview(UpdateView):
+#     model =  Profile
+#     form_class = ProfileUpdateForm
+#     template_name = 'ProfileUpdate.html'
+#     pk_url_kwarg = 'user_id'
+#     context_object_name = 'profile'
+#
+#     def form_valid(self, form):
+#
+#         profile = form.save(commit=False)
+#         profile.save()
+#         return redirect('ProfileUpdate',self.request.user.id)
+#

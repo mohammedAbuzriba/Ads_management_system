@@ -21,24 +21,41 @@
 
 
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap');
-
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800&display=swap');
+    *{
+    padding: 0;
+    margin: 0;
+    }
 
     .aLink:hover {
     text-decoration: underline;
     }
     {% if LANGUAGE_CODE == 'ar' %}
     *{
-     font-family: 'Cairo', sans-serif;
+      font-family: 'Tajawal', sans-serif;
       direction: rtl;
+      text-align: right;
+       font-weight: 600;
+        font-size: 101%;
     }
     .img_ar {
       -webkit-transform: scaleX(-1);
       transform: scaleX(-1);
     }
     {%else%}
+    *{
+      font-family: 'Tajawal', sans-serif;
+      direction: ltr;
+      text-align: left;
+      font-weight: 600;
+      font-size: 101%;
+    }
     {%endif%}
 
+    .align_center
+    {
+        text-align: center;
+    }
 
       #intro {
         /* Margin to fix overlapping fixed navbar */
@@ -61,11 +78,9 @@
         <a class="logo" href="{% url 'home' %}">{% trans 'Ads Board' %}  </a>
 
         <div class="collapse navbar-collapse" id="navbarExample01">
-            {% if LANGUAGE_CODE == 'ar' %}
-          <ul class="navbar-nav ms-auto ">
-              {%else%}
-              <ul class="navbar-nav me-auto ">
-              {%endif%}
+
+                <ul class="navbar-nav {% if LANGUAGE_CODE == 'ar' %} ms-auto {%else%} me-auto {%endif%}  ">
+
             <li class="nav-item active">
 
                 <a class="nav-link" aria-current="page" href="{% url 'home' %}">{% trans 'Home' %}</a>
@@ -84,9 +99,13 @@
                     aria-expanded="false">
                   {% trans 'Section' %}
                   </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinks">
+                  <ul class="dropdown-menu shadow-lg" aria-labelledby="navbarDropdownMenuLinks">
                     <li>
-                      <a class="dropdown-item" href="{% url 'SectionAds' 0 %}">{% trans 'All Section' %}</a>
+
+                            <a class="dropdown-item " href="{% url 'SectionAds' 0 %}">{% trans 'All Section' %}</a>
+
+
+
                     </li>
                     {% block section %}
                     {%endblock%}
@@ -122,8 +141,8 @@
               <a href="{% url 'waitingAds' %}" >
 
                 <i class="fas fa-envelope fa-lg"></i>
-  <p class="badge rounded-pill badge-notification bg-danger"  >{{countAds}}</p>
-</a>
+                <p class="badge rounded-pill badge-notification bg-danger"  >{{countAds}}</p>
+                </a>
             </li>
             {%endif%}
           </ul>
@@ -149,11 +168,14 @@
                   >
                   {% trans 'Welcome' %}  {{ user.username }}
                   </a>
-                  <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+                    {% if LANGUAGE_CODE == 'ar' %}
+                    <ul class="dropdown-menu text-end" aria-labelledby="navbarDropdownMenuLink">
+                  {%else%}
+                        <ul class="dropdown-menu text-start" aria-labelledby="navbarDropdownMenuLink">
+                  {%endif%}
                     <li>
                       <a class="dropdown-item" href="{% url 'myAccount'%}"
-                          ><i class="fas fa-user"></i> {% trans 'My account' %}</a
-                        >
+                          ><i class="fas fa-user"></i> {% trans 'My account' %} </a>
                     </li>
                     <li>
                       <a
@@ -173,7 +195,7 @@
 
               <div class="ps-1 pe-1 d-none d-lg-block">
                 <a
-                  class="btn btn-primary m-2"
+                  class="btn btn-primary btn-sm m-2"
                   href="{% url 'login' %}"
                   role="button">
                     {% trans 'Login' %}
@@ -250,14 +272,14 @@
         <div class="text-center pt-3 pb-5">
           <div id="intro" class="border border-1 rounded-5  text-start bg-white">
                <nav class="navbar navbar-expand-lg  bg-white rounded-5">
-  <div class="container-fluid">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-                {% block breadcrumb %} {%endblock%}
-        </ol>
-    </nav>
-  </div>
-</nav>
+                  <div class="container-fluid">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb ">
+                                {% block breadcrumb %} {%endblock%}
+                        </ol>
+                    </nav>
+                  </div>
+               </nav>
           </div>
         </div>
 
@@ -277,15 +299,14 @@
     <footer class="bg-light text-lg-start pt-5">
       <hr class="m-0" />
 
-      <div class="text-center py-4 align-items-center">
-        <p>Follow You Can on social media</p>
+      <div class="text-center py-4 align-items-center ">
+        <p class="text-center">{% trans 'Follow You Can on social media' %}</p>
         <a
           href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA"
           class="btn btn-primary m-1"
           role="button"
           rel="nofollow"
-          target="_blank"
-        >
+          target="_blank">
           <i class="fab fa-youtube"></i>
         </a>
         <a
@@ -320,7 +341,7 @@
       <!-- Copyright -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
         © 2022 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">YouCan.com</a>
+        <a class="text-dark" href="https://mdbootstrap.com/">YouCan Team</a>
       </div>
       <!-- Copyright -->
     </footer>
@@ -412,6 +433,8 @@ myBtn.onclick = function(){
     'use strict';
     window.scrollTo(0,0);
 }
+
+
 </script>
 
 

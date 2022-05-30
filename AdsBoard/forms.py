@@ -1,7 +1,7 @@
 import django.utils.translation
 from django.utils.translation import gettext_lazy as _
 from django import forms
-from .models import Ads , Comments
+from .models import Ads, Comments, Section
 from ckeditor.fields import RichTextField
 class NewAdsForm(forms.ModelForm,):
 
@@ -20,18 +20,6 @@ class NewAdsForm(forms.ModelForm,):
         }
 
 
-class NewAdsForm_ar(forms.ModelForm):
-    # message = forms.CharField(widget=forms.Textarea(
-    #     attrs={'rows':5,'placeholder':'What is on your mind?'}
-    # ),
-    # max_length=4000,
-    # help_text='The max length of the text is 4000')
-
-    subject = forms.CharField(max_length=255, label ='العنوان')
-
-    class Meta:
-        model = Ads
-        fields = ['subject', 'messageAds', 'img']
 
 
 class CommentsForm(forms.ModelForm):
@@ -39,3 +27,20 @@ class CommentsForm(forms.ModelForm):
     class Meta:
         model = Comments
         fields = ['message',]
+        labels = {
+            'message': _('Comment'),
+        }
+
+
+class SectionUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Section
+        fields = ['name','name_ar','description','description_ar','img']
+        labels = {
+            'name': _('Name'),
+            'name_ar': _('Name Arabic'),
+            'description': _('Description'),
+            'description_ar': _('Description Arabic'),
+            'img': _('Image'),
+        }
