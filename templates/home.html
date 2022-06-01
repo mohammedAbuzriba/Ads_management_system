@@ -5,18 +5,6 @@
         Section
 {%endblock%}
 
-{% block section %}
-        {% for Sections in getSection%}
-                    <li>
-                        {% if LANGUAGE_CODE == 'ar' %}
-                       <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name_ar}}</a>
-                        {%else%}
-                       <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
-                        {%endif%}
-                    </li>
-
-        {%endfor%}
-{%endblock%}
 
 {% block breadcrumb %}
       <!-- Jumbotron -->

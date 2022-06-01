@@ -79,7 +79,19 @@ h3 {
                                     <div class="row text-center m-t-10">
                                         <div class="col-lg-4 col-md-4 m-t-20"></div>
                                         <div class="col-lg-4 col-md-4 m-t-20">
-                                            <h3 class="m-b-0 font-light text-center "><i class="fa-regular fa-copy"></i> {% trans 'Users' %}  20</h3>
+                                            <h3 class="m-b-0 font-light text-center ">
+                                                <i class="fas fa-user"></i>
+                                                    {% if user_type == 0 %}
+                                                        {% trans 'All Users' %}
+                                                    {%elif user_type == 1 %}
+                                                        {% trans 'Admin' %}
+                                                    {%elif user_type == 2 %}
+                                                        {% trans 'Staff' %}
+                                                    {%elif user_type == 3 %}
+                                                        {% trans 'Users' %}
+                                                    {%endif%}
+                                                    {{userCount}}
+                                            </h3>
 
                                         </div>
                                         <div class="col-lg-4 col-md-4 m-t-20"></div>
@@ -93,18 +105,72 @@ h3 {
 
     </div>
 
+    <div class="row mt-5 mb-5">
+        <div class="col">
+        <form method="get"  action="{% url 'listuser' user_type %}"  class=" g-3 align-items-center">
+        {% csrf_token %}
+
+
+          <div class="col">
+              {% if LANGUAGE_CODE == 'ar' %}
+                    <label class="visually-hidden rounded-5" for="inlineFormInputGroupSearch">{% trans 'Search' %}</label>
+                    <div class="input-group">
+                      <input type="search" class="form-control rounded-0" name="Search" id="inlineFormInputGroupSearch" placeholder="{% trans 'Search' %}" />
+                        <button type="submit" class="btn btn-primary rounded-0"><i class="fa-solid fa-magnifying-glass"></i></button>
+
+                    </div>
+
+              {%else%}
+                    <label class="visually-hidden" for="inlineFormInputGroupSearchen">{% trans 'Search' %}</label>
+                    <div class="input-group">
+
+                      <input type="search" class="form-control" name="Search" id="inlineFormInputGroupSearchen" placeholder="{% trans 'Search' %}" />
+                        <button type="submit" class="btn btn-primary "><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+              {%endif%}
+          </div>
 
 
 
+
+        </form>
+        </div>
+
+
+            <div class="col ">
+            <div class="dropdown">
+              <button
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-mdb-toggle="dropdown"
+                aria-expanded="false">
+                {% trans 'Users' %}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                             <li><a class="dropdown-item" href="{% url 'listuser' 0 %}">{% trans 'All Users' %}</a></li>
+                             <li><a class="dropdown-item" href="{% url 'listuser' 1 %}">{% trans 'superuser' %}</a></li>
+                             <li><a class="dropdown-item" href="{% url 'listuser' 2 %}">{% trans 'Staff' %}</a></li>
+                             <li><a class="dropdown-item" href="{% url 'listuser' 3 %}">{% trans 'user' %}</a></li>
+
+              </ul>
+            </div>
+                </div>
+    </div>
+
+
+
+
+{% if user.is_superuser == True%}
 <table class="table table-hover align-middle mt-5 bg-white border border-2">
               <thead class="bg-light table-dark">
                 <tr>
-                  <th>Name</th>
-                  <th>User Name</th>
-                  <th>Status</th>
-                  <th>Date joined</th>
-                  <th>Last login</th>
-                  <th>Actions</th>
+                  <th>{% trans 'Name' %}</th>
+                  <th>{% trans 'User Name' %}</th>
+                  <th>{% trans 'Status' %}</th>
+                  <th>{% trans 'Date joined' %}</th>
+                  <th>{% trans 'Last login' %}</th>
+                  <th>{% trans 'Actions' %}</th>
                 </tr>
               </thead>
               <tbody>
@@ -127,11 +193,11 @@ h3 {
                   <td>
                     <p class="fw-normal mb-1">{{user.username}}</p>
                       {% if user.is_superuser == True%}
-                         <p class="text-muted mb-0">superuser</p>
+                         <p class="text-muted mb-0">{% trans 'superuser' %}</p>
                       {% elif user.is_staff == True%}
-                         <p class="text-muted mb-0">staff</p>
+                         <p class="text-muted mb-0">{% trans 'Staff' %}</p>
                       {%else%}
-                         <p class="text-muted mb-0">user</p>
+                         <p class="text-muted mb-0">{% trans 'user' %}</p>
                       {%endif%}
                   </td>
                   <td>
@@ -163,6 +229,66 @@ h3 {
               {%endfor%}
               </tbody>
             </table>
+{%else%}
+<table class="table table-hover align-middle mt-5 bg-white border border-2">
+              <thead class="bg-light table-dark">
+                <tr>
+                  <th>{% trans 'Name' %}</th>
+                  <th>{% trans 'User Name' %}</th>
+                  <th>{% trans 'User type' %}</th>
+                  <th>{% trans 'Email' %}</th>
+
+
+                </tr>
+              </thead>
+              <tbody>
+                {%for user in listuser %}
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                          src="{% static 'img/avatar-06.png' %}"
+                          class="rounded-circle "
+                          alt=""
+                          style="width: 45px; height: 45px"
+                          />
+                      <div class="ms-3 me-3">
+                        <p class="fw-bold mb-1">{{user.first_name}} {{user.last_name}}</p>
+
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="fw-normal mb-1">{{user.username}}</p>
+                  </td>
+                  <td>
+                      <p class="text-muted mb-0">
+                          {% if user.is_superuser == True%}
+                         <p class="text-muted mb-0">{% trans 'Superuser' %}</p>
+                          {% elif user.is_staff == True%}
+                             <p class="text-muted mb-0">{% trans 'Staff' %}</p>
+                          {%else%}
+                             <p class="text-muted mb-0">{% trans 'User' %}</p>
+                          {%endif%}
+                      </p>
+                  </td>
+                  <td>
+                      {% if user.is_staff == True%}
+                      <a  href="mailto:{{user_profile.email}}">{{user.email}}</a>
+                      {%endif%}
+                  </td>
+
+
+
+
+                </tr>
+              {%endfor%}
+              </tbody>
+            </table>
+
+{%endif%}
+
+
 
 
 

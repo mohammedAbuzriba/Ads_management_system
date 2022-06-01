@@ -1,14 +1,16 @@
 import os
+
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth.models import User,Group
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
-from .models import Section, Archives
+from .models import Section, Archives, Profile
 from .models import Ads
 from .models import Comments
-from .forms import NewAdsForm, CommentsForm, SectionUpdateForm
+from .forms import NewAdsForm, CommentsForm, SectionUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required , permission_required
 from django.db.models import Count
 from django.views.generic import UpdateView, ListView, DeleteView
@@ -18,10 +20,14 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
 
-def count_Ads():
-    ads = Ads.objects.filter(active='False')
+def count_Ads(request):
+    if request.user.is_superuser == True:
+        ads = Ads.objects.filter(active='False')
+    else:
+        ads = Ads.objects.filter(active='False', created_by=request.user)
     countAds = ads.count()
     return countAds
+
 
 def count_comment(ads):
     comment = Comments.objects.filter(ads=ads)
@@ -35,7 +41,7 @@ def getSection():
 def home(request):
 
     adslast = Ads.objects.filter(active='True').order_by('-created_dt')[:10]
-    return render(request,'home.html',{'adslast':adslast,'getSection':getSection(),'countAds':count_Ads()})
+    return render(request,'home.html',{'adslast':adslast,'getSection':getSection(),'countAds':count_Ads(request)})
 
 #@method_decorator(login_required,name='dispatch')
 # class SectionListView(ListView):
@@ -78,7 +84,7 @@ def SectionAdsSearch(request,section_id):
 
                 return render(request, 'Ads.html',
                               {'l':l,'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,'getSection':getSection(),
-                               'countAds': count_Ads()})
+                               'countAds': count_Ads(request)})
             else:
                 ads = Ads.objects.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
                     commentCount=Count('comments'))
@@ -104,7 +110,7 @@ def SectionAdsSearch(request,section_id):
                             l.append(a.pk)
 
                 return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,'getSection':getSection(),
-                                                    'countAds': count_Ads()})
+                                                    'countAds': count_Ads(request)})
         else:
             if section_id != 0:
                 Sections = get_object_or_404(Section, pk=section_id)
@@ -133,7 +139,7 @@ def SectionAdsSearch(request,section_id):
 
                 return render(request, 'Ads.html',
                               {'l':l,'SectionAll': SectionAll, 'Section': Sections, 'Ads': ads, 'li': listView,'getSection':getSection(),
-                               'countAds': count_Ads()})
+                               'countAds': count_Ads(request)})
             else:
                 ads = Ads.objects.filter(active='True', subject__icontains=subject).order_by('-created_dt').annotate(
                     commentCount=Count('comments'))
@@ -159,7 +165,7 @@ def SectionAdsSearch(request,section_id):
                             l.append(a.pk)
 
                 return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,'getSection':getSection(),
-                                                    'countAds': count_Ads()})
+                                                    'countAds': count_Ads(request)})
 
 
 
@@ -196,9 +202,9 @@ def SectionAds(request,section_id):
         if request.user.id:
             user_profile = get_object_or_404(User, pk=request.user.id)
 
-            return render(request,'Ads.html',{'user_profile':user_profile,'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'getSection':getSection(),'countAds':count_Ads()})
+            return render(request,'Ads.html',{'user_profile':user_profile,'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'getSection':getSection(),'countAds':count_Ads(request)})
         else:
-            return render(request,'Ads.html',{'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'getSection':getSection(),'countAds':count_Ads()})
+            return render(request,'Ads.html',{'l':l,'SectionAll':SectionAll,'Section':Sections,'Ads':ads,'li':listView,'getSection':getSection(),'countAds':count_Ads(request)})
 
     else:
         ads = Ads.objects.filter(active='True').order_by('-created_dt').annotate(commentCount=Count('comments'))
@@ -226,25 +232,27 @@ def SectionAds(request,section_id):
 
 
         return render(request, 'Ads.html', {'l':l,'SectionAll': SectionAll, 'Ads': ads, 'li': listView,'getSection':getSection(),
-                                            'countAds': count_Ads()})
+                                            'countAds': count_Ads(request)})
 
 
 def waitingAds(request):
-    if request.user.is_staff:
+    if request.user.is_superuser == True:
         ads = Ads.objects.filter(active='False').order_by('-created_dt').annotate(commentCount=Count('comments'))
-        page = request.GET.get('page',1)
-        paginator = Paginator(ads,5)
-        try:
-            ads = paginator.page(page)
-        except PageNotAnInteger:
-            ads = paginator.page(1)
-        except EmptyPage:
-            ads = paginator.page(paginator.num_pages)
-
-        return render(request,'waitingAds.html',{'Ads':ads,'countAds':count_Ads(),'getSection':getSection()})
-
     else:
-        return redirect('home')
+        ads = Ads.objects.filter(active='False',created_by = request.user).order_by('-created_dt').annotate(commentCount=Count('comments'))
+
+    page = request.GET.get('page',1)
+    paginator = Paginator(ads,5)
+    try:
+        ads = paginator.page(page)
+    except PageNotAnInteger:
+        ads = paginator.page(1)
+    except EmptyPage:
+        ads = paginator.page(paginator.num_pages)
+
+    return render(request,'waitingAds.html',{'Ads':ads,'countAds':count_Ads(request),'getSection':getSection()})
+
+
 
 def UserProfile(request,user_id):
     user_profile = get_object_or_404(User,pk=user_id)
@@ -274,7 +282,7 @@ def UserProfile(request,user_id):
             listView.append(a.pk)
 
 
-    return render(request,'UserProfile.html',{'li': listView,'l':l,'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(),'user_profile':user_profile,'getSection':getSection()})
+    return render(request,'UserProfile.html',{'li': listView,'l':l,'Ads':ads,'CountUserAds':CountUserAds,'countAds':count_Ads(request),'user_profile':user_profile,'getSection':getSection()})
 
 def saveArchivesAds(request,ads_id,id):
     ads = get_object_or_404(Ads, pk=ads_id)
@@ -333,7 +341,7 @@ def ArchivesAds(request):
             listView.append(a.pk)
 
     return render(request, 'Archive.html',
-                  {'li': listView,'l':l,'Ads': ads, 'CountUserAds': CountUserAds, 'countAds': count_Ads(), 'user_profile': user_profile,'getSection':getSection()})
+                  {'li': listView,'l':l,'Ads': ads, 'CountUserAds': CountUserAds, 'countAds': count_Ads(request), 'user_profile': user_profile,'getSection':getSection()})
 
 def Accept(request,ads_id):
     if request.user.is_staff:
@@ -448,6 +456,11 @@ def adsComments(request, section_id,ads_id,id):
         ads.save()
         request.session[session_key]=True
 
+    listView = [""]
+    session_key = 'view_ads_{}'.format(ads.pk)
+    if not request.session.get(session_key, False):
+        listView.append(ads.pk)
+
     l = [""]
     for ar in Archive:
         if ads.pk == ar.ads.pk:
@@ -455,7 +468,7 @@ def adsComments(request, section_id,ads_id,id):
 
 
     idpage=id
-    return render(request, 'adsComments.html', {'l':l,'Ads': ads,'comments':comments,'idpage':idpage,'count_comment':count_comment(ads),'countAds':count_Ads(),'getSection':getSection()})
+    return render(request, 'adsComments.html', {'l':l,'li':listView,'Ads': ads,'comments':comments,'idpage':idpage,'count_comment':count_comment(ads),'countAds':count_Ads(request),'getSection':getSection()})
 
 @login_required
 def replyAds(request, section_id,ads_id,id):
@@ -512,6 +525,8 @@ class AdsUpdateView(UpdateView):
             return redirect('ArchivesAds')
         elif self.kwargs['id'] == 3:
             return redirect('adsComments', section_id=ads.section.pk, ads_id=ads.pk, id=id)
+        elif self.kwargs['id'] == 4:
+            return redirect('waitingAds')
         else:
             return redirect('home')
 
@@ -544,8 +559,35 @@ def CommentDelete(request,section_id,ads_id,comment_id,id):
         return redirect('home')
 
 
-def listuser(request):
-    listuser = User.objects.all()
+
+
+def listuser(request,user_type):
+
+    name = None
+    if 'Search' in request.GET:
+        name = request.GET['Search']
+        if name:
+            if user_type == 0:
+                listuser = User.objects.filter(first_name__icontains=name).order_by('first_name')
+            elif user_type == 1:
+                listuser = User.objects.filter(is_superuser='True',first_name__icontains=name).order_by('first_name')
+            elif user_type == 2:
+                listuser = User.objects.filter(is_staff='True',first_name__icontains=name).order_by('first_name')
+            elif user_type == 3:
+                listuser = User.objects.filter(is_staff='False',is_superuser='False',first_name__icontains=name).order_by('first_name')
+        else:
+            listuser = User.objects.all().order_by('first_name')
+    else:
+        if user_type ==0:
+            listuser = User.objects.all().order_by('first_name')
+        elif user_type ==1:
+            listuser = User.objects.filter(is_superuser='True').order_by('first_name')
+        elif user_type ==2:
+            listuser = User.objects.filter(is_staff='True').order_by('first_name')
+        elif user_type ==3:
+            listuser = User.objects.filter(is_staff='False',is_superuser='False').order_by('first_name')
+
+    # usertype =Members.objects.raw('select * from User')
 
     page = request.GET.get('page', 1)
     paginator = Paginator(listuser, 5)
@@ -556,13 +598,13 @@ def listuser(request):
     except EmptyPage:
         ads = paginator.page(paginator.num_pages)
 
-    return render(request, 'Users.html', {'listuser': listuser, 'getSection': getSection(), 'countAds': count_Ads()})
+    return render(request, 'Users.html', {'userCount':listuser.count(),'user_type':user_type,'listuser': listuser, 'getSection': getSection(), 'countAds': count_Ads(request)})
 
 
 @method_decorator(login_required,name='dispatch')
 class usersEditView(UpdateView):
     model =  User
-    fields = ['username','first_name','last_name','email','is_active','is_staff','is_superuser',]
+    fields = ['username','first_name','last_name','email','is_active','is_staff','is_superuser']
     template_name = 'edituser.html'
     pk_url_kwarg = 'user_id'
     context_object_name = 'users'
@@ -573,18 +615,56 @@ class usersEditView(UpdateView):
         return redirect('listuser',)
 
 
+# def get_Profile_id(user_id):
+#     profile_id = Profile.objects.filter(user_id = user_id).first()
+#     print(profile_id.id)
+#     return profile_id.id
+#
 
+# def update_Profile_view0(request, user_id):
+#     context = {}
+#     id = get_Profile_id(user_id)
+#     print(id.id)
+#     obj = get_object_or_404(Profile, id=id)
+#
+#     form = ProfileUpdateForm(request.POST or None, instance=obj)
+#
+#     if form.is_valid():
+#         form.save()
+#         return redirect('update_Profile_view',context)
+#
+#     context["form"] = form
+#
+#     return render(request, "ProfileUpdate.html", context)
+#
+# def update_Profile_view(request, user_id):
+#
+#     profile_id = Profile.objects.filter(id=id).first()
+#
+#     data = get_object_or_404(Profile, id=user_id)
+#
+#     form = ProfileUpdateForm(instance=data)
+#
+#     if request.method == "POST":
+#         form = ProfileUpdateForm(request.POST, instance=data)
+#         if form.is_valid():
+#             form.save()
+#             return redirect ('home')
+#     context = {
+#         "form":form
+#     }
+#     return render(request, 'ProfileUpdate.html', context)
+#
 # @method_decorator(login_required,name='dispatch')
 # class ProfileUpdateview(UpdateView):
 #     model =  Profile
 #     form_class = ProfileUpdateForm
 #     template_name = 'ProfileUpdate.html'
-#     pk_url_kwarg = 'user_id'
+#     pk_url_kwarg = 'id'
 #     context_object_name = 'profile'
 #
 #     def form_valid(self, form):
 #
 #         profile = form.save(commit=False)
 #         profile.save()
-#         return redirect('ProfileUpdate',self.request.user.id)
-#
+#         return redirect('ProfileUpdate',self.id)

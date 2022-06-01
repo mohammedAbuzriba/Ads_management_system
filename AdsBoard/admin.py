@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import Section,Archives,Ads,Comments
+from .models import Section,Archives,Ads,Comments,Profile
 
 # Register your models here.
 
@@ -15,13 +15,13 @@ class InlineAds(admin.StackedInline):
 class SectionAdmin(admin.ModelAdmin):
     inlines = [InlineAds]
 
-# class ProfileInline(admin.StackedInline):
-#     model = Profile
-#     can_delete = False
-#     verbose_name_plural = 'Profile'
-#
-# class UserAdmin(BaseUserAdmin):
-#     inlines = (ProfileInline,)
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+    verbose_name_plural = 'Profile'
+
+class UserAdmin(BaseUserAdmin):
+    inlines = (ProfileInline,)
 
 # class AdsAdmin(admin.ModelAdmin):
 #     fields = ('subject', 'section' ,'created_by' ,'views')
@@ -35,13 +35,13 @@ class SectionAdmin(admin.ModelAdmin):
 #         return "{}  -  {}".format(obj.subject,obj.section)
 
 
-# admin.site.unregister(User)
-# admin.site.register(User, UserAdmin)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(Section,SectionAdmin)
 admin.site.register(Ads)
 admin.site.register(Comments)
 admin.site.register(Archives)
-# admin.site.register(Profile)
+admin.site.register(Profile)
 
 
 

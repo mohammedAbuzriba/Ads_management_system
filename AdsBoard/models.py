@@ -7,6 +7,21 @@ from ckeditor.fields import RichTextField
 
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User,null=True,on_delete=models.CASCADE)
+    bio = models.TextField(default='section',blank=True,max_length=150)
+    birthday = models.DateField(null=True,blank=True,)
+    gender = models.CharField(
+        null=True,
+        blank=True,
+        max_length=6,
+        choices=[('MALE','MALE'),('FEMALE','FEMALE')]
+    )
+    img = models.ImageField(null=True, blank=True, upload_to='static/img/Profile')
+
+    def __str__(self):
+        return self.user.username
+
 class Section(models.Model):
     name = models.CharField(max_length=50,unique=True)
     name_ar = models.CharField(default='section',max_length=50)

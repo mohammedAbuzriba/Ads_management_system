@@ -5,18 +5,6 @@
        {{Section.name}}
 {%endblock%}
 
-{% block section %}
-        {% for Sections in getSection%}
-                    <li>
-                       {% if LANGUAGE_CODE == 'ar' %}
-                       <a class="dropdown-item text-end" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name_ar}}</a>
-                        {%else%}
-                       <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
-                        {%endif%}
-                    </li>
-
-        {%endfor%}
-{%endblock%}
 
 {% block breadcrumb %}
   <li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'Section' %}</a></li><div class="vr ms-2 me-2"></div>
@@ -108,109 +96,226 @@ h3 {
 
 
          {%for ads in Ads %}
-            <div class="card border border-1 border-primary  mt-3 mb-3" >
-            <h5 class="card-header  bg-primary  " >
-                <div class="row">
+            {% if user.id == ads.created_by.id %}
+            <div class="card border 1   mt-5 mb-5" >
+            <h5 class="card-header  bg-dark   " >
 
-                    <div class="col">
-                        <strong>
-                            <a href="{% url 'UserProfile' ads.created_by.pk %} " class="text-white">@{{ads.created_by.username}}</a>
-                        </strong>
-                        <small class="  text-white d-block fs-6 lh-base" >{{ads.created_dt|date:"H:i A , d/m/Y"}}</small>
-                    </div>
-                     <div class="col-1">
-                              <div class="" >
-                                  {% if ads.pk not in l %}
-                                  <a href="{% url 'saveArchivesAds' ads.pk 0 %}" class="text-white"><i class="fa-regular fa-bookmark"></i></a>
+            {% else %}
+
+            <div class="card border 1   mt-5 mb-5" style="border-color:#55acee;" >
+            <h5 class="card-header   bg-primary  " style="background-color:#55acee;" >
+            {% endif %}
+
+                      <div class="row">
+
+              <div class="col ">
+                        {% if LANGUAGE_CODE == 'ar' %}
+                        <a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white"> {{ads.created_by.username}}@</a>
+                         {%else%}
+                         <a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white"> @{{ads.created_by.username}}</a>
+                         {%endif%}
+<!--                        <small class=" text-white fw-light d-block fs-6 lh-base"><i class="fa-regular fa-clock"></i> {{ads.created_dt|date:"H:i A , d/m/Y"}}</small>-->
+                  <br>
+                                  <a type="button" class="text-white fw-light fs-6 lh-base" data-mdb-toggle="tooltip" data-mdb-placement="bottom" title="{{ads.created_dt|date:'H:i A , d/m/Y'}}">
+                                 <i class="fa-regular fa-clock"></i> {{ads.created_dt|timesince}}
+                                </a>
+
+
+              </div>
+                          {% if ads.pk not in li %}
+
+
+                            {% else %}
+                          <div class="col-2">
+                              <div class="text-white " >
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+
+                                  {% trans 'Loading ...' %}
+                              </div>
+                          </div>
+                          {% endif %}
+
+
+                          <div class="col-1">
+                              <div class="text-primary" >
+                                 {% if ads.pk not in l %}
+                                  <a href="{% url 'saveArchivesAds' ads.pk 4 %}" class="text-white" ><i class="fa-regular fa-bookmark fs-1"></i></a>
                                   {% elif ads.pk  in l%}
-                                  <a href="{% url 'deleteArchivesAds' ads.pk  0 %}"class="text-white" ><i class="fa-solid fa-bookmark"></i></a>
+                                  <a href="{% url 'deleteArchivesAds' ads.pk 4 %}" class="text-white"><i class="fa-solid fa-bookmark fs-1"></i></a>
                                   {% endif%}
                               </div>
                           </div>
-                </div>
+      </div>
             </h5>
 
+<!--  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
-  <div class="card-body" style="transform: rotate(0);">
-    <h5 class="card-title"><a href="#" class="stretched-link text-decoration-underline" >{{ads.subject}}</a></h5>
-    <p class="card-text text-justify"> {{ads.messageAds|safe}}</p>
-     {%if ads.img%}
+                <div class="card-body " style="transform: rotate(0);">
+                <h5 class="card-title  " >
+
+                    <button class="btn btn-sm btn-floating  btn-primary ms-1 me-1"  data-mdb-toggle="collapse" href="#ad{{ads.pk}}" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="fa-solid fa-angles-down"></i></button>
+
+                    <a href="" class="  text-decoration-underline" >{{ads.subject}}</a>
+                </h5>
+
+      <!-- Button triggers collapse -->
+
+<!-- Collapsed content -->
+      <div class="collapse mt-3 scroll-section" id="ad{{ads.pk}}"  >
+
+    <p class="" > {{ads.messageAds|safe}}</p>
+    {%if ads.img%}
       <a href="{{ ads.img.url }}" target="_blank">
                 <img src="{{ ads.img.url }}" alt="{{ ads.subject}}" class="img-fluid" height="100" width="120"  >
 
       </a>
 
       {%endif%}
-  </div>
-
-
-    <div class="card-footer text-muted">
-
-        <div class="row">
-            <div class="col-2">
-                <a href="{% url 'Accept' ads.pk %}" class="btn btn-success">Accept</a>
-            </div>
-
-            <div class="col-2">
-<!--                <a href="{% url 'Rejection' ads.pk %}" class="btn btn-danger">Rejection</a>-->
-
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-danger" data-mdb-toggle="modal" data-mdb-target="#ex{{ads.pk}}">
-  Rejection
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="ex{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content ">
-      <div class="modal-header bg-danger text-white justify-content-center ">
-        <h3 class="modal-title" id="exampleModalLabel">Are you sure?</h3>
-<!--        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>-->
-      </div>
-      <div class="modal-body text-danger text-center "><h1><i class="fa-solid fa-xmark"></h1></i></div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">No</button>
-         <a href="{% url 'Rejection' ads.pk %}" class="btn btn-outline-danger">Yes</a>
-
-      </div>
-    </div>
-  </div>
 </div>
 
+  </div>
+                <div class="card-footer text-muted">
 
+                <div class="row">
 
+                    {% if ads.created_by == user and user.is_superuser   %}
+                            <div class="col-1">
+                                <a href="{% url 'Accept' ads.pk %}" class="btn btn-success btn-sm">{% trans 'Accept' %}</a>
+                            </div>
+                            <div class="col-1">
+                              <div class="">
+                                <a href="{% url 'AdsUpdateView' ads.section.pk ads.pk 4  %}" class="btn btn-info btn-sm" role="button">{% trans 'Edit' %}</a>
+                              </div>
 
+                            </div>
+                            <div class="col-1">
+                            <button type="button" class="btn btn-danger btn-sm" data-mdb-toggle="modal" data-mdb-target="#Reject{{ads.pk}}">
+                              {% trans 'Rejection' %}
+                            </button>
 
+            <!-- Modal -->
+            <div class="modal fade" id="Reject{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabelReject" aria-hidden="true">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content ">
+                  <div class="modal-header bg-danger text-white justify-content-center ">
+                    <h3 class="modal-title" id="exampleModalLabelReject">{% trans 'Are you sure?' %}</h3>
+                  </div>
+                  <div class="modal-body text-danger text-center ">
+                      <h1 class="text-center">
+                          <i class="fa-solid fa-xmark"></i>
+                      </h1>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-danger" data-mdb-dismiss="modal">{% trans 'No' %}</button>
+                     <a href="{% url 'Rejection' ads.pk %}" class="btn btn-danger">{% trans 'Yes' %}</a>
 
-
-
-
-
-
-
-
-
-
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
 
             </div>
 
-            <div class="col"></div>
+                    {% elif  ads.created_by == user and perms.AdsBoard.change_ads  %}
 
-            <div class="col-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Comments"> <i class="fa-regular fa-comments"></i> {{ads.commentCount}}</div>
-            <div class="col-1" data-bs-toggle="tooltip" data-bs-placement="left" title="View">  <i class="fa-solid fa-eye"></i> {{ads.views}}</div>
-            <div class="col-3">{{ads.created_dt}}</div>
+                        <div class="col-1">
+                          <div class="">
+                            <a href="{% url 'AdsUpdateView' ads.section.pk ads.pk 4  %}" class="btn btn-info btn-sm" role="button">{% trans 'Edit' %}</a>
+                          </div>
+
+                        </div>
+                        <div class="col-1">
+
+                          <div class="">
+
+                    <a href="{{ads.pk}}" type="button"  class="btn btn-danger btn-sm" data-mdb-toggle="modal" data-mdb-target="#ex{{ads.pk}}">
+                      {% trans 'Delete' %}
+                    </a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="ex{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-sm">
+                        <div class="modal-content ">
+                          <div class="modal-header bg-danger text-white justify-content-center ">
+                            <h3 class="modal-title" id="exampleModalLabel">{% trans 'Are you sure?' %}</h3>
+                          </div>
+                          <div class="modal-body text-danger text-center ">
+                              <h1 class="text-center"><i class="fa-solid fa-xmark"></i></h1></div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn  btn-outline-danger" data-mdb-dismiss="modal">{% trans 'No' %}</button>
+
+                             <a href="{% url 'DeleteAds' ads.section.pk  ads.pk 4  %}" class="btn btn-danger" role="button">{% trans 'Yes' %}</a>
 
 
-        </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+
+                          </div>
+                        </div>
+                    {% elif   user.is_superuser  %}
+                            <div class="col-1">
+                                        <a href="{% url 'Accept' ads.pk %}" class="btn btn-success btn-sm">{% trans 'Accept' %}</a>
+                                    </div>
+                            <div class="col-1">
+                            <button type="button" class="btn btn-danger btn-sm" data-mdb-toggle="modal" data-mdb-target="#Rej{{ads.pk}}">
+                              {% trans 'Rejection' %}
+                            </button>
+
+                             <!-- Modal -->
+                            <div class="modal fade" id="Rej{{ads.pk}}" tabindex="-1" aria-labelledby="exampleModalLabelRej" aria-hidden="true">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content ">
+                  <div class="modal-header bg-danger text-white justify-content-center ">
+                    <h3 class="modal-title" id="exampleModalLabelRej">{% trans 'Are you sure?' %}</h3>
+                  </div>
+                  <div class="modal-body text-danger text-center "><h1 class="text-center"><i class="fa-solid fa-xmark"></i></h1></div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-danger" data-mdb-dismiss="modal">{% trans 'No' %}</button>
+                     <a href="{% url 'Rejection' ads.pk %}" class="btn btn-danger">{% trans 'Yes' %}</a>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+                    </div>
+                    {% endif %}
+
+
+
+                    <div class="col"></div>
+
+                    <div class="col-1" data-mdb-toggle="tooltip" data-mdb-placement="bottom" title="{% trans 'Comment' %}" > <i class="fa-regular fa-comments"></i> {{ads.commentCount}}</div>
+                    <div class="col-1" data-mdb-toggle="tooltip" data-mdb-placement="bottom" title="{% trans 'View' %}">  <i class="fa-solid fa-eye"></i> {{ads.views}}</div>
+                    <div class="col-1" >
+        <!--                <button class="btn btn-warning" onclick="myright()">Try</button>-->
+                    </div>
+                    <div class="col-3">
+                        {% if LANGUAGE_CODE == 'ar' %}
+                         <a href="{% url 'SectionAds' ads.section.pk%}" class="">{{ads.section.name_ar|upper}}</a>
+                        {%else%}
+                         <a href="{% url 'SectionAds' ads.section.pk%}" class="">{{ads.section.name|upper}}</a>
+                        {%endif%}
+
+                    </div>
+
+
+
+                </div>
   </div>
 </div>
+
  {%endfor%}
-
-
 
 
 

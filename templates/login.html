@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load socialaccount %}
+{% load i18n %}
+
 {% load static %}
 
-{% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'css/account.css' %}">
-{% endblock %}
+<!--{% block stylesheet %}-->
+<!--  <link rel="stylesheet" href="{% static 'css/account.css' %}">-->
+<!--{% endblock %}-->
 
 {% block body %}
 
@@ -12,7 +14,7 @@
 
   <div class="container mb-5">
     <h1 class="text-center logo my-4">
-      <a href="{% url 'home' %}">Ads Boards</a>
+      <a href="{% url 'home' %}">{% trans 'Ads Board' %}</a>
     </h1>
     <div class="row justify-content-center">
       <div class="col-8 ">
@@ -21,7 +23,7 @@
           <div class="card-body row">
 
             <div class="col-6">
-                <h3 class="card-title mt-3">Log in</h3>
+                <h3 class="card-title mt-3">{% trans 'Log in' %}</h3>
             <form method="post" novalidate>
               {% csrf_token %}
               <input type="hidden" name="next" value="{{ next }}">
@@ -34,17 +36,17 @@
       <!-- Checkbox -->
       <div class="form-check">
         <input class="form-check-input" type="checkbox" value="" id="form2Example34" checked />
-        <label class="form-check-label" for="form2Example34"> Remember me </label>
+        <label class="form-check-label" for="form2Example34">{% trans 'Remember me' %}  </label>
       </div>
     </div>
 
     <div class="col">
       <!-- Simple link -->
-      <a href="{% url 'password_reset' %}">Forgot password?</a>
+      <a href="{% url 'password_reset' %}">{% trans 'Forgot password?' %}</a>
     </div>
   </div>
 
-              <button type="submit" class="btn btn-primary btn-block">Log in</button>
+              <button type="submit" class="btn btn-primary btn-block">{% trans 'Log in' %}</button>
             </form>
 
             </div>
@@ -57,10 +59,14 @@
 
 
             <div class="card-footer text-muted text-center">
-            Create New account  <a href="{% url 'signup' %}">Sign up</a>
+                <span>
+                    {% trans 'Create New account' %}
+                </span>
+                <a href="{% url 'signup' %}">{% trans 'Sign up' %}</a>
+                <p class=" text-muted text-center">{% trans 'or sign up with:' %}</p>
 
+                <div class="text-center d-flex justify-content-center">
 
-              <p>or sign up with:</p>
 
                 <form action="{% provider_login_url 'google' %}" method="post">
                   {% csrf_token %}
@@ -80,6 +86,8 @@
 
 
                 </form>
+
+            </div>
 
 
 

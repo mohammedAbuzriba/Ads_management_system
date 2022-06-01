@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% load socialaccount %}
-
+{% load i18n %}
 {% load static %}
 
-{% block stylesheet %}
-  <link rel="stylesheet" href="{% static 'css/account.css' %}">
-{% endblock %}
+<!--{% block stylesheet %}-->
+<!--  <link rel="stylesheet" href="{% static 'css/account.css' %}">-->
+<!--{% endblock %}-->
 
 {% block body %}
   <div class="container mb-5">
     <h1 class="text-center logo my-4">
-      <a href="{% url 'home' %}">Ads Boards</a>
+      <a href="{% url 'home' %}">{% trans 'Ads Board' %}</a>
     </h1>
     <div class="row justify-content-center">
 
@@ -18,14 +18,14 @@
 
       <div class="col-lg-10 ">
         <div class="card">
-          <div class="card-body row">
+          <div class="card-body row p-5">
             <div class="col-5">
-            <h3 class="card-title">Sign up</h3>
+            <h3 class="card-title">{% trans 'Sign up' %}</h3>
             <form method="post" novalidate>
               {% csrf_token %}
               {% include 'form.html' %}
               <br>
-              <button type="submit" class="btn btn-primary btn-block">Create an account</button>
+              <button type="submit" class="btn btn-primary btn-block mt-2 mb-2">{% trans 'Create an account' %}</button>
             </form>
           </div>
             <div class="col-7">
@@ -34,28 +34,37 @@
 
             </div>
           <div class="card-footer text-muted text-center">
-            Already have an account? <a href="{% url 'login' %}">Log in</a>
-
-                       <p>or sign up with:</p>
-
-                <form action="{% provider_login_url 'google' %}" method="post">
-                  {% csrf_token %}
-                  <!-- Google -->
-                    <button class="btn btn-primary btn-floating mx-1 " style="background-color: #dd4b39;"  role="button" type="submit">
-                      <i class="fab fa-google"></i>
-                    </button>
-                    <button class="btn btn-primary btn-floating mx-1 " style="background-color: #55acee;"  role="button" type="submit">
-                     <i class="fab fa-twitter"></i>
-                    </button>
-                  <button class="btn btn-primary btn-floating mx-1 " style="background-color: #3b5998;"  role="button" type="submit">
-                     <i class="fab fa-facebook-f"></i>
-                    </button>
-                  <button class="btn btn-primary btn-floating mx-1 " style="background-color: #333333;"  role="button" type="submit">
-                     <i class="fab fa-github"></i>
-                    </button>
+              <span>
+                 {% trans 'Already have an account?' %}
+              </span>
 
 
-                </form>
+              <a href="{% url 'login' %}">{% trans 'Log in' %}</a>
+
+                  <p class=" text-muted text-center">{% trans 'or sign up with:' %}</p>
+                  <div class="text-center d-flex justify-content-center">
+
+
+                  <form action="{% provider_login_url 'google' %}" method="post">
+                    {% csrf_token %}
+                    <!-- Google -->
+                      <button class="btn btn-primary btn-floating mx-1 " style="background-color: #dd4b39;"  role="button" type="submit">
+                        <i class="fab fa-google"></i>
+                      </button>
+                      <button class="btn btn-primary btn-floating mx-1 " style="background-color: #55acee;"  role="button" type="submit">
+                       <i class="fab fa-twitter"></i>
+                      </button>
+                    <button class="btn btn-primary btn-floating mx-1 " style="background-color: #3b5998;"  role="button" type="submit">
+                       <i class="fab fa-facebook-f"></i>
+                      </button>
+                    <button class="btn btn-primary btn-floating mx-1 " style="background-color: #333333;"  role="button" type="submit">
+                       <i class="fab fa-github"></i>
+                      </button>
+
+
+                  </form>
+
+              </div>
 
 
 

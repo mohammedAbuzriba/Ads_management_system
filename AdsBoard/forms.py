@@ -1,8 +1,9 @@
 import django.utils.translation
 from django.utils.translation import gettext_lazy as _
 from django import forms
-from .models import Ads, Comments, Section
+from .models import Ads, Comments, Section, Profile
 from ckeditor.fields import RichTextField
+
 class NewAdsForm(forms.ModelForm,):
 
     # message = forms.CharField(widget=forms.Textarea(
@@ -44,3 +45,13 @@ class SectionUpdateForm(forms.ModelForm):
             'description_ar': _('Description Arabic'),
             'img': _('Image'),
         }
+
+
+
+
+class ProfileUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ['bio','birthday','gender','img']
+

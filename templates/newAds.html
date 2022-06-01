@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block title %}
      Create new Ads
 {%endblock%}
@@ -7,20 +7,25 @@
 
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+    <li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'Section' %}</a></li><div class="vr ms-2 me-2"></div>
+    {% if LANGUAGE_CODE == 'ar' %}
+    <li class="breadcrumb-item "><a href="{% url 'SectionAds' Section.pk %}">{{Section.name_ar}}</a></li><div class="vr ms-2 me-2"></div>
+    {%else%}
     <li class="breadcrumb-item "><a href="{% url 'SectionAds' Section.pk %}">{{Section.name}}</a></li>
-    <li class="breadcrumb-item active">New Ads</li>
+    {%endif%}
+    <li class="breadcrumb-item active">{% trans 'New Ads' %}</li>
  {%endblock%}
 
 
 {% block content %}
-
+<div class="card">
+    <div class="card-body row">
 <form method="post" enctype="multipart/form-data"  novalidate>
     {% csrf_token %}
     {{form.media}}
     {% include 'form.html' %}
 <br>
-    <button type="submit" class="btn btn-success">Add</button>
+    <button type="submit" class="btn btn-success mt-2">{% trans 'Add' %}</button>
 </form>
-
+ </div></div>
 {%endblock%}

@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}
      Edit  Ads
 {%endblock%}
 
 
-
 {% block breadcrumb %}
 
-  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
-    <li class="breadcrumb-item "><a href="{% url 'SectionAds' ads.section.pk%}">{{ads.section.name}}</a></li>
-    <li class="breadcrumb-item active">edit Ads</li>
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'Section' %}</a></li><div class="vr ms-2 me-2"></div>
+    {% if LANGUAGE_CODE == 'ar' %}
+    <li class="breadcrumb-item "><a href="{% url 'SectionAds' ads.section.pk%}">{{ads.section.name_ar}}</a></li><div class="vr ms-2 me-2"></div>
+    {%else%}
+    <li class="breadcrumb-item "><a href="{% url 'SectionAds' ads.section.pk%}">{{ads.section.name}}</a></li><div class="vr ms-2 me-2"></div>
+    {%endif%}
+    <li class="breadcrumb-item active">{% trans 'Edit Ads' %}</li>
  {%endblock%}
 
 
@@ -22,7 +26,7 @@
      {{form.media}}
     {% include 'form.html' %}
 
-    <button type="submit" class="btn btn-success">save</button>
+    <button type="submit" class="btn btn-success mt-2">{% trans 'Save' %}</button>
 </form>
  </div></div>
 {%endblock%}

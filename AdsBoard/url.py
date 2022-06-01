@@ -3,10 +3,12 @@ from . import views
 urlpatterns = [
     path('',views.home,name='home'),
     # path('',views.SectionListView.as_view(),name='home'),
-    path('users/',views.listuser,name='listuser'),
+    path('users/<int:user_type>',views.listuser,name='listuser'),
     path('users/<int:user_id>/edit', views.usersEditView.as_view(), name='usersEditView'),
     path('waitingAds/',views.waitingAds,name='waitingAds'),
-    # path('profile/<int:user_id>', views.ProfileUpdateview.as_view(), name='ProfileUpdate'),
+    # path('profile/<int:id>', views.ProfileUpdateview.as_view(), name='ProfileUpdate'),
+    # path('profile/ddd/<int:user_id>', views.update_Profile_view, name='update_Profile_view'),
+
     path('ArchivesAds/',views.ArchivesAds,name='ArchivesAds'),
     path('UserProfile/<int:user_id>',views.UserProfile,name='UserProfile'),
     path('Section/Ads/<int:ads_id>/save/<int:id>', views.saveArchivesAds, name='saveArchivesAds'),
