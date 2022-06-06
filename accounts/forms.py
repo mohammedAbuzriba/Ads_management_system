@@ -38,14 +38,14 @@ class UpdateUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['first_name','last_name','username','email']
 
 
 class UpdateProfileForm(forms.ModelForm):
     # avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
     # bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
     bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
-    # birthday = forms.DateField()
+    birthday = forms.DateField()
     # gender = forms.CharField(
     #     max_length=6,
     #     choices=[('MALE', 'MALE'), ('FEMALE', 'FEMALE')]

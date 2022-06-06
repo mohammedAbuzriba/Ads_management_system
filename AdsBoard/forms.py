@@ -1,4 +1,5 @@
 import django.utils.translation
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django import forms
 from .models import Ads, Comments, Section, Profile
@@ -55,3 +56,9 @@ class ProfileUpdateForm(forms.ModelForm):
         model = Profile
         fields = ['bio','birthday','gender','img']
 
+
+# class EditeUserForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = User
+#         fields = ['first_name','last_name','username','email']

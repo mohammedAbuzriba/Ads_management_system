@@ -6,7 +6,7 @@ urlpatterns = [
     path('users/<int:user_type>',views.listuser,name='listuser'),
     path('users/<int:user_id>/edit', views.usersEditView.as_view(), name='usersEditView'),
     path('waitingAds/',views.waitingAds,name='waitingAds'),
-    # path('profile/<int:id>', views.ProfileUpdateview.as_view(), name='ProfileUpdate'),
+    # path('EditeUser/', views.EditeUser, name='EditeUser'),
     # path('profile/ddd/<int:user_id>', views.update_Profile_view, name='update_Profile_view'),
 
     path('ArchivesAds/',views.ArchivesAds,name='ArchivesAds'),

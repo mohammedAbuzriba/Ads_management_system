@@ -1,3 +1,4 @@
+from datetime import datetime
 from pyexpat.errors import messages
 
 from django.shortcuts import render, redirect
@@ -17,8 +18,6 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-
-
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -36,6 +35,7 @@ def profile(request):
 
     return render(request, 'ProfileUpdate.html', {'form': form, 'profile_form': profile_form})
 
+
 def signup(request):
     form = SignUpForm()
     if request.method == 'POST':
@@ -44,12 +44,14 @@ def signup(request):
             user = form.save()
             auth_login(request, user)
             profile = Profile.objects.create(
-                user = user,
-                bio = 'defult'
+                user=user,
+                bio='Default Bio',
+                birthday=datetime.now().date(),
+                img='static/img/Profile/user.png',
             )
 
             return redirect('home')
-    return render(request,'signup.html',{'form':form})
+    return render(request, 'signup.html', {'form': form})
 
 
 class UserUpdateview(UpdateView):
@@ -59,5 +61,3 @@ class UserUpdateview(UpdateView):
 
     def get_object(self):
         return self.request.user
-
-

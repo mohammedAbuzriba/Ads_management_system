@@ -3,12 +3,12 @@
 {% load i18n %}
 
 {% block title %}
-        My Account
+My Account
 {%endblock%}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active">{% trans 'My account' %}</li>
- {%endblock%}
+<li class="breadcrumb-item active">{% trans 'My account' %}</li>
+{%endblock%}
 
 {% block content %}
 
@@ -17,31 +17,31 @@
     <div class="card-body row">
         <div class="row">
             <div class="row">
-         <a class="dropdown-item" href="{% url 'myAccount'%}">
-            <i class="fas fa-user"></i> {% trans 'My account' %}
-        </a>
-        <a class="dropdown-item" href="{% url 'update_Profile_view' user.id  %}">
-            <i class="fas fa-user"></i> {% trans 'My Profile' %}
-        </a>
-    </div>
+                <a class="dropdown-item" href="{% url 'myAccount'%}">
+                    <i class="fas fa-user"></i> {% trans 'My account' %}
+                </a>
+                <a class="dropdown-item" href="">
+                    <i class="fas fa-user"></i> {% trans 'My Profile' %}
+                </a>
+            </div>
         </div>
         <div class="row">
 
 
-        <div class="col-6">
+            <div class="col-6">
 
-<form method="post"  novalidate class="mt-5">
-    {% csrf_token %}
+                <form method="post" novalidate class="mt-5">
+                    {% csrf_token %}
 
-    {% include 'form.html' %}
+                    {% include 'form.html' %}
 
-    <button type="submit" class="btn btn-success mt-2">{% trans 'Save' %}</button>
-</form>
+                    <button type="submit" class="btn btn-success mt-2">{% trans 'Save' %}</button>
+                </form>
+            </div>
+            <div class="col-6">
+                <img class="card-img-top" src="{% static 'img/20943587.jpg' %}" alt="image">
+            </div>
         </div>
-        <div class="col-6">
-            <img class="card-img-top" src="{% static 'img/20943587.jpg' %}" alt="image">
-        </div>
- </div>
     </div>
 </div>
- {%endblock%}
+{%endblock%}

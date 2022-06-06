@@ -2,27 +2,38 @@
 {% load static%}
 {% load i18n %}
 {% block title %}
-       {{user.username}}
+{{user.username}}
 {%endblock%}
 
 
 {% block section %}
-        {% for Sections in getSection%}
-                    <li>
-                      {% if LANGUAGE_CODE == 'ar' %}
-                       <a class="dropdown-item text-end" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name_ar}}</a>
-                        {%else%}
-                       <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
-                        {%endif%}
-                    </li>
+{% for Sections in getSection%}
+<li>
+    {% if LANGUAGE_CODE == 'ar' %}
+    <a class="dropdown-item text-end" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name_ar}}</a>
+    {%else%}
+    <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+    {%endif%}
+</li>
 
-        {%endfor%}
+{%endfor%}
 {%endblock%}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'Section' %}</a></li><div class="vr ms-2 me-2"></div>
-    <li class="breadcrumb-item active">{% trans 'Users' %}</li>
- {%endblock%}
+<li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'Section' %}</a></li>
+<div class="vr ms-2 me-2"></div>
+<li class="breadcrumb-item active">{% trans 'Users' %}</li>
+<div class="vr ms-2 me-2"></div>
+{% if user_type == 0 %}
+<li class="breadcrumb-item active">{% trans 'All Users' %}</li>
+{%elif user_type == 1 %}
+<li class="breadcrumb-item active">{% trans 'Admin' %}</li>
+{%elif user_type == 2 %}
+<li class="breadcrumb-item active">{% trans 'Staff' %}</li>
+{%elif user_type == 3 %}
+
+{%endif%}
+{%endblock%}
 
 
 {% block content %}
@@ -64,256 +75,254 @@ h3 {
     text-align: center !important
 }
 
+
+
+
 </style>
 
 
-    <div class="mb-4">
-        <div class="padding ">
-            <div class="card text-center col-md-12  ">
-                <!-- Column -->
+<div class="mb-4">
+    <div class="padding ">
+        <div class="card text-center col-md-12  ">
+            <!-- Column -->
 
-                    <div class=" text-center ">
-                            <img class="col-8" src="{% static 'img/20943447.jpg' %}" alt="image">
-                            <div class="card-body little-profile text-center">
+            <div class=" text-center ">
+                <img class="col-8" src="{% static 'img/20943447.jpg' %}" alt="image">
+                <div class="card-body little-profile text-center">
                     <!--    <p>Web Designer &amp; Developer</p>-->
-                                    <div class="row text-center m-t-10">
-                                        <div class="col-lg-4 col-md-4 m-t-20"></div>
-                                        <div class="col-lg-4 col-md-4 m-t-20">
-                                            <h3 class="m-b-0 font-light text-center ">
-                                                <i class="fas fa-user"></i>
-                                                    {% if user_type == 0 %}
-                                                        {% trans 'All Users' %}
-                                                    {%elif user_type == 1 %}
-                                                        {% trans 'Admin' %}
-                                                    {%elif user_type == 2 %}
-                                                        {% trans 'Staff' %}
-                                                    {%elif user_type == 3 %}
-                                                        {% trans 'Users' %}
-                                                    {%endif%}
-                                                    {{userCount}}
-                                            </h3>
+                    <div class="row text-center m-t-10">
+                        <div class="col-lg-4 col-md-4 m-t-20"></div>
+                        <div class="col-lg-4 col-md-4 m-t-20">
+                            <h3 class="m-b-0 font-light text-center ">
+                                <i class="fas fa-user"></i>
+                                {% if user_type == 0 %}
+                                {% trans 'All Users' %}
+                                {%elif user_type == 1 %}
+                                {% trans 'Admin' %}
+                                {%elif user_type == 2 %}
+                                {% trans 'Teacher' %}
+                                {%elif user_type == 3 %}
+                                {% trans 'Student' %}
+                                {%endif%}
+                                {{userCount}}
+                            </h3>
 
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 m-t-20"></div>
-                                    </div>
-                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 m-t-20"></div>
                     </div>
-
+                </div>
             </div>
+
         </div>
-
-
     </div>
 
-    <div class="row mt-5 mb-5">
-        <div class="col">
-        <form method="get"  action="{% url 'listuser' user_type %}"  class=" g-3 align-items-center">
-        {% csrf_token %}
+
+</div>
+
+<div class="row mt-5 mb-5">
+    <div class="col">
+        <form method="get" action="{% url 'listuser' user_type %}" class=" g-3 align-items-center">
+            {% csrf_token %}
 
 
-          <div class="col">
-              {% if LANGUAGE_CODE == 'ar' %}
-                    <label class="visually-hidden rounded-5" for="inlineFormInputGroupSearch">{% trans 'Search' %}</label>
-                    <div class="input-group">
-                      <input type="search" class="form-control rounded-0" name="Search" id="inlineFormInputGroupSearch" placeholder="{% trans 'Search' %}" />
-                        <button type="submit" class="btn btn-primary rounded-0"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="col">
+                {% if LANGUAGE_CODE == 'ar' %}
+                <label class="visually-hidden rounded-5" for="inlineFormInputGroupSearch">{% trans 'Search' %}</label>
+                <div class="input-group">
+                    <input type="search" class="form-control rounded-0" name="Search" id="inlineFormInputGroupSearch"
+                           placeholder="{% trans 'Search' %}"/>
+                    <button type="submit" class="btn btn-primary rounded-0"><i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
 
-                    </div>
+                </div>
 
-              {%else%}
-                    <label class="visually-hidden" for="inlineFormInputGroupSearchen">{% trans 'Search' %}</label>
-                    <div class="input-group">
+                {%else%}
+                <label class="visually-hidden" for="inlineFormInputGroupSearchen">{% trans 'Search' %}</label>
+                <div class="input-group">
 
-                      <input type="search" class="form-control" name="Search" id="inlineFormInputGroupSearchen" placeholder="{% trans 'Search' %}" />
-                        <button type="submit" class="btn btn-primary "><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </div>
-              {%endif%}
-          </div>
-
-
+                    <input type="search" class="form-control" name="Search" id="inlineFormInputGroupSearchen"
+                           placeholder="{% trans 'Search' %}"/>
+                    <button type="submit" class="btn btn-primary "><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                {%endif%}
+            </div>
 
 
         </form>
-        </div>
-
-
-            <div class="col ">
-            <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-mdb-toggle="dropdown"
-                aria-expanded="false">
-                {% trans 'Users' %}
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                             <li><a class="dropdown-item" href="{% url 'listuser' 0 %}">{% trans 'All Users' %}</a></li>
-                             <li><a class="dropdown-item" href="{% url 'listuser' 1 %}">{% trans 'superuser' %}</a></li>
-                             <li><a class="dropdown-item" href="{% url 'listuser' 2 %}">{% trans 'Staff' %}</a></li>
-                             <li><a class="dropdown-item" href="{% url 'listuser' 3 %}">{% trans 'user' %}</a></li>
-
-              </ul>
-            </div>
-                </div>
     </div>
 
 
+    <div class="col ">
+        <div class="dropdown">
+            <button
+                    class="btn btn-primary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-mdb-toggle="dropdown"
+                    aria-expanded="false">
+                {% trans 'Users' %}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'listuser' 0 %}">{% trans 'All Users' %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'listuser' 1 %}">{% trans 'Admin' %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'listuser' 2 %}">{% trans 'Teacher' %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'listuser' 3 %}">{% trans 'Student' %}</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
 
 
 {% if user.is_superuser == True%}
-<table class="table table-hover align-middle mt-5 bg-white border border-2">
-              <thead class="bg-light table-dark">
-                <tr>
-                  <th>{% trans 'Name' %}</th>
-                  <th>{% trans 'User Name' %}</th>
-                  <th>{% trans 'Status' %}</th>
-                  <th>{% trans 'Date joined' %}</th>
-                  <th>{% trans 'Last login' %}</th>
-                  <th>{% trans 'Actions' %}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {%for user in listuser %}
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <img
-                          src="{% static 'img/avatar-06.png' %}"
-                          class="rounded-circle"
-                          alt=""
-                          style="width: 45px; height: 45px"
-                          />
-                      <div class="ms-3">
-                        <p class="fw-bold mb-1">{{user.first_name}} {{user.last_name}}</p>
-                        <p class="text-muted mb-0">{{user.email}}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
+<table id="dtBasicExample" class="table table-hover align-middle mt-5 bg-white border border-2">
+    <thead class="bg-light table-dark">
+    <tr>
+        <th>{% trans 'User Name' %}</th>
+        <th>{% trans 'Name' %}</th>
+
+        <th>{% trans 'Status' %}</th>
+        <th>{% trans 'Date joined' %}</th>
+        <th>{% trans 'Last login' %}</th>
+        <th>{% trans 'Email' %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {%for user in listuser %}
+    <tr>
+        <td>
+            <div class="d-flex align-items-center">
+                {% if user.profile.img %}
+                <img src="{{ user.profile.img.url }}" class="rounded-circle " alt="" style="width: 45px; height: 45px"/>
+                {%else%}
+                <img src="{% static 'img/user.png' %}" class="rounded-circle " alt=""
+                     style="width: 45px; height: 45px"/>
+                {%endif%}
+                <div class="ms-3 me-3">
                     <p class="fw-normal mb-1">{{user.username}}</p>
-                      {% if user.is_superuser == True%}
-                         <p class="text-muted mb-0">{% trans 'superuser' %}</p>
-                      {% elif user.is_staff == True%}
-                         <p class="text-muted mb-0">{% trans 'Staff' %}</p>
-                      {%else%}
-                         <p class="text-muted mb-0">{% trans 'user' %}</p>
-                      {%endif%}
-                  </td>
-                  <td>
-                      {% if user.is_active == True%}
-                       <span class="badge badge-success rounded-pill d-inline">Active</span>
-                      {%else%}
-                      <span class="badge badge-warning rounded-pill d-inline">stopped</span>
 
-                      {%endif%}
-                  </td>
-                  <td>
-                      {{user.date_joined}}
-                  </td>
-                  <td>
-                      {{user.last_login}}
-                  </td>
+                </div>
+            </div>
+        </td>
+        <td>
+            <p class="fw-bold mb-1">{{user.first_name}} {{user.last_name}}</p>
+            {% if user.is_superuser == True%}
+            <p class="text-muted mb-0">{% trans 'Admin' %}</p>
+            {% elif user.is_staff == True%}
+            <p class="text-muted mb-0">{% trans 'Teacher' %}</p>
+            {%else%}
+            <p class="text-muted mb-0">{% trans 'Student' %}</p>
+            {%endif%}
+        </td>
+        <td>
+            {% if user.is_active == True%}
+            <span class="badge badge-success rounded-pill d-inline">{% trans 'Active' %}</span>
+            {%else%}
+            <span class="badge badge-warning rounded-pill d-inline">{% trans 'stopped' %}</span>
 
-                  <td>
-                    <a
-                            href="{% url 'usersEditView' user.id %}"
-                            type="button"
-                            class="btn btn-link btn-rounded btn-sm fw-bold"
-                            data-mdb-ripple-color="dark"
-                            >
-                      Edit
-                    </a>
-                  </td>
-                </tr>
-              {%endfor%}
-              </tbody>
-            </table>
+            {%endif%}
+        </td>
+        <td>
+            {{user.date_joined}}
+        </td>
+        <td>
+            {{user.last_login}}
+        </td>
+
+        <td>
+             <a href="mailto:{{user_profile.email}}">{{user.email}}</a>
+<!--            <form method="get" action="" novalidate>-->
+<!--                {% csrf_token %}-->
+<!--                <input type="hidden" name="user_id" value="{{ user }}">-->
+<!--                <button type="submit" class="btn btn-outline-primary">{% trans 'Edit' %}</button>-->
+<!--            </form>-->
+            <!--            <a href="" type="button"
+                            class="btn btn-outline-primary btn-sm m-0 waves-effect btn-rounded btn-sm fw-bold"
+                            data-mdb-ripple-color="dark">Edit</a>-->
+        </td>
+    </tr>
+    {%endfor%}
+    </tbody>
+</table>
 {%else%}
-<table class="table table-hover align-middle mt-5 bg-white border border-2">
-              <thead class="bg-light table-dark">
-                <tr>
-                  <th>{% trans 'Name' %}</th>
-                  <th>{% trans 'User Name' %}</th>
-                  <th>{% trans 'User type' %}</th>
-                  <th>{% trans 'Email' %}</th>
+<table id="dtBasicExample2" class="table table-hover align-middle mt-5 bg-white border border-2">
+    <thead class="bg-light table-dark">
+    <tr>
+        <th>{% trans 'Name' %}</th>
+        <th>{% trans 'User Name' %}</th>
+        <th>{% trans 'User type' %}</th>
+        <th>{% trans 'Email' %}</th>
 
 
-                </tr>
-              </thead>
-              <tbody>
-                {%for user in listuser %}
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <img
-                          src="{% static 'img/avatar-06.png' %}"
-                          class="rounded-circle "
-                          alt=""
-                          style="width: 45px; height: 45px"
-                          />
-                      <div class="ms-3 me-3">
-                        <p class="fw-bold mb-1">{{user.first_name}} {{user.last_name}}</p>
+    </tr>
+    </thead>
+    <tbody>
+    {%for l_user in listuser %}
+    <tr>
+        <td>
+            <div class="d-flex align-items-center">
+                {% if l_user.profile.img %}
+                <img src="{{ l_user.profile.img.url }}" class="rounded-circle " alt="" style="width: 45px; height: 45px"/>
+                {%else%}
+                <img src="{% static 'img/user.png' %}" class="rounded-circle " alt=""
+                     style="width: 45px; height: 45px"/>
+                {%endif%}
 
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p class="fw-normal mb-1">{{user.username}}</p>
-                  </td>
-                  <td>
-                      <p class="text-muted mb-0">
-                          {% if user.is_superuser == True%}
-                         <p class="text-muted mb-0">{% trans 'Superuser' %}</p>
-                          {% elif user.is_staff == True%}
-                             <p class="text-muted mb-0">{% trans 'Staff' %}</p>
-                          {%else%}
-                             <p class="text-muted mb-0">{% trans 'User' %}</p>
-                          {%endif%}
-                      </p>
-                  </td>
-                  <td>
-                      {% if user.is_staff == True%}
-                      <a  href="mailto:{{user_profile.email}}">{{user.email}}</a>
-                      {%endif%}
-                  </td>
+                <div class="ms-3 me-3">
+                    <p class="fw-bold mb-1">{{l_user.first_name}} {{l_user.last_name}}</p>
+
+                </div>
+            </div>
+        </td>
+        <td>
+            <p class="fw-normal mb-1">{{l_user.username}}</p>
+        </td>
+        <td>
+            <p class="text-muted mb-0">
+            {% if l_user.is_superuser == True%}
+            <p class="text-muted mb-0">{% trans 'Admin' %}</p>
+            {% elif l_user.is_staff == True%}
+            <p class="text-muted mb-0">{% trans 'Teacher' %}</p>
+            {%else%}
+            <p class="text-muted mb-0">{% trans 'Student' %}</p>
+            {%endif%}
+            </p>
+        </td>
+        <td>
+            {% if user.is_staff == True%}
+            <a href="mailto:{{user_profile.email}}">{{l_user.email}}</a>
+            {%endif%}
+        </td>
 
 
-
-
-                </tr>
-              {%endfor%}
-              </tbody>
-            </table>
+    </tr>
+    {%endfor%}
+    </tbody>
+</table>
 
 {%endif%}
-
-
-
-
-
 
 
 <div class="text-center mt-5 mb-3">
 
 
-      {% if Ads.has_previous %}
-        <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
-        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">Previous</a>
-      {% endif %}
+    {% if Ads.has_previous %}
+    <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+    <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.previous_page_number }}">Previous</a>
+    {% endif %}
 
-      {% for num in Ads.paginator.page_range %}
-        {% if Ads.number == num %}
-          <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
-        {% elif num > Ads.number|add:'-3' and num < Ads.number|add:'3' %}
-          <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
-        {% endif %}
-      {% endfor %}
+    {% for num in Ads.paginator.page_range %}
+    {% if Ads.number == num %}
+    <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+    {% elif num > Ads.number|add:'-3' and num < Ads.number|add:'3' %}
+    <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+    {% endif %}
+    {% endfor %}
 
-      {% if Ads.has_next %}
-        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">Next</a>
-        <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">Last</a>
-      {% endif %}
+    {% if Ads.has_next %}
+    <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.next_page_number }}">Next</a>
+    <a class="btn btn-outline-primary mb-4" href="?page={{ Ads.paginator.num_pages }}">Last</a>
+    {% endif %}
 
 
 </div>
