@@ -1,24 +1,64 @@
 {% load static%}
-<!--<html lang="ar" dir="rtl" >-->
-<html lang="en"    >
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+{% load i18n %}
+{% if LANGUAGE_CODE == 'ar' %}
+<html lang="ar" dir="rtl">
+{% else %}
+<html lang="en" dir="ltr">
+{% endif %}
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <title>{% block title %}{%endblock%}</title>
-    <link rel="stylesheet" href="{% static 'css/all.css'%}" />
-    <link rel="stylesheet" href="{% static 'css/mdb.min.css'%}" />
-<!--  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap"rel="stylesheet"/>
-  </head>
-  <body class="" style="background-color: #f3f3f3;">
+    <link rel="stylesheet" href="{% static 'css/all.css'%}"/>
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css'%}"/>
+    <!--  ----------------------  -->
+    <!--    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}"/>-->
+    <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap5.min.css'%}"/>
+
+    <!--  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />-->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap" rel="stylesheet"/>
+</head>
+<body class="font_ar" style="background-color: #f3f3f3;">
 
 
-    <style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800&display=swap');
+    *{
+    padding: 0;
+    margin: 0;
+    }
+
     .aLink:hover {
     text-decoration: underline;
+    }
+    {% if LANGUAGE_CODE == 'ar' %}
+    *{
+      font-family: 'Tajawal', sans-serif;
+      direction: rtl;
+      text-align: right;
+
+        font-size: 101%;
+    }
+    .img_ar {
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+    }
+    {%else%}
+    *{
+      font-family: 'Tajawal', sans-serif;
+      direction: ltr;
+      text-align: left;
+
+      font-size: 101%;
+    }
+    {%endif%}
+
+    .align_center
+    {
+        text-align: center;
     }
 
       #intro {
@@ -31,285 +71,304 @@
           margin-top: 45px;
         }
       }
-    </style>
 
-    {% block body %}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
 
-      <div class="container-fluid ">
+
+
+
+</style>
+
+{% block body %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+
+    <div class="container-fluid ">
         <!-- Navbar brand -->
-        <a class="logo" href="{% url 'home' %}"> Ads Board </a>
+        <a class="logo" href="{% url 'home' %}">{% trans 'Ads Board' %} </a>
 
         <div class="collapse navbar-collapse" id="navbarExample01">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="{% url 'home' %}"
-                >Home</a
-              >
-            </li>
-            <li class="nav-item">
-              <ul class="navbar-nav">
-                <!-- Dropdown -->
-                <li class="nav-item dropdown">
 
+            <ul class="navbar-nav {% if LANGUAGE_CODE == 'ar' %} ms-auto {%else%} me-auto {%endif%}  ">
 
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdownMenuLinks"
-                    role="button"
-                    data-mdb-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                  Section
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinks">
-                    <li>
-                      <a class="dropdown-item" href="{% url 'SectionAds' 0 %}">All Section</a>
-                    </li>
-                    {% block section %}
-                    {%endblock%}
+                <li class="nav-item active">
 
-
-                  </ul>
+                    <a class="nav-link" aria-current="page" href="{% url 'home' %}">{% trans 'Home' %}</a>
                 </li>
-              </ul>
-            </li>
+                <li class="nav-item">
+                    <ul class="navbar-nav">
+                        <!-- Dropdown -->
+                        <li class="nav-item dropdown">
 
-            <li class="nav-item">
-              {% if user.id%}
-              <a class="nav-link" href="{% url 'ArchivesAds' %}" rel="nofollow"
-                >Archive</a>
-              {%endif%}
-            </li>
-              <li class="nav-item">
-                {% if user.id%}
-              <a class="nav-link" href="{% url 'UserProfile' user.id %}" rel="nofollow">Profile</a>
-                {%else%}
 
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="navbarDropdownMenuLinks"
+                               role="button"
+                               data-mdb-toggle="dropdown"
+                               aria-expanded="false">
+                                {% trans 'Section' %}
+                            </a>
+                            <ul class="dropdown-menu shadow-lg" aria-labelledby="navbarDropdownMenuLinks">
+                                <li>
+
+                                    <a class="dropdown-item " href="{% url 'SectionAds' 0 %}">
+                                        {% trans 'All Section'%}
+                                    </a>
+
+
+                                </li>
+                                {% for Sections in getSection%}
+                                <li>
+                                    {% if LANGUAGE_CODE == 'ar' %}
+                                    <a class="dropdown-item text-end" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name_ar}}</a>
+                                    {%else%}
+                                    <a class="dropdown-item"
+                                       href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
+                                    {%endif%}
+                                </li>
+
+                                {%endfor%}
+
+
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                {%if user.is_authenticated%}
+
+                <li class="nav-item">
+                    {% if user.id%}
+                    <a class="nav-link" href="{% url 'ArchivesAds' %}" rel="nofollow">{% trans 'Archive' %}</a>
+                    {%endif%}
+                </li>
+                <li class="nav-item">
+                    {% if user.id%}
+                    <a class="nav-link" href="{% url 'UserProfile' user.id %}" rel="nofollow">{% trans 'Profile' %}</a>
+                    {%else%}
+
+                    {%endif%}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'listuser' 0 %}">{% trans 'Users' %}</a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'waitingAds' %}">{% trans 'Waiting Ads' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'waitingAds' %}">
+                        <i class="fas fa-envelope "></i>
+                        <span class="badge rounded-pill badge-notification bg-danger">{{countAds}}</span>
+                    </a>
+                </li>
                 {%endif%}
-            </li>
-            {% if user.is_superuser%}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'listuser' %}"  >Users</a>
-
-            </li>
-              <li class="nav-item">
-              <a class="nav-link" href="{% url 'waitingAds' %}"  >Waiting Ads</a>
-
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'waitingAds' %}" >
-
-                <i class="fas fa-envelope fa-lg"></i>
-  <p class="badge rounded-pill badge-notification bg-danger"  >{{countAds}}</p>
-</a>
-            </li>
-            {%endif%}
-          </ul>
+            </ul>
 
 
+            {%if user.is_authenticated%}
 
-
-
-          {%if user.is_authenticated%}
-
-              <ul class="navbar-nav">
+            <ul class="navbar-nav">
                 <!-- Dropdown -->
                 <li class="nav-item dropdown">
 
 
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdownMenuLink"
-                    role="button"
-                    data-mdb-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                  Welcome  {{ user.username }}
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li>
-                      <a class="dropdown-item" href="{% url 'myAccount'%}"
-                          ><i class="fas fa-user"></i> My account</a
-                        >
-                    </li>
-                    <li>
-                      <a
-                      class="dropdown-item"
-                      href="{% url 'changePassword' %}"
-                      > <i class="fa-solid fa-unlock-keyhole"></i> Change password</a
+                    <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="navbarDropdownMenuLink"
+                            role="button"
+                            data-mdb-toggle="dropdown"
+                            aria-expanded="false"
                     >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'logout' %}"
-                          > <i class="fa-solid fa-right-from-bracket"></i> Log out</a
-                        >
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-              {%else%}
+                        {% trans 'Welcome' %} {{ user.username }}
+                    </a>
+                    {% if LANGUAGE_CODE == 'ar' %}
+                    <ul class="dropdown-menu text-end" aria-labelledby="navbarDropdownMenuLink">
+                        {%else%}
+                        <ul class="dropdown-menu text-start" aria-labelledby="navbarDropdownMenuLink">
+                            {%endif%}
+                            <!--                            <li>-->
+                            <!--                                <a class="dropdown-item" href="{% url 'myAccount'%}"-->
+                            <!--                                ><i class="fas fa-user"></i> {% trans 'My account' %} </a>-->
+                            <!--                            </li>-->
+                            <li>
+                                <a class="dropdown-item" href="{% url 'users-profile'  %}"
+                                ><i class="fas fa-user"></i> {% trans 'My account' %} </a>
+                            </li>
+                            <li>
+                                <a
+                                        class="dropdown-item"
+                                        href="{% url 'changePassword' %}"
+                                > <i class="fa-solid fa-unlock-keyhole"></i> {% trans 'Change password' %}</a
+                                >
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout' %}"
+                                > <i class="fa-solid fa-right-from-bracket"></i> {% trans 'Log out' %}</a>
+                            </li>
+                        </ul>
+                        </li>
+                    </ul>
+                    {%else%}
 
-              <div class="ps-1 pe-1 d-none d-lg-block">
-                <a
-                  class="btn btn-primary m-2"
-                  href="{% url 'login' %}"
+                    <div class="ps-1 pe-1 d-none d-lg-block">
+                        <a
+                                class="btn btn-primary btn-sm m-2"
+                                href="{% url 'login' %}"
+                                role="button">
+                            {% trans 'Login' %}
+                        </a>
 
-                  role="button"
-                  >Login
-                </a>
+                    </div>
+                    {%endif%}
 
-              </div>
-
-{%endif%}
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    <div class="ps-1 pe-1 d-none d-lg-block">
+                        <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                            {% get_current_language as LANGUAGE_CODE %}
+                            <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
+                            {% if LANGUAGE_CODE == 'ar' %}
+                            <button type='submit' name='language' value='en' class="btn btn-primary btn-sm">
+                                <span class="label"></span> en
+                            </button>
+                            {% else %}
+                            <button type='submit' name='language' value='ar' class="btn btn-primary btn-sm">
+                                <span class="label"></span> ar
+                            </button>
+                            {% endif %}
+                        </form>
+                    </div>
 
 
+                    <ul class="navbar-nav d-flex flex-row">
+                        <!-- Icons -->
 
-          <ul class="navbar-nav d-flex flex-row">
-            <!-- Icons -->
-            <li class="nav-item me-3 me-lg-0">
-              <a class="nav-link" href="https://www.youtube.com" rel="nofollow"
-                target="_blank">
-                <i class="fab fa-youtube"></i>
-              </a>
-            </li>
-            <li class="nav-item me-3 me-lg-0">
-              <a class="nav-link" href="https://www.facebook.com/mohamed.abuzriba.9" rel="nofollow" target="_blank">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-            </li>
-            <li class="nav-item me-3 me-lg-0">
-              <a class="nav-link" href="https://twitter.com/MAbuzriba" rel="nofollow" target="_blank">
-                <i class="fab fa-twitter"></i>
-              </a>
-            </li>
-            <li class="nav-item me-3 me-lg-0">
-              <a class="nav-link" href="https://github.com/mohammedAbuzriba/Ads_management_system.git" rel="nofollow" target="_blank">
-                <i class="fab fa-github"></i>
-              </a>
-            </li>
-          </ul>
+                        <li class="nav-item me-3 me-lg-0">
+                            <a class="nav-link" href="https://www.youtube.com" rel="nofollow"
+                               target="_blank">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item me-3 me-lg-0">
+                            <a class="nav-link" href="https://www.facebook.com/mohamed.abuzriba.9" rel="nofollow"
+                               target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item me-3 me-lg-0">
+                            <a class="nav-link" href="https://twitter.com/MAbuzriba" rel="nofollow" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item me-3 me-lg-0">
+                            <a class="nav-link" href="https://github.com/mohammedAbuzriba/Ads_management_system.git"
+                               rel="nofollow" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </li>
+                    </ul>
         </div>
-      </div>
-    </nav>
-    <!-- Navbar -->
+    </div>
+</nav>
+<!-- Navbar -->
 
 
-    <main class="my-5 pb-5">
-      <div class="container pb-5">
+<main class="my-5 pb-5">
+    <div class="container pb-5">
 
         <div class="text-center pt-3 pb-5">
-          <div id="intro" class="border border-1 rounded-5  text-start bg-white">
-               <nav class="navbar navbar-expand-lg  bg-white rounded-5">
-  <div class="container-fluid">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-                {% block breadcrumb %} {%endblock%}
-        </ol>
-    </nav>
-  </div>
-</nav>
-          </div>
+            <div id="intro" class="border border-1 rounded-5  text-start bg-white">
+                <nav class="navbar navbar-expand-lg  bg-white rounded-5">
+                    <div class="container-fluid">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb ">
+                                {% block breadcrumb %} {%endblock%}
+                            </ol>
+                        </nav>
+                    </div>
+                </nav>
+            </div>
         </div>
-
 
 
         {% block content %} {%endblock%}
-      </div>
-    </main>
+    </div>
+</main>
 
-    {%endblock body%}
-
-
+{%endblock body%}
 
 
+<!--Footer-->
+<footer class="bg-light text-lg-start pt-5">
+    <hr class="m-0"/>
 
-    <!--Footer-->
-    <footer class="bg-light text-lg-start pt-5">
-      <hr class="m-0" />
-
-      <div class="text-center py-4 align-items-center">
-        <p>Follow You Can on social media</p>
+    <div class="text-center py-4 align-items-center ">
+        <p class="text-center">{% trans 'Follow You Can on social media' %}</p>
         <a
-          href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA"
-          class="btn btn-primary m-1"
-          role="button"
-          rel="nofollow"
-          target="_blank"
-        >
-          <i class="fab fa-youtube"></i>
+                href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA"
+                class="btn btn-primary m-1"
+                role="button"
+                rel="nofollow"
+                target="_blank">
+            <i class="fab fa-youtube"></i>
         </a>
         <a
-          href="#"
-          class="btn btn-primary m-1 "
-          role="button"
-          rel="nofollow"
-          target="_blank"
+                href="#"
+                class="btn btn-primary m-1 "
+                role="button"
+                rel="nofollow"
+                target="_blank"
         >
-          <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-facebook-f"></i>
         </a>
         <a
-          href="#"
-          class="btn btn-primary m-1  "
-          role="button"
-          rel="nofollow"
-          target="_blank"
+                href="#"
+                class="btn btn-primary m-1  "
+                role="button"
+                rel="nofollow"
+                target="_blank"
         >
-          <i class="fab fa-twitter"></i>
+            <i class="fab fa-twitter"></i>
         </a>
         <a
-          href="https://github.com/mdbootstrap/mdb-ui-kit"
-          class="btn btn-primary m-1"
-          role="button"
-          rel="nofollow"
-          target="_blank"
+                href="https://github.com/mdbootstrap/mdb-ui-kit"
+                class="btn btn-primary m-1"
+                role="button"
+                rel="nofollow"
+                target="_blank"
         >
-          <i class="fab fa-github"></i>
+            <i class="fab fa-github"></i>
         </a>
-      </div>
+    </div>
 
-      <!-- Copyright -->
-      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
         © 2022 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">YouCan.com</a>
-      </div>
-      <!-- Copyright -->
-    </footer>
-    <!--Footer-->
-
-
-
-
-
-
-
-    <div class="loader bg-white">
-      <img src="{% static 'img/load-gif.gif' %}" alt="">
+        <a class="text-dark" href="https://mdbootstrap.com/">YouCan Team</a>
     </div>
+    <!-- Copyright -->
+</footer>
+<!--Footer-->
 
 
+<div class="loader bg-white">
+    <img src="{% static 'img/load-gif.gif' %}" alt="">
+</div>
 
-    <div class="fixed-top top-50  btnfixed1 ms-5" id="btnfixed1">
-        <button class="btn btn-floating btn-primary btn-lg" style="background-color: #f44336;">
-             <i class="fa-solid fa-angles-up"></i>
-        </button>
-    </div>
+
+<!--    <div class="fixed-top top-50  btnfixed1 ms-5" id="btnfixed1">-->
+<!--        <button class="btn btn-floating btn-primary btn-lg" style="background-color: #f44336;">-->
+<!--             <i class="fa-solid fa-angles-up"></i>-->
+<!--        </button>-->
+<!--    </div>-->
+
+
+<!--<div class="fixed-action-btn btnfixed1" id="btnfixed1">-->
+<!--  <button class="btn btn-floating btn-primary " style="background-color: #f44336;">-->
+<!--    <i class="fa-solid fa-angles-up"></i>-->
+<!--  </button>-->
+<!--</div>-->
 
 <style>
     .loader{
@@ -337,7 +396,14 @@
 
 .btnfixed1 {
 display:none;
+z-index: -1;
 }
+
+
+
+
+
+
 
 
 </style>
@@ -370,13 +436,32 @@ myBtn.onclick = function(){
     'use strict';
     window.scrollTo(0,0);
 }
+
+
+
+
+
+
+
+
 </script>
 
 
+<!-- MDB -->
+<script src="{%static 'js/all.js'%}"></script>
+<script src="{%static 'js/mdb.min.js'%}"></script>
+<script src="{%static 'js/mdb.min.js.map'%}"></script>
+<script src="{%static 'js/jquery-3.5.1.js'%}"></script>
+<script src="{%static 'js/jquery.dataTables.min.js'%}"></script>
+<script src="{%static 'js/dataTables.bootstrap5.min.js'%}"></script>
+<script>
+$(document).ready(function () {
+$('#dtBasicExample').DataTable();
+$('#dtBasicExample2').DataTable();
+$('.dataTables_length').addClass('bs-select');
+});
+</script>
 
-    <!-- MDB -->
-    <script src="{%static 'js/all.js'%}"></script>
-    <script src="{%static 'js/mdb.min.js'%}"></script>
-    <script src="{%static 'js/mdb.min.js.map'%}"></script>
-  </body>
+
+</body>
 </html>

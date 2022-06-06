@@ -1,27 +1,18 @@
 {% extends 'base.html' %}
 {% load static%}
-
+{% load i18n %}
 {% block title %}
-        Section
+Section
 {%endblock%}
 
-{% block section %}
-        {% for Sections in getSection%}
-                    <li>
-                      <a class="dropdown-item" href="{% url 'SectionAds' Sections.pk%}">{{Sections.name}}</a>
-                    </li>
-
-        {%endfor%}
-{%endblock%}
 
 {% block breadcrumb %}
-      <!-- Jumbotron -->
+<!-- Jumbotron -->
 
-<li class="breadcrumb-item active" aria-current="page">Section</li>
+<li class="breadcrumb-item active" aria-current="page">{% trans 'Section' %}</li>
 
-    <!-- Jumbotron -->
- {%endblock%}
-
+<!-- Jumbotron -->
+{%endblock%}
 
 
 {% block content %}
@@ -50,225 +41,321 @@ padding: 0px -120px;
 height:120px;
 
 }
+.bg_hover:hover{
+background-color: #555;
+
+}
+
+
 
 </style>
 
-  <!--Main Navigation-->
+<!--Main Navigation-->
 
-  <!--Main layout-->
+<!--Main layout-->
 
-      <!--Section: Content-->
-      <section class="text-center">
-
-
-          <!-- Carousel wrapper -->
-<div id="carouselMaterialStyle" class=" carousel slide carousel-fade mb-5" data-mdb-ride="carousel">
-  <!-- Indicators -->
-  <div class="carousel-indicators">
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="0"  aria-label="Slide 1" class="active" aria-current="true"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="2" aria-label="Slide 3"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="3" aria-label="Slide 4"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="4" aria-label="Slide 5"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="5" aria-label="Slide 6"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="6" aria-label="Slide 7"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="7" aria-label="Slide 8"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="8" aria-label="Slide 9"></button>
-    <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="9" aria-label="Slide 10"></button>
+<!--Section: Content-->
+<section class="text-center">
 
 
-  </div>
+    <!-- Carousel wrapper -->
+    <div id="carouselMaterialStyle" class="carousel slide  mb-5" data-mdb-ride="carousel">
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="0" aria-label="Slide 1"
+                    class="active" aria-current="true"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="2"
+                    aria-label="Slide 3"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="3"
+                    aria-label="Slide 4"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="4"
+                    aria-label="Slide 5"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="5"
+                    aria-label="Slide 6"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="6"
+                    aria-label="Slide 7"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="7"
+                    aria-label="Slide 8"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="8"
+                    aria-label="Slide 9"></button>
+            <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="9"
+                    aria-label="Slide 10"></button>
 
-  <!-- Inner -->
-  <div class="carousel-inner rounded-5 shadow-4-strong">
-    <!-- Single item -->
+
+        </div>
+
+        <!-- Inner -->
+        <div class="carousel-inner rounded-5 shadow-4-strong align-items-start text-start">
+            <!-- Single item -->
 
 
-
-<!--    <div class="carousel-item active">-->
-<!--      <img src="{% static 'img/we.png' %}" class="d-block w-100"-->
-<!--        alt="Sunset Over the City" />-->
-<!--      <div class="carousel-caption d-none d-md-block">-->
-<!--        <h4 class="text-start text-capitalize mb-5">Section label</h4>-->
-<!--        <h5 class="text-start text-capitalize mt-5">First slide label</h5>-->
-<!--        <p  class="text-start">Nulla vitae elit libero, a pharetra augue mollis interdum.</p>-->
-<!--      </div>-->
-<!--    </div>-->
+            <!--    <div class="carousel-item active">-->
+            <!--      <img src="{% static 'img/we.png' %}" class="d-block w-100"-->
+            <!--        alt="Sunset Over the City" />-->
+            <!--      <div class="carousel-caption d-none d-md-block">-->
+            <!--        <h4 class="text-start text-capitalize mb-5">Section label</h4>-->
+            <!--        <h5 class="text-start text-capitalize mt-5">First slide label</h5>-->
+            <!--        <p  class="text-start">Nulla vitae elit libero, a pharetra augue mollis interdum.</p>-->
+            <!--      </div>-->
+            <!--    </div>-->
 
             {% for ads in adslast%}
 
-          <!-- Single item -->
-      {% if forloop.counter == 1 %}
-    <div class="carousel-item active">
-    {% else %}
-    <div class="carousel-item">
-    {% endif %}
-      <img src="{{ ads.section.img.url }}" class="d-block w-100"
-        alt="Cliff Above a Stormy Sea" />
-      <div class="carousel-caption d-none d-md-block">
-        <h4 class="text-start  text-uppercase mb-5">{{ads.section.name}}</h4>
-        <p class="text-start  mt-5 ">@{{ads.created_by}}</p>
-        <p class="text-start   "><i class="fa-regular fa-file"></i> {{ads.subject|truncatewords_html:4}}</p>
-        <p class="text-start  fw-light mb-3"><i class="fa-regular fa-clock"></i> {{ads.created_dt|date:"H:i A , d/m/Y"}}</p>
-<!--              {% if ads.messageAds|wordcount >= 4 %}-->
-<!--               <small class="text-start">{{ads.messageAds|truncatewords_html:3|safe}}</small>-->
-<!--              {% else %}-->
-<!--                <small class="text-start">{{ads.messageAds|safe}}</small>-->
-<!--              {% endif %}-->
+            <!-- Single item -->
+            {% if forloop.counter == 1 %}
+            <div class="carousel-item active align-items-start text-start ">
+                {% else %}
+                <div class="carousel-item align-items-start text-start">
+                    {% endif %}
 
-      </div>
-    </div>
+                    <img src="{{ ads.section.img.url }}" class=" img_ar d-block w-100" alt="Cliff Above a Stormy Sea"/>
+                    <div class="carousel-caption d-none d-md-block row ">
 
 
+                        <div class="col">
+                            {% if LANGUAGE_CODE == 'ar' %}
+                            <h4 class="  text-uppercase mb-2 ">{{ads.section.name_ar}}</h4>
+                            <a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white  mt-2 ">{{ads.created_by}}@</a>
+                            {%else%}
+                            <h4 class="  text-uppercase mb-5">{{ads.section.name}}</h4>
+                            <p><a href="{% url 'UserProfile' ads.created_by.pk %}" class="text-white bg_hover mt-5 ">@{{ads.created_by}}</a>
+                            </p>
+                            {%endif%}
+                            <p><a href="{% url 'adsComments' ads.section.pk ads.pk 0 %}"
+                                  class="text-white text-start bg_hover"><i class="fa-regular fa-file"></i>
+                                {{ads.subject|truncatewords_html:15}}</a></p>
+                            <p class="  fw-light mb-3"><i class="fa-regular fa-clock"></i> {{ads.created_dt|timesince}}
+                            </p>
+
+                        </div>
+
+                        <!--              {% if ads.messageAds|wordcount >= 4 %}-->
+                        <!--               <small class="text-start">{{ads.messageAds|truncatewords_html:3|safe}}</small>-->
+                        <!--              {% else %}-->
+                        <!--                <small class="text-start">{{ads.messageAds|safe}}</small>-->
+                        <!--              {% endif %}-->
+
+                    </div>
+                </div>
+
+
+                {%endfor%}
+
+                <!--    &lt;!&ndash; Single item &ndash;&gt;-->
+                <!--    <div class="carousel-item">-->
+                <!--      <img src="{% static 'img/sec2.jpg' %}"  class="d-block w-100"-->
+                <!--        alt="Canyon at Nigh" />-->
+                <!--      <div class="carousel-caption d-none d-md-block">-->
+                <!--        <h5>Second slide label</h5>-->
+                <!--        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+                <!--      </div>-->
+                <!--    </div>-->
+
+                <!--    &lt;!&ndash; Single item &ndash;&gt;-->
+                <!--    <div class="carousel-item">-->
+                <!--      <img src="{% static 'img/sec3.jpg' %}" class="d-block w-100"-->
+                <!--        alt="Cliff Above a Stormy Sea" />-->
+                <!--      <div class="carousel-caption d-none d-md-block">-->
+                <!--        <h5>Third slide label</h5>-->
+                <!--        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>-->
+                <!--      </div>-->
+                <!--    </div>-->
+
+
+            </div>
+            <!-- Inner -->
+
+            <!-- Controls -->
+            {% if LANGUAGE_CODE == 'ar' %}
+            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselMaterialStyle"
+                    data-mdb-slide="next">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-mdb-target="#carouselMaterialStyle"
+                    data-mdb-slide="prev">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            {%else%}
+            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselMaterialStyle"
+                    data-mdb-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-mdb-target="#carouselMaterialStyle"
+                    data-mdb-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            {%endif%}
+        </div>
+        <!-- Carousel wrapper -->
+
+
+        <div class="row mt-5">
+            {% for Sections in getSection%}
+
+            <div class="col-lg-4 col-md-12 mb-4 ">
+                <div class="card text-start border border-2 shadow-5">
+
+                    <div class="bg-image  hover-overlay ripple w-100 hh" data-mdb-ripple-color="light">
+                        {%if Sections.img%}
+                        <div class="inner ">
+                            <img src="{{ Sections.img.url }}" alt="{{ Sections.name }}" class="img_ar img-fluid ">
+                        </div>
+                        {%else%}
+                        <div class="inner">
+                            <img src="{% static 'img/6070193.jpg' %}" alt="{{ Sections.name }}"
+                                 class="img_ar img-fluid">
+                        </div>
+                        {%endif%}
+                        <a href="{% url 'SectionAds' Sections.pk%}">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                        </a>
+                    </div>
+
+
+                    <div class="card-body row ">
+
+                        {% if LANGUAGE_CODE == 'ar' %}
+                        <div class="d-flex justify-content-between">
+
+                            <h5 class="card-title text-end">
+                                <a href="{% url 'SectionAds' Sections.pk%}"
+                                   class="text-end">{{Sections.name_ar|upper}}</a>
+                                <small class="text-muted d-block">{{Sections.description_ar}}</small>
+                            </h5>
+                            <div class=" ">
+                                {% if user.is_superuser%}
+
+
+                                <ul class="navbar-nav">
+                                    <!-- Dropdown -->
+                                    <li class="nav-item dropdown ">
+
+
+                                        <a
+                                                class="nav-link text-dark"
+                                                href="#"
+                                                id="navbarDropdownMenuLink"
+                                                role="button"
+                                                data-mdb-toggle="dropdown"
+                                                aria-expanded="false"
+                                        >
+                                            <h5>
+                                                <i class="fa-solid fa-ellipsis-vertical "></i></h5>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+
+                                            <li>
+
+                                                <a href="{% url 'SectionEditView' Sections.pk  %}"
+                                                   class="  dropdown-item " role="button"><i
+                                                        class="fa-regular fa-pen-to-square"></i> {% trans 'Edit' %}</a>
+
+                                            </li>
+
+
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                                {%endif%}
+
+
+                            </div>
+                        </div>
+
+
+                        {% else %}
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title   text-start">
+                                <a href="{% url 'SectionAds' Sections.pk%}" class="">{{Sections.name|upper}}</a>
+                                <small class="text-muted d-block">{{Sections.description}}</small>
+                            </h5>
+                            <div class="">
+                                {% if user.is_superuser%}
+
+
+                                <ul class="navbar-nav">
+                                    <!-- Dropdown -->
+                                    <li class="nav-item dropdown ">
+
+
+                                        <a
+                                                class="nav-link text-dark"
+                                                href="#"
+                                                id="navbarDropdownMenuLink2"
+                                                role="button"
+                                                data-mdb-toggle="dropdown"
+                                                aria-expanded="false"
+                                        >
+                                            <h5>
+                                                <i class="fa-solid fa-ellipsis-vertical "></i></h5>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+
+
+                                            <li>
+
+                                                <a href="{% url 'SectionEditView' Sections.pk  %}"
+                                                   class="  dropdown-item " role="button"><i
+                                                        class="fa-regular fa-pen-to-square"></i> Edit</a>
+
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                                {%endif%}
+
+
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if LANGUAGE_CODE == 'ar' %}
+                    <div class="card-footer text-muted text-end ">
+                        <div class="">
+                            <i class="fa-regular fa-copy"></i> {{Sections.ads.count}} {% trans 'Ads' %}
+                        </div>
+                        {% with ads=Sections.ads.last %}
+                        {%if ads%}
+                        {% trans 'update by' %} {{ads.created_by.username}} <i class="fa-regular fa-circle-user"></i>
+                        <small class="text-muted d-block"> {% trans 'at' %} {{ads.created_dt}}</small>
+                        {%else%}
+                        {% trans 'NO ADS' %}
+                        {%endif%}
+                        {%endwith%}
+
+                    </div>
+                    {% else %}
+                    <div class="card-footer text-muted ">
+                        <div><i class="fa-regular fa-copy"></i> {{Sections.ads.count}} Ads</div>
+                        {% with ads=Sections.ads.last %}
+                        {%if ads%}
+                        update by <i class="fa-regular fa-circle-user"></i> {{ads.created_by.username}}
+                        <small class="text-muted d-block"> at {{ads.created_dt}}</small>{%else%} NO ADS {%endif%}
+                        {%endwith%}
+
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
 
             {%endfor%}
-
-<!--    &lt;!&ndash; Single item &ndash;&gt;-->
-<!--    <div class="carousel-item">-->
-<!--      <img src="{% static 'img/sec2.jpg' %}"  class="d-block w-100"-->
-<!--        alt="Canyon at Nigh" />-->
-<!--      <div class="carousel-caption d-none d-md-block">-->
-<!--        <h5>Second slide label</h5>-->
-<!--        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Single item &ndash;&gt;-->
-<!--    <div class="carousel-item">-->
-<!--      <img src="{% static 'img/sec3.jpg' %}" class="d-block w-100"-->
-<!--        alt="Cliff Above a Stormy Sea" />-->
-<!--      <div class="carousel-caption d-none d-md-block">-->
-<!--        <h5>Third slide label</h5>-->
-<!--        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>-->
-<!--      </div>-->
-<!--    </div>-->
+        </div>
+</section>
+<!--Section: Content-->
 
 
-
-  </div>
-  <!-- Inner -->
-
-  <!-- Controls -->
-  <button class="carousel-control-prev" type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-<!-- Carousel wrapper -->
+<!--Main layout-->
 
 
-
-
-<div class="row mt-5">
-          {% for Sections in getSection%}
-
-          <div class="col-lg-4 col-md-12 mb-4 ">
-            <div class="card text-start border border-2 shadow-5">
-
-              <div class="bg-image hover-overlay ripple hh"   data-mdb-ripple-color="light">
-            {%if Sections.img%}
-                  <div class="inner">
-                        <img src="{{ Sections.img.url }}" alt="{{ Sections.name }}"  class="img-fluid "     >
-                  </div>
-                  {%else%}
-                  <div class="inner">
-                  <img src="{% static 'img/6070193.jpg' %}" alt="{{ Sections.name }}" class="img-fluid" >
-                      </div>
-            {%endif%}
-                <a href="{% url 'SectionAds' Sections.pk%}">
-                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                </a>
-              </div>
-
-
-                <div class="card-body row " >
-                  <h5 class="card-title  col " >
-                      <a href="{% url 'SectionAds' Sections.pk%}" class="">{{Sections.name|upper}}</a>
-                        <small class="text-muted d-block">{{Sections.description}}</small>
-
-                  </h5>
-<div class="col-1">
-                    {% if user.is_superuser%}
-
-
-                    <ul class="navbar-nav">
-                <!-- Dropdown -->
-                <li class="nav-item dropdown ">
-
-
-                  <a
-                    class="nav-link text-dark"
-                    href="#"
-                    id="navbarDropdownMenuLink"
-                    role="button"
-                    data-mdb-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                      <h5>
-                  <i class="fa-solid fa-ellipsis-vertical "></i></h5>
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
-
-                      <li>
-
-                        <a href="{% url 'SectionEditView' Sections.pk  %}" class="  dropdown-item " role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-
-                      </li>
-
-
-
-
-
-
-
-
-
-                  </ul>
-                </li>
-              </ul>
-
-                         {%endif%}
-
-
-
-</div>
-
-              </div>
-                <ul class="list-group list-group-flush">
-    <li class="list-group-item"> <i class="fa-regular fa-copy"></i> Ads  {{Sections.ads.count}}</li>
-    </ul>
-                <div class="card-footer text-muted">
-                    {% with ads=Sections.ads.last %}
-                    {%if ads%}
-                     update   by   <i class="fa-regular fa-circle-user"></i> {{ads.created_by.username}}
-    <small class="text-muted d-block"> at    {{ads.created_dt}}</small>{%else%} NO ADS {%endif%} {%endwith%}
-
-  </div>
-            </div>
-          </div>
-
-        {%endfor%}
-</div>
-      </section>
-      <!--Section: Content-->
-
-
-  <!--Main layout-->
-
-
-
-
-
-
-
-
-
-
-
-
- {%endblock%}
+{%endblock%}

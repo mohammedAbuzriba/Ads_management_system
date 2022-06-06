@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% block title %}
      Edit  Ads
 {%endblock%}
@@ -8,8 +9,12 @@
 
 {% block breadcrumb %}
 
-  <li class="breadcrumb-item "><a href="{% url 'home'%}">Section</a></li>
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'Section' %}</a></li><div class="vr ms-1 me-1"></div>
+    {% if LANGUAGE_CODE == 'ar' %}
+    <li class="breadcrumb-item "><a href="#">{{section.name_ar}}</a></li>
+    {%else%}
     <li class="breadcrumb-item "><a href="#">{{section.name}}</a></li>
+    {%endif%}
  {%endblock%}
 
 
@@ -22,11 +27,11 @@
                          {{form.media}}
                         {% include 'form.html' %}
 
-                        <button type="submit" class="btn btn-success mt-2">save</button>
+                        <button type="submit" class="btn btn-success mt-2">{% trans 'Save' %}</button>
                     </form>
             </div>
             <div class="col-6">
-            <img class="card-img-top" src="{% static 'img/20943483.jpg' %}" alt="image">
+            <img class="card-img-top" src="{% static 'img/20943483.jpg' %}" alt="{% trans 'Image' %}">
         </div>
 
     </div>

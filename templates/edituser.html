@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
+{% load i18n %}
 {% block title %}
      Edit  Ads
 {%endblock%}
@@ -8,7 +9,7 @@
 
 {% block breadcrumb %}
 
-  <li class="breadcrumb-item "><a href="{% url 'home'%}">User</a></li>
+  <li class="breadcrumb-item "><a href="{% url 'home'%}">{% trans 'User' %}</a></li><div class="vr ms-2 me-2"></div>
     <li class="breadcrumb-item "><a href="#">{{user.username}}</a></li>
  {%endblock%}
 
@@ -24,7 +25,7 @@
     </table>
 
 <p></p>
-    <button type="submit" class="btn btn-success">save</button>
+    <button type="submit" class="btn btn-success">{% trans 'Save' %}</button>
 </form>
     </div></div>
 {%endblock%}

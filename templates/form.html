@@ -37,3 +37,44 @@
     {%endif%}
 
     {% endfor %}
+
+
+
+
+{% if profile_form.non_field_errors%}
+<div class="alert alert-danger " role="alerts">
+{%for error in profile_form.non_field_errors%}
+<p {%if forloop.last%} class="mb-0" {%endif%}>{{error}}</p>
+{%endfor%}
+</div>
+{%endif%}
+
+{% for field in profile_form %}
+
+    <div class="form-group pt-1 pb-1">
+      <div class="mt-1 mb-2">
+        {{field.label_tag}}<br>
+</div>
+      {%if profile_form.is_bound%}
+        {%if field.errors%}
+           {% render_field field class="form-control is-invalid pt-1 pb-1" %}
+            {%for error in field.errors%}
+              <div class="invalid-feedback pt-0 pb-1">{{error}}</div>
+            {%endfor%}
+        {%else%}
+            {% render_field field class="form-control is-valid pt-1 pb-1" %}
+        {%endif%}
+      {%else%}
+      {% render_field field class="form-control" %}
+
+      {%endif%}
+
+
+    </div>
+    {%if field.help_text%}
+    <small class="form-text text-muted">
+      {{field.help_text}}
+    </small>
+    {%endif%}
+
+    {% endfor %}
